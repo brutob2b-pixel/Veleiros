@@ -1,0 +1,38 @@
+PASTA DE ARTES DO SERVIDOR
+==========================
+
+Jogue os PNG/JPG aqui por FTP. O simulador carrega sozinho, sem
+precisar exportar o HTML de novo — basta recarregar a página.
+
+REGRA DE NOME (obrigatória)
+
+    tampa-01.png, tampa-02.png, tampa-03.png ...
+    tarja-01.png, tarja-02.png, tarja-03.png ...
+
+O prefixo define onde a arte é aplicada: "tampa" no disco da tampa,
+"tarja" na faixa do corpo. A numeração precisa ser sequencial e com
+dois dígitos, começando em 01. Extensões aceitas: .png, .jpg, .jpeg, .webp.
+
+O carregamento para depois de 3 números seguidos sem arquivo, então
+não deixe buracos grandes na sequência (01, 02, 03... e não 01, 09).
+
+NOME BONITO NA LEGENDA (opcional)
+
+Crie um arquivo "artes.json" nesta pasta para controlar a lista à mão:
+
+    [
+      { "arquivo": "tampa-01.png", "slot": "top",  "nome": "Morango — v2" },
+      { "arquivo": "tarja-01.png", "slot": "wrap", "nome": "Tarja morango" }
+    ]
+
+Existindo o artes.json, ele manda: a regra de nome acima é ignorada e
+os arquivos podem se chamar o que você quiser.
+
+PESO DO ARQUIVO (importante)
+
+As artes aqui foram exportadas como .webp (qualidade 92) em vez de
+.png — mesma aparência, sem perda visível, mas ~70% mais leve (as 20
+artes originais somavam ~204 MB; em .webp ficaram ~57 MB). Ao gerar
+novas artes no Illustrator/Photoshop, exporte como .webp sempre que
+possível (ou rode o PNG por um conversor para .webp qualidade ~90-92
+antes de subir por FTP) para manter o carregamento do simulador leve.

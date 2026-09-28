@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Veleiros do Caribe — mockup 3D</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+    "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js",
+    "three/addons/exporters/OBJExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js",
+    "three/addons/exporters/GLTFExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js"
+  },
+  "integrity": {
+    "https://unpkg.com/three@0.184.0/build/three.module.js": "sha384-8FCZ1eVO6it4+pbec2aDtnTrwjWXZLJRC+MAGCIPDgsYnUrl/E0A2YlF8ioMKI/J",
+    "https://unpkg.com/three@0.184.0/build/three.core.js": "sha384-dw2ooPewaEIrAgl6oFDBmmBWCE9oW9LxRGcfwZ0hLvEprzo202wXl7vCYHRlSnOT",
+    "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js": "sha384-4rziNxOBZKQ69i+w+f89KJ55TCYquwchVbByQwmaOeIOXdOU2PLDn3kOfXHwIJC9",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js": "sha384-nbwtoZENJD3Vq+ACK0CuGQdPMuDWHkamC2KJD70EV5nfg6jQjfppKOea07YJN+N3",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js": "sha384-VofkvpG6HERhFCYbsUOHeNXBCqID2nfqkQqnVzE1jc/oPcz+qJ13ADdXH08hE+cQ"
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#17120f}
+  three-d-stage:not(:defined){visibility:hidden}
+  three-d-stage{display:block;width:100vw;height:100vh}
+  #up{position:fixed;top:20px;left:20px;z-index:5;display:flex;flex-direction:column;gap:12px;
+      width:250px;padding:16px;border-radius:12px;background:rgba(12,9,8,.82);
+      max-height:calc(100vh - 40px);overflow-y:auto;
+      border:1px solid rgba(217,164,65,.35);backdrop-filter:blur(8px);
+      font-family:"Barlow Condensed",system-ui,sans-serif;color:#f3e2c4}
+  #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
+  #up p{margin:0;font-size:13px;line-height:1.35;color:#bda98c}
+  .drop{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;cursor:pointer;
+        border:1px dashed rgba(217,164,65,.5);background:rgba(176,17,24,.10);transition:.15s}
+  .drop:hover,.drop.over{background:rgba(176,17,24,.28);border-color:#e0b25c}
+  .drop b{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#f6e8cc}
+  .drop span{font-size:12px;color:#bda98c}
+  .drop img{width:100%;height:62px;object-fit:cover;border-radius:5px;display:none}
+  .drop.has img{display:block}
+  #up button{all:unset;text-align:center;padding:8px;border-radius:7px;cursor:pointer;font-size:12px;
+             letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
+  #up button:hover{color:#f6e8cc;border-color:#e0b25c}
+  #up input{display:none}
+  #up .dl{display:flex;gap:8px}
+  #up .dl a{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:12px;letter-spacing:.08em;
+            text-transform:uppercase;color:#e0b25c;text-decoration:none;border:1px solid rgba(217,164,65,.3)}
+  #up .dl a:hover{color:#f6e8cc;border-color:#e0b25c;background:rgba(176,17,24,.2)}
+  #up .mode{display:flex;gap:6px}
+  #up .mode .m{flex:1;text-align:center;padding:7px 2px;border-radius:7px;font-size:11px;
+                letter-spacing:.06em;text-transform:uppercase;color:#bda98c;
+                border:1px solid rgba(217,164,65,.28);cursor:pointer}
+  #up .mode .m.on{color:#0b0708;background:#e0b25c;border-color:#e0b25c}
+  #up .lib{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  #up .lib figure{margin:0;position:relative;border-radius:6px;overflow:hidden;cursor:pointer;
+                  border:1px solid rgba(217,164,65,.28);background:#0b0708;aspect-ratio:1}
+  #up .lib figure:hover{border-color:#e0b25c}
+  #up .lib img{width:100%;height:100%;object-fit:contain;display:block}
+  #up .lib figcaption{position:absolute;left:0;right:0;bottom:0;padding:2px 4px;font-size:9px;
+                      letter-spacing:.04em;color:#f6e8cc;background:rgba(8,5,4,.78);
+                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #up .lib .act{position:absolute;top:2px;right:2px;display:flex;gap:2px;opacity:0;transition:.12s}
+  #up .lib figure:hover .act{opacity:1}
+  #up .lib .act span{width:17px;height:17px;display:grid;place-items:center;border-radius:4px;
+                     font-size:10px;color:#f6e8cc;background:rgba(8,5,4,.85)}
+  #up .lib .act span:hover{background:#b01118}
+  #up .lib .tag{position:absolute;top:2px;left:2px;padding:1px 4px;border-radius:4px;font-size:8px;
+                letter-spacing:.08em;color:#0b0708;background:#e0b25c}
+  #up .vazio{font-size:12px;color:#8d7f6c;font-style:italic}
+  #up hr{border:none;border-top:1px solid rgba(217,164,65,.22);margin:2px 0}
+</style>
+</head>
+<body>
+<script type="application/json" id="bibliotecaEmbutida">{"artes":[]}</script>
+<three-d-stage name="pote-veleiros-do-caribe" background="#1d1714" autorotate></three-d-stage>
+<div id="up">
+  <h1>SUA ARTE</h1>
+  <p>Suba as duas artes para substituir os rótulos do mockup.</p>
+  <label class="drop" id="dropTop">
+    <b>Tampa</b><span>disco completo (1:1)</span>
+    <img id="prevTop" alt="">
+    <input type="file" id="fileTop" accept="image/*">
+  </label>
+  <label class="drop" id="dropWrap">
+    <b>Corpo · wrap 360°</b>    <span>faixa deitada · 280 × 15 mm (ex. 4096×219). "Preencher" corta topo e base.</span>
+    <img id="prevWrap" alt="">
+    <input type="file" id="fileWrap" accept="image/*">
+  </label>
+  <div class="mode">
+    <button class="m" data-mode="repeat">Repetir</button>
+    <button class="m" data-mode="cover">Preencher</button>
+    <button class="m" data-mode="contain">Encaixar</button>
+  </div>
+  <button id="girar">▶ Girar</button>
+  <button id="pdf">Salvar PDF (4 cenários)</button>
+  <button id="reset">Voltar ao original</button>
+  <p id="aviso" style="color:#e0b25c"></p>
+  <hr>
+  <h1 id="tituloLib">BIBLIOTECA DE ARTES</h1>
+  <p id="ajudaLib">Artes da pasta <b>artes/</b> do servidor aparecem sozinhas. Arraste PNGs aqui para testar localmente.</p>
+  <label class="drop" id="dropLib">
+    <b>+ Adicionar artes</b><span>PNG/JPG · vários de uma vez</span>
+    <input type="file" id="fileLib" accept="image/*" multiple>
+  </label>
+  <div class="lib" id="lib"></div>
+  <p class="vazio" id="vazioLib">Nenhuma arte na biblioteca.</p>
+  <button id="exportar">Exportar HTML para o cliente</button>
+  <hr>
+  <p>Gabaritos em mm com corte, sangria e área segura — abra no Illustrator.</p>
+  <div class="dl">
+    <a href="#" id="dlTampa">Tampa</a>
+    <a href="#" id="dlCorpo">Corpo</a>
+  </div>
+<script type="text/plain" id="svgTampa"><svg xmlns="http://www.w3.org/2000/svg" width="95mm" height="95mm" viewBox="0 0 95 95" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxMWE0MDU3ZC1hOGQ2LTQ1NjUtOWU2Yy1jMGY1MGIxMWZmNTgAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaNXPE0sJ+GN9h3ZyJJgSj98AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpjZWJiNGFiNy02NmIwLTQ3NzQtYjgyNC00MmE2OWY4MjdmMWVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoM+ySU4e3TKaiPhzhDk+pXQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgghWHBfKzmmRq2XF9/mcCa5rd0Ev841M7iUuSO62Cj0QKkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaIj4WjxxW/5/fsOIJ+evArcAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBOMfnnfaLgKPTFVPuKzo6iwzfQ74XQZNb5lPQtnPy2XmRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiWZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjExYTQwNTdkLWE4ZDYtNDU2NS05ZTZjLWMwZjUwYjExZmY1OC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmY4NzNmMTFjLTMzNDMtNDBkYy1hNjc4LWJkYzYxYzNmZTkwM3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCFYcF8rOaZGrZcX3+ZwJrmt3QS/zjUzuJS5I7rYKPRAqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggwZaGVBxKc29nrs8ItqHE0IZ30PF2bzfGxFoEjS+1UU+iY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggrp8G4svFuyoL1Rv0RbEZYpWKaCFOxBI8ejsgNCMY1CJ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQEdH8PWtB5YWfj5Y9lW7T26FWI04tJIpK4O4odsl4xYeDFZDHa62o/lZAXBp0Jym13Fga6IXl7Iv421PmvxHSeg=</c2pa:manifest></metadata>
+  <title>Gabarito — rótulo da tampa (Ø89,1 mm)</title>
+  <g id="ARTE-AQUI"></g>
+  <g id="GUIAS" fill="none" font-family="Helvetica, Arial, sans-serif">
+    <rect x="0" y="0" width="95" height="95" fill="#ffffff"></rect>
+    <circle cx="47.5" cy="47.5" r="47.5" stroke="#00a3ff" stroke-width="0.25" stroke-dasharray="2 1.5"></circle>
+    <circle cx="47.5" cy="47.5" r="44.55" stroke="#ff0055" stroke-width="0.4"></circle>
+    <circle cx="47.5" cy="47.5" r="40.25" stroke="#12b886" stroke-width="0.25" stroke-dasharray="1.5 1.5"></circle>
+    <path d="M47.5 0v6M47.5 89v6M0 47.5h6M89 47.5h6" stroke="#111" stroke-width="0.2"></path>
+    <g font-size="2.4">
+      <text x="47.5" y="50.4" text-anchor="middle" fill="#9aa0a6" font-size="2.2">centro</text>
+      <text x="4" y="4.4" fill="#00a3ff" font-size="2.2">sangria Ø95 mm</text>
+      <text x="4" y="7.8" fill="#ff0055">corte Ø89,1 mm — exporte só esta área</text>
+      <text x="4" y="11.2" fill="#12b886">área segura Ø80,5 mm</text>
+      <text x="4" y="91" fill="#9aa0a6" font-size="2.2">Exportar: PNG quadrado 1:1, 1400 × 1400 px ou mais</text>
+    </g>
+  </g>
+</svg></script>
+<script type="text/plain" id="svgCorpo"><svg xmlns="http://www.w3.org/2000/svg" width="286mm" height="21mm" viewBox="0 0 286 21" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpiOTQ4YWJiNC02MTBmLTQ1YzctOGY1Ni03ODg4NmNlODgzYjQAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaCe5l3lxIAUVIMK2UZkT9B0AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo4ODQzM2E4YS0xYzMxLTQ4NjYtOWI1MS0wZWJkOGZkODFhNzlscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNox4/LwqtlB+biI2oiBE1DCgAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgg0tkuMrPZ5xinv8R4AuSgqQNxj4lR873QyWiy087qIN2kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaA0mtenbVG48CJ66AM8/k+UAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCCpzkAnb0LDiNs0w98PUGSi+nNRomDiagu/LxiTTrGWMWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiYZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmI5NDhhYmI0LTYxMGYtNDVjNy04ZjU2LTc4ODg2Y2U4ODNiNC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjU0ZTk1ZjI2LWFhYzYtNDc0Yi1hYjc4LWY0MGUxZmYyNWI1OHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDS2S4ys9nnGKe/xHgC5KCpA3GPiVHzvdDJaLLTzuog3aJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggs0fx4GJ6azqovdTjLqfnrbFy+BytnUgQqwrlMBHVZWSiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggqpepfupRWzNITa+2QzvK9mnpvgD3HcG1g4YJdPGP2bZ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQFJvKHZgnHZibShoviZpe+cYXSmql6/8FQ/7WWxO+i0O2R8QUXft8KpaRqpWuac8I7xPTsDaBHgyCWJ9oucWyr0=</c2pa:manifest></metadata>
+  <title>Gabarito — tarja do corpo, wrap 360° (280 × 15 mm)</title>
+  <g id="ARTE-AQUI"></g>
+  <g id="GUIAS" fill="none" font-family="Helvetica, Arial, sans-serif">
+    <rect x="0" y="0" width="286" height="21" fill="#ffffff"></rect>
+    <rect x="0.125" y="0.125" width="285.75" height="20.75" stroke="#00a3ff" stroke-width="0.25" stroke-dasharray="2 1.5"></rect>
+    <rect x="3" y="3" width="280" height="15" stroke="#ff0055" stroke-width="0.4"></rect>
+    <rect x="6" y="5.5" width="274" height="10" stroke="#12b886" stroke-width="0.25" stroke-dasharray="1.5 1.5"></rect>
+    <path d="M143 3v15" stroke="#9aa0a6" stroke-width="0.2" stroke-dasharray="1 1"></path>
+    <g font-size="2.2">
+      <text x="5" y="1.9" fill="#00a3ff">sangria 286 × 21 mm</text>
+      <text x="5" y="20.2" fill="#ff0055">corte 280 × 15 mm (circunferência do pote Ø89,1) — área segura 274 × 10 mm — exportar PNG 4096 × 219 px</text>
+      <text x="145.5" y="10.5" fill="#9aa0a6">emenda 360°</text>
+    </g>
+  </g>
+</svg></script>
+<script>
+(function () {
+  function baixar(id, nome) {
+    var src = document.getElementById(id).textContent;
+    var url = URL.createObjectURL(new Blob([src], { type: 'image/svg+xml' }));
+    var a = document.createElement('a');
+    a.href = url; a.download = nome;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  document.getElementById('dlTampa').addEventListener('click', function (e) {
+    e.preventDefault(); baixar('svgTampa', 'gabarito-tampa.svg');
+  });
+  document.getElementById('dlCorpo').addEventListener('click', function (e) {
+    e.preventDefault(); baixar('svgCorpo', 'gabarito-corpo.svg');
+  });
+})();
+</script>
+</div>
+<script src="three-d-stage.js"></script>
+<script type="module">
+const stage = document.querySelector('three-d-stage');
+const { THREE } = await stage.ready;
+await (document.fonts ? document.fonts.ready : Promise.resolve());
+
+const GOLD = '#d9a441', GOLD_HI = '#f6e3a1', RED = '#b01118', RED_DK = '#460508';
+
+function cv(w, h) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  return [c, c.getContext('2d')];
+}
+function tex(canvas, repeatX) {
+  const t = new THREE.CanvasTexture(canvas);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = (stage._renderer && stage._renderer.capabilities.getMaxAnisotropy()) || 16;
+  t.generateMipmaps = true;
+  t.minFilter = THREE.LinearMipmapLinearFilter;
+  if (repeatX) { t.wrapS = THREE.RepeatWrapping; t.repeat.x = repeatX; }
+  return t;
+}
+function goldFill(ctx, x0, y0, x1, y1) {
+  const g = ctx.createLinearGradient(x0, y0, x1, y1);
+  g.addColorStop(0, '#8c5a1c'); g.addColorStop(.35, GOLD_HI);
+  g.addColorStop(.55, GOLD); g.addColorStop(.8, '#9c6a22'); g.addColorStop(1, GOLD_HI);
+  return g;
+}
+function ring(ctx, cx, cy, r, w) {
+  ctx.lineWidth = w;
+  ctx.strokeStyle = goldFill(ctx, cx - r, cy - r, cx + r, cy + r);
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+}
+function palm(ctx, x, y, s, color) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.fillStyle = color;
+  ctx.beginPath(); ctx.moveTo(-3, 0); ctx.quadraticCurveTo(2, -60, 14, -104);
+  ctx.lineTo(20, -104); ctx.quadraticCurveTo(8, -58, 5, 0); ctx.closePath(); ctx.fill();
+  for (let i = 0; i < 7; i++) {
+    const a = -Math.PI + i * (Math.PI / 6.2);
+    ctx.beginPath(); ctx.moveTo(16, -104);
+    ctx.quadraticCurveTo(16 + Math.cos(a) * 34, -104 + Math.sin(a) * 30 - 14,
+                         16 + Math.cos(a) * 62, -104 + Math.sin(a) * 40 + 8);
+    ctx.quadraticCurveTo(16 + Math.cos(a) * 32, -104 + Math.sin(a) * 26 + 4, 16, -100);
+    ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
+}
+function compass(ctx, cx, cy, r) {
+  ctx.save();
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  bg.addColorStop(0, '#2a0407'); bg.addColorStop(1, '#140203');
+  ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.fill();
+  ring(ctx, cx, cy, r * .97, r * .07);
+  ring(ctx, cx, cy, r * .62, r * .035);
+  for (let i = 0; i < 8; i++) {
+    const a = i * Math.PI / 4, len = i % 2 ? r * .42 : r * .86;
+    ctx.fillStyle = goldFill(ctx, cx - r, cy - r, cx + r, cy + r);
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+    ctx.lineTo(cx + Math.cos(a + .34) * r * .17, cy + Math.sin(a + .34) * r * .17);
+    ctx.lineTo(cx + Math.cos(a - .34) * r * .17, cy + Math.sin(a - .34) * r * .17);
+    ctx.closePath(); ctx.fill();
+  }
+  ctx.fillStyle = GOLD_HI;
+  ctx.font = `700 ${r * .3}px Cinzel, serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  [['N', 0, -r * .78], ['S', 0, r * .78], ['L', r * .78, 0], ['O', -r * .78, 0]]
+    .forEach(([t, dx, dy]) => ctx.fillText(t, cx + dx, cy + dy));
+  ctx.restore();
+}
+function ship(ctx, cx, base, s) {
+  ctx.save(); ctx.translate(cx, base); ctx.scale(s, s);
+  ctx.fillStyle = '#1b0204';
+  ctx.beginPath(); ctx.moveTo(-96, 0); ctx.quadraticCurveTo(0, 40, 96, 0);
+  ctx.lineTo(74, -26); ctx.lineTo(-78, -26); ctx.closePath(); ctx.fill();
+  ctx.fillRect(-3, -230, 6, 205);
+  ctx.fillRect(-62, -180, 5, 155); ctx.fillRect(58, -168, 5, 143);
+  const sail = (x, y, w, h, lean) => {
+    const g = ctx.createLinearGradient(x - w, y, x + w, y + h);
+    g.addColorStop(0, '#7c0a11'); g.addColorStop(.5, '#d2252c'); g.addColorStop(1, '#61070d');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.moveTo(x - w, y); ctx.lineTo(x + w, y);
+    ctx.quadraticCurveTo(x + w + lean, y + h * .6, x + w * .5, y + h);
+    ctx.lineTo(x - w * .8, y + h); ctx.quadraticCurveTo(x - w - lean, y + h * .5, x - w, y);
+    ctx.closePath(); ctx.fill();
+  };
+  sail(0, -218, 34, 70, 14); sail(0, -142, 46, 78, 18); sail(0, -58, 40, 32, 10);
+  sail(-60, -172, 26, 60, 10); sail(58, -160, 24, 56, 10);
+  ctx.restore();
+}
+function seaSky(ctx, w, h) {
+  const g = ctx.createLinearGradient(0, 0, 0, h);
+  g.addColorStop(0, '#3d0509'); g.addColorStop(.42, '#a7121a');
+  g.addColorStop(.52, '#d8242c'); g.addColorStop(.56, '#6e0a10');
+  g.addColorStop(1, '#210305');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  const sun = ctx.createRadialGradient(w * .27, h * .3, 0, w * .27, h * .3, h * .22);
+  sun.addColorStop(0, 'rgba(255,236,198,.95)'); sun.addColorStop(.5, 'rgba(255,160,120,.25)');
+  sun.addColorStop(1, 'rgba(255,120,90,0)');
+  ctx.fillStyle = sun; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = 'rgba(255,255,255,.10)';
+  for (let i = 0; i < 60; i++) {
+    const y = h * .56 + Math.random() * h * .42;
+    ctx.fillRect(Math.random() * w, y, 30 + Math.random() * 90, 1.5);
+  }
+}
+
+/* ---------- rótulos em branco (base do mockup) ---------- */
+const [topC, tc] = cv(1400, 1400);
+(() => {
+  const S = 1400, cx = S / 2;
+  tc.fillStyle = '#0b0708'; tc.fillRect(0, 0, S, S);
+  tc.save();
+  tc.beginPath(); tc.arc(cx, cx, S * .455, 0, 7); tc.clip();
+  tc.fillStyle = '#f6f3ee'; tc.fillRect(0, 0, S, S);
+  tc.restore();
+})();
+
+const [wrapC, wc] = cv(4096, 219);
+(() => {
+  wc.fillStyle = '#f6f3ee'; wc.fillRect(0, 0, 4096, 219);
+})();
+
+/* ---------- materiais ---------- */
+const plastic = new THREE.MeshStandardMaterial({ name: 'plastico_preto', color: 0x141314, roughness: .28, metalness: .18 });
+const plasticSide = new THREE.MeshStandardMaterial({ name: 'plastico_preto_fosco', color: 0x0f0e0f, roughness: .5, metalness: .1 });
+const gold = new THREE.MeshStandardMaterial({ name: 'dourado', color: 0xe0b25c, roughness: .3, metalness: .38 });
+const paste = new THREE.MeshStandardMaterial({ name: 'pasta_morango', color: 0xf3dfe2, roughness: .6, metalness: 0 });
+const labelTop = new THREE.MeshStandardMaterial({ name: 'rotulo_tampa', map: tex(topC), roughness: .22, metalness: .12 });
+const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: tex(wrapC), roughness: .26, metalness: .12 });
+
+/* ---------- geometria: pote Ø85 × 38 mm ---------- */
+const R = 0.04406, LID_R = 0.0453, BODY_H = 0.020, LID_H = 0.020, OVER = 0.002;
+const TOP_Y = BODY_H + LID_H - OVER;
+const BAND_H = 0.015;
+const jar = new THREE.Group(); jar.name = 'pote_pasta_modeladora';
+const add = (name, geo, mat, y, rx, ry, rz) => {
+  const m = new THREE.Mesh(geo, mat);
+  m.name = name; m.position.y = y;
+  m.rotation.set(rx || 0, ry || 0, rz || 0);
+  jar.add(m); return m;
+};
+
+// corpo
+add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, false), plasticSide, BODY_H / 2);
+add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, -1.42);
+add('pasta', new THREE.CylinderGeometry(R - .0025, R - .0025, .0005, 64), paste, BODY_H - .0016);
+add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plastic, .0014, Math.PI / 2);
+
+// tampa
+add('tampa_lateral', new THREE.CylinderGeometry(LID_R, LID_R, LID_H, 96, 1, true), plasticSide, BODY_H + LID_H / 2 - OVER);
+add('tampa_topo', new THREE.CylinderGeometry(LID_R, LID_R, .0035, 96), plastic, TOP_Y - .0018);
+add('rotulo_tampa', new THREE.CircleGeometry(0.04455, 96), labelTop, TOP_Y + .0002, -Math.PI / 2, 0, 0.675);
+add('aro_base_tampa', new THREE.TorusGeometry(LID_R - .0012, .0012, 14, 128), plastic, BODY_H - OVER + .0004, Math.PI / 2);
+
+jar.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+stage.setObject(jar);
+
+/* ---------- upload das artes do usuário ---------- */
+const KEY = 'veleiros-labels';
+// proporção real de cada rótulo: a arte é encaixada dentro (contain), nunca esticada
+const MAXTEX = Math.min(8192, (stage._renderer && stage._renderer.capabilities.maxTextureSize) || 4096);
+const FIT = { top: [Math.min(2048, MAXTEX), Math.min(2048, MAXTEX)], wrap: [MAXTEX, Math.round(MAXTEX * 15 / 280)] };
+const slots = {
+  top: { mat: labelTop, base: labelTop.map, prev: prevTop, drop: dropTop, input: fileTop, repeat: 0 },
+  wrap: { mat: labelWrap, base: labelWrap.map, prev: prevWrap, drop: dropWrap, input: fileWrap, repeat: 0 }
+};
+const store = JSON.parse(localStorage.getItem(KEY) || '{}');
+
+let mode = store.mode || 'repeat';
+function applyArt(which, dataURL) {
+  const s = slots[which];
+  const img = new Image();
+  img.onload = () => {
+    const [W, H] = FIT[which];
+    const [c, x] = cv(W, H);
+    x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
+    if (which === 'wrap' && mode === 'repeat' && img.width / img.height >= 6) {
+      // arte de volta inteira: largura = circunferência, sem repetir; centraliza na altura
+      const k = W / img.width, th = img.height * k;
+      x.drawImage(img, 0, (H - th) / 2, W, th);
+    } else if (which === 'wrap' && mode === 'repeat') {
+      // repetida ao redor do pote; escala uniforme nos dois eixos, centralizada
+      const nat = img.width * (H / img.height);
+      const n = Math.max(1, Math.round(W / nat));
+      const step = W / n;
+      const k = step / img.width;           // mesma escala em X e Y
+      const th = img.height * k, ty = (H - th) / 2;
+      for (let i = 0; i < n; i++) x.drawImage(img, i * step, ty, step, th);
+    } else if (mode === 'cover') {
+      const k = Math.max(W / img.width, H / img.height);
+      const w = img.width * k, ht = img.height * k;
+      x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
+    } else {
+      const k = Math.min(W / img.width, H / img.height);
+      const w = img.width * k, ht = img.height * k;
+      x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
+    }
+    const t = tex(c, which === 'wrap' ? 1 : 0);
+    if (which === 'wrap') t.wrapS = THREE.RepeatWrapping;
+    s.mat.map = t; s.mat.needsUpdate = true;
+  };
+  img.src = dataURL;
+  s.prev.src = dataURL; s.drop.classList.add('has');
+}
+function syncMode() {
+  document.querySelectorAll('#up .m').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+}
+document.querySelectorAll('#up .m').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.mode; store.mode = mode; syncMode();
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+  Object.keys(slots).forEach(w => { if (store[w]) applyArt(w, store[w]); });
+}));
+syncMode();
+function readFile(which, file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    applyArt(which, fr.result);
+    // guarda uma versão reduzida (máx. 3072 px) para caber na cota do navegador
+    const im = new Image();
+    im.onload = () => {
+      const k = Math.min(1, (which === 'wrap' ? 8192 : 2048) / im.width);
+      const [c, x] = cv(Math.round(im.width * k), Math.round(im.height * k));
+      x.drawImage(im, 0, 0, c.width, c.height);
+      store[which] = c.toDataURL('image/jpeg', 0.95);
+      try {
+        localStorage.setItem(KEY, JSON.stringify(store));
+        aviso.textContent = '';
+      } catch (e) {
+        aviso.textContent = 'Arte muito grande para salvar — vale só nesta sessão.';
+      }
+    };
+    im.src = fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+Object.entries(slots).forEach(([which, s]) => {
+  s.input.addEventListener('change', e => readFile(which, e.target.files[0]));
+  ['dragenter', 'dragover'].forEach(ev => s.drop.addEventListener(ev, e => {
+    e.preventDefault(); s.drop.classList.add('over');
+  }));
+  ['dragleave', 'drop'].forEach(ev => s.drop.addEventListener(ev, e => {
+    e.preventDefault(); s.drop.classList.remove('over');
+  }));
+  s.drop.addEventListener('drop', e => readFile(which, e.dataTransfer.files[0]));
+  if (store[which]) applyArt(which, store[which]);
+});
+/* ---------- export PDF: 4 cenários em alta resolução ---------- */
+const CENAS = [
+  { nome: '3/4 frontal',   dir: [ 0.62,  0.42,  0.95] },
+  { nome: 'frente',        dir: [ 0.00,  0.16,  1.00] },
+  { nome: 'topo',          dir: [ 0.00,  1.00,  0.00], roll: 0.675 + Math.PI },
+  { nome: '3/4 posterior', dir: [-0.78,  0.30, -0.82] }
+];
+const PX = [3300, 2160]; // ~300 dpi, proporção da área útil do A4 paisagem
+
+let _verts = null;
+function vertices() {
+  if (_verts) return _verts;
+  const out = [], v = new THREE.Vector3();
+  stage._object.updateMatrixWorld(true);
+  stage._object.traverse(o => {
+    if (!o.isMesh) return;
+    const p = o.geometry.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i).applyMatrix4(o.matrixWorld);
+      out.push(v.x, v.y, v.z);
+    }
+  });
+  _verts = out;
+  return out;
+}
+
+function renderCena(dir, roll) {
+  const r = stage._renderer, cam = stage._camera, ctr = stage._controls;
+  const oldTarget = ctr.target.clone();
+  const size = new THREE.Vector2(); r.getSize(size);
+  const oldPos = cam.position.clone(), oldAsp = cam.aspect, oldRot = ctr.autoRotate;
+  const oldDPR = r.getPixelRatio();
+  r.setPixelRatio(1);
+  ctr.autoRotate = false;
+  const oldBG = stage._scene.background;
+  stage._scene.background = new THREE.Color('#1d1714');
+  // enquadramento pela silhueta real: vértices da geometria em coordenadas de mundo
+  const box = new THREE.Box3().setFromObject(stage._object);
+  const ctro = box.getCenter(new THREE.Vector3());
+  const pts = vertices();
+  const fov = cam.fov * Math.PI / 180;
+  const tanV = Math.tan(fov / 2);
+  const tanH = tanV * (PX[0] / PX[1]);
+  const n = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
+  const up0 = Math.abs(n.y) > 0.95 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
+  const right = new THREE.Vector3().crossVectors(up0, n).normalize();
+  const up = new THREE.Vector3().crossVectors(n, right).normalize();
+  if (roll) { right.applyAxisAngle(n, roll).normalize(); up.applyAxisAngle(n, roll).normalize(); }
+  let dist = 0;
+  const c = new THREE.Vector3();
+  for (let i = 0; i < pts.length; i += 3) {
+    c.set(pts[i], pts[i + 1], pts[i + 2]).sub(ctro);
+    const d = c.dot(n);
+    dist = Math.max(dist, Math.abs(c.dot(right)) / tanH + d, Math.abs(c.dot(up)) / tanV + d);
+  }
+  dist *= 1.06;
+  ctr.target.copy(ctro);
+  const v = n.clone().multiplyScalar(dist);
+  cam.position.copy(ctr.target).add(v);
+  cam.up.copy(up);
+  cam.lookAt(ctr.target);
+  cam.aspect = PX[0] / PX[1];
+  cam.updateProjectionMatrix();
+  r.setSize(PX[0], PX[1], false);
+  r.render(stage._scene, cam);
+  const data = r.domElement.toDataURL('image/jpeg', 0.94);
+  const dim = [r.domElement.width, r.domElement.height];
+  cam.position.copy(oldPos); cam.aspect = oldAsp; cam.up.set(0, 1, 0); cam.updateProjectionMatrix();
+  cam.lookAt(oldTarget);
+  stage._scene.background = oldBG;
+  r.setPixelRatio(oldDPR);
+  r.setSize(size.x, size.y, false);
+  ctr.target.copy(oldTarget);
+  ctr.autoRotate = oldRot;
+  return { data: data, dim: dim };
+}
+
+// gerador de PDF mínimo: páginas A4 paisagem com JPEG embutido
+function montarPDF(imagens, dims, legendas) {
+  const W = 842, H = 595, enc = new TextEncoder();
+  const partes = [], offsets = [];
+  let out = [], len = 0;
+  const push = (bytes) => { out.push(bytes); len += bytes.length; };
+  const pushStr = (s) => push(enc.encode(s));
+  pushStr('%PDF-1.4\n');
+  const objs = [];
+  const addObj = (body, raw) => {
+    offsets.push(len);
+    pushStr((objs.length + 1) + ' 0 obj\n');
+    pushStr(body);
+    if (raw) { push(raw); pushStr('\nendstream\n'); }
+    pushStr('endobj\n');
+    objs.push(1);
+    return objs.length;
+  };
+  const n = imagens.length;
+  const kids = [];
+  const pagesId = 1 + 0; // reservado: montamos depois via placeholders
+  // objetos: 1 = Catalog, 2 = Pages, depois por página: Page, Content, Image; fonte no final
+  const pageIds = [], contentIds = [], imgIds = [];
+  for (let i = 0; i < n; i++) { pageIds.push(3 + i * 3); contentIds.push(4 + i * 3); imgIds.push(5 + i * 3); }
+  const fontId = 3 + n * 3;
+  addObj('<< /Type /Catalog /Pages 2 0 R >>\n');
+  addObj('<< /Type /Pages /Count ' + n + ' /Kids [' + pageIds.map(i => i + ' 0 R').join(' ') + '] >>\n');
+  for (let i = 0; i < n; i++) {
+    const m = 28, iw = W - m * 2, ih = ((H - m * 2 - 26) );
+    const [pw, ph] = dims[i];
+    const scale = Math.min(iw / pw, ih / ph);
+    const dw = pw * scale, dh = ph * scale;
+    const dx = (W - dw) / 2, dy = H - m - dh;
+    const stream = 'q ' + dw.toFixed(2) + ' 0 0 ' + dh.toFixed(2) + ' ' + dx.toFixed(2) + ' ' + dy.toFixed(2) +
+      ' cm /Im0 Do Q\nBT /F1 11 Tf ' + dx.toFixed(2) + ' ' + (dy - 18).toFixed(2) + ' Td (' +
+      legendas[i].replace(/[^\x20-\x7e]/g, '-').replace(/[()\\]/g, '') + ') Tj ET\n';
+    addObj('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /XObject << /Im0 ' +
+      imgIds[i] + ' 0 R >> /Font << /F1 ' + fontId + ' 0 R >> >> /Contents ' + contentIds[i] + ' 0 R >>\n');
+    addObj('<< /Length ' + enc.encode(stream).length + ' >>\nstream\n', enc.encode(stream));
+    const bin = imagens[i];
+    addObj('<< /Type /XObject /Subtype /Image /Width ' + pw + ' /Height ' + ph +
+      ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + bin.length + ' >>\nstream\n', bin);
+  }
+  addObj('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\n');
+  const xref = len;
+  pushStr('xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n');
+  offsets.forEach(o => pushStr(String(o).padStart(10, '0') + ' 00000 n \n'));
+  pushStr('trailer\n<< /Size ' + (objs.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF');
+  let total = 0; out.forEach(b => total += b.length);
+  const buf = new Uint8Array(total); let p = 0;
+  out.forEach(b => { buf.set(b, p); p += b.length; });
+  return new Blob([buf], { type: 'application/pdf' });
+}
+
+function dataURLtoBytes(u) {
+  const bin = atob(u.split(',')[1]);
+  const a = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+  return a;
+}
+
+pdf.addEventListener('click', () => {
+  pdf.textContent = 'Gerando…';
+  setTimeout(() => {
+    try {
+      const shots = CENAS.map(c => renderCena(c.dir, c.roll));
+      const blob = montarPDF(shots.map(s => dataURLtoBytes(s.data)), shots.map(s => s.dim),
+                             CENAS.map(c => 'Pasta modeladora - ' + c.nome));
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'rotulo-mockup-4-cenarios.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    } catch (e) {
+      aviso.textContent = 'Falha ao gerar o PDF: ' + e.message;
+    }
+    pdf.textContent = 'Salvar PDF (4 cenários)';
+  }, 30);
+});
+
+const sync = () => {
+  girar.textContent = stage._controls && stage._controls.autoRotate ? '❚❚ Pausar' : '▶ Girar';
+};
+girar.addEventListener('click', () => {
+  const c = stage._controls;
+  if (!c) return;
+  c.autoRotate = !c.autoRotate;
+  sync();
+});
+if (stage._controls) stage._controls.addEventListener('start', sync);
+sync();
+
+/* ---------- biblioteca de artes ---------- */
+const DB = 'rotulo-biblioteca';
+function idb() {
+  return new Promise((ok, err) => {
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('artes', { keyPath: 'id' });
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => err(r.error);
+  });
+}
+function tx(modo, fn) {
+  return idb().then(db => new Promise((ok, err) => {
+    const t = db.transaction('artes', modo), s = t.objectStore('artes');
+    const req = fn(s);
+    t.oncomplete = () => ok(req && req.result);
+    t.onerror = () => err(t.error);
+  }));
+}
+const embutida = document.getElementById('bibliotecaEmbutida');
+const modoCliente = !!embutida;
+let artes = embutida ? JSON.parse(embutida.textContent).artes : [];
+
+function pintarLib() {
+  lib.innerHTML = '';
+  artes.forEach(a => {
+    const f = document.createElement('figure');
+    f.title = a.nome + ' — clique para aplicar';
+    f.innerHTML = '<img alt="">' +
+      '<span class="tag">' + (a.slot === 'top' ? 'TAMPA' : 'TARJA') + (a.servidor ? ' · WEB' : '') + '</span>' +
+      '<div class="act"><span data-a="dl" title="Baixar">\u2193</span>' +
+      (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">\u00d7</span>') + '</div>' +
+      '<figcaption>' + a.nome + '</figcaption>';
+    const im = f.querySelector('img');
+    im.onload = () => {
+      const min = a.slot === 'wrap' ? 4096 : 1400;
+      if (im.naturalWidth < min) {
+        const t = f.querySelector('.tag');
+        t.textContent += ' · BAIXA RES';
+        t.style.background = '#ef6a60';
+        f.title = a.nome + ' — ' + im.naturalWidth + ' px de largura: substitua por uma versão maior';
+      }
+    };
+    im.src = a.data;
+    f.addEventListener('click', e => {
+      const act = e.target.dataset && e.target.dataset.a;
+      if (act === 'dl') {
+        e.stopPropagation();
+        const el = document.createElement('a');
+        el.href = a.data; el.download = a.nome;
+        document.body.appendChild(el); el.click(); el.remove();
+        return;
+      }
+      if (act === 'rm') {
+        e.stopPropagation();
+        artes = artes.filter(x => x.id !== a.id);
+        tx('readwrite', s => s.delete(a.id)).catch(() => {});
+        pintarLib();
+        return;
+      }
+      applyArt(a.slot, a.data);
+      store[a.slot] = a.data;
+      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (err) {}
+    });
+    lib.appendChild(f);
+  });
+  vazioLib.style.display = artes.length ? 'none' : '';
+}
+
+function reduzir(dataURL, max) {
+  return new Promise(ok => {
+    const im = new Image();
+    im.onload = () => {
+      const k = Math.min(1, max / Math.max(im.width, im.height));
+      if (k === 1) return ok({ data: dataURL, w: im.width, h: im.height });
+      const [c, x] = cv(Math.round(im.width * k), Math.round(im.height * k));
+      x.drawImage(im, 0, 0, c.width, c.height);
+      ok({ data: c.toDataURL('image/png'), w: im.width, h: im.height });
+    };
+    im.src = dataURL;
+  });
+}
+
+async function addArte(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const dataURL = await new Promise(ok => {
+    const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(file);
+  });
+  const r = await reduzir(dataURL, 8192);
+  const arte = {
+    id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+    nome: file.name,
+    slot: r.w / r.h > 4 ? 'wrap' : 'top',   // faixa larga = tarja, resto = tampa
+    data: r.data
+  };
+  artes.push(arte);
+  try { await tx('readwrite', s => s.put(arte)); aviso.textContent = ''; }
+  catch (e) { aviso.textContent = 'Nao foi possivel salvar a biblioteca neste navegador.'; }
+  pintarLib();
+}
+
+fileLib.addEventListener('change', async e => {
+  for (const f of e.target.files) await addArte(f);
+  e.target.value = '';
+});
+['dragenter', 'dragover'].forEach(ev => dropLib.addEventListener(ev, e => {
+  e.preventDefault(); dropLib.classList.add('over');
+}));
+['dragleave', 'drop'].forEach(ev => dropLib.addEventListener(ev, e => {
+  e.preventDefault(); dropLib.classList.remove('over');
+}));
+dropLib.addEventListener('drop', async e => {
+  for (const f of e.dataTransfer.files) await addArte(f);
+});
+
+/* artes hospedadas na pasta artes/ do servidor */
+function carregaImg(url) {
+  return new Promise(ok => {
+    const im = new Image();
+    im.onload = () => ok(true);
+    im.onerror = () => ok(false);
+    im.src = url;
+  });
+}
+async function carregarPasta() {
+  const achadas = [];
+  // 1) manifesto opcional
+  try {
+    const r = await fetch('artes/artes.json', { cache: 'no-store' });
+    if (r.ok) {
+      const lista = await r.json();
+      lista.forEach((a, i) => achadas.push({
+        id: 'srv-' + i, servidor: true,
+        nome: a.nome || a.arquivo,
+        slot: a.slot === 'wrap' || /tarja|corpo/i.test(a.arquivo) ? 'wrap' : 'top',
+        data: 'artes/' + a.arquivo
+      }));
+      return achadas;
+    }
+  } catch (e) { /* sem manifesto: cai na convenção de nomes */ }
+  // 2) convenção tampa-01 / tarja-01
+  const exts = ['png', 'jpg', 'jpeg', 'webp'];
+  for (const [pre, slot] of [['tampa', 'top'], ['tarja', 'wrap']]) {
+    let falhas = 0;
+    for (let n = 1; n <= 60 && falhas < 3; n++) {
+      const base = pre + '-' + String(n).padStart(2, '0');
+      let achou = null;
+      for (const e of exts) {
+        const url = 'artes/' + base + '.' + e;
+        if (await carregaImg(url)) { achou = url; break; }
+      }
+      if (achou) { falhas = 0; achadas.push({ id: 'srv-' + base, servidor: true, nome: base, slot: slot, data: achou }); }
+      else falhas++;
+    }
+  }
+  return achadas;
+}
+
+if (modoCliente) {
+  dropLib.style.display = 'none';
+  exportar.style.display = 'none';
+  ajudaLib.textContent = 'Clique numa arte para ver no pote, ou baixe pelo icone.';
+  pintarLib();
+  carregarPasta().then(srv => {
+    if (srv.length) { artes = srv.concat(artes); pintarLib(); }
+  });
+} else {
+  Promise.all([
+    tx('readonly', s => s.getAll()).catch(() => []),
+    carregarPasta()
+  ]).then(([locais, srv]) => {
+    artes = srv.concat(locais || []);
+    pintarLib();
+  });
+}
+
+exportar.addEventListener('click', async () => {
+  exportar.textContent = 'Gerando…';
+  let motor = '';
+  try { motor = await (await fetch('three-d-stage.js')).text(); }
+  catch (e) {
+    aviso.textContent = 'Nao consegui ler three-d-stage.js para embutir.';
+    exportar.textContent = 'Exportar HTML para o cliente';
+    return;
+  }
+  setTimeout(() => {
+    const srcs = [prevTop.src, prevWrap.src];
+    const thumbs = Array.from(lib.childNodes);
+    prevTop.removeAttribute('src'); prevWrap.removeAttribute('src');
+    lib.replaceChildren();
+    const antigo = document.getElementById('bibliotecaEmbutida');
+    if (antigo) antigo.remove();
+    const tag = document.createElement('script');
+    tag.type = 'application/json';
+    tag.id = 'bibliotecaEmbutida';
+    tag.textContent = JSON.stringify({ artes: artes.filter(a => !a.servidor) });
+    document.body.appendChild(tag);
+    let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    tag.remove();
+    lib.append(...thumbs);
+    if (srcs[0]) prevTop.src = srcs[0];
+    if (srcs[1]) prevWrap.src = srcs[1];
+    // embute o motor 3D para o arquivo funcionar sozinho
+    html = html.replace('<scr' + 'ipt src="three-d-stage.js"></scr' + 'ipt>',
+      '<scr' + 'ipt>' + motor.split('<' + '/script').join('<\\/script') + '</scr' + 'ipt>');
+    const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'simulador-rotulo-cliente.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    exportar.textContent = 'Exportar HTML para o cliente';
+  }, 30);
+});
+
+reset.addEventListener('click', () => {
+  Object.entries(slots).forEach(([which, s]) => {
+    s.mat.map = s.base; s.mat.needsUpdate = true;
+    s.prev.removeAttribute('src'); s.drop.classList.remove('has');
+    delete store[which];
+  });
+  localStorage.setItem(KEY, JSON.stringify(store));
+});
+</script>
+</body>
+</html>

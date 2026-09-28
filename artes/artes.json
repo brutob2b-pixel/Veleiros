@@ -1,0 +1,102 @@
+[
+  {
+    "arquivo": "tampa-01.webp",
+    "slot": "top",
+    "nome": "Black + Dourado"
+  },
+  {
+    "arquivo": "tampa-02.webp",
+    "slot": "top",
+    "nome": "Black + Prata"
+  },
+  {
+    "arquivo": "tampa-03.webp",
+    "slot": "top",
+    "nome": "Classic Verde + Dourado"
+  },
+  {
+    "arquivo": "tampa-04.webp",
+    "slot": "top",
+    "nome": "Classic Verde + Prata"
+  },
+  {
+    "arquivo": "tampa-05.webp",
+    "slot": "top",
+    "nome": "Light v1"
+  },
+  {
+    "arquivo": "tampa-06.webp",
+    "slot": "top",
+    "nome": "Light v2"
+  },
+  {
+    "arquivo": "tampa-07.webp",
+    "slot": "top",
+    "nome": "Premium"
+  },
+  {
+    "arquivo": "tampa-08.webp",
+    "slot": "top",
+    "nome": "Premium + Prata"
+  },
+  {
+    "arquivo": "tampa-09.webp",
+    "slot": "top",
+    "nome": "Vermelho + Prata"
+  },
+  {
+    "arquivo": "tampa-10.webp",
+    "slot": "top",
+    "nome": "Prancheta 1"
+  },
+  {
+    "arquivo": "tarja-01.webp",
+    "slot": "wrap",
+    "nome": "Tarja Black Dourado"
+  },
+  {
+    "arquivo": "tarja-02.webp",
+    "slot": "wrap",
+    "nome": "Tarja Black Prata"
+  },
+  {
+    "arquivo": "tarja-03.webp",
+    "slot": "wrap",
+    "nome": "Tarja Classic Dourada"
+  },
+  {
+    "arquivo": "tarja-04.webp",
+    "slot": "wrap",
+    "nome": "Tarja Classic Prata"
+  },
+  {
+    "arquivo": "tarja-05.webp",
+    "slot": "wrap",
+    "nome": "Tarja Light Dourada"
+  },
+  {
+    "arquivo": "tarja-06.webp",
+    "slot": "wrap",
+    "nome": "Tarja Light Prata"
+  },
+  {
+    "arquivo": "tarja-07.webp",
+    "slot": "wrap",
+    "nome": "Tarja Premium Dourada"
+  },
+  {
+    "arquivo": "tarja-08.webp",
+    "slot": "wrap",
+    "nome": "Tarja Premium Prata"
+  },
+  {
+    "arquivo": "tarja-09.webp",
+    "slot": "wrap",
+    "nome": "Tarja Vermelha"
+  },
+  {
+    "arquivo": "tarja-10.webp",
+    "slot": "wrap",
+    "nome": "Tarja Vermelha Dourada"
+  }
+]
