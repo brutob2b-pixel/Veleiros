@@ -3,60 +3,70 @@
     "id": "black-dourado",
     "tampa": "tampa-01.webp",
     "tarja": "tarja-01.webp",
-    "nome": "Black Dourado"
+    "nome": "Black Dourado",
+    "thumb": "thumbs/tampa-01.webp"
   },
   {
     "id": "black-prata",
     "tampa": "tampa-02.webp",
     "tarja": "tarja-02.webp",
-    "nome": "Black Prata"
+    "nome": "Black Prata",
+    "thumb": "thumbs/tampa-02.webp"
   },
   {
     "id": "classic-dourado",
     "tampa": "tampa-03.webp",
     "tarja": "tarja-03.webp",
-    "nome": "Classic Dourado"
+    "nome": "Classic Dourado",
+    "thumb": "thumbs/tampa-03.webp"
   },
   {
     "id": "classic-prata",
     "tampa": "tampa-04.webp",
     "tarja": "tarja-04.webp",
-    "nome": "Classic Prata"
+    "nome": "Classic Prata",
+    "thumb": "thumbs/tampa-04.webp"
   },
   {
     "id": "light-dourado",
     "tampa": "tampa-05.webp",
     "tarja": "tarja-05.webp",
-    "nome": "Light Dourada"
+    "nome": "Light Dourada",
+    "thumb": "thumbs/tampa-05.webp"
   },
   {
     "id": "light-prata",
     "tampa": "tampa-06.webp",
     "tarja": "tarja-06.webp",
-    "nome": "Light Prata"
+    "nome": "Light Prata",
+    "thumb": "thumbs/tampa-06.webp"
   },
   {
     "id": "premium-dourado",
     "tampa": "tampa-07.webp",
     "tarja": "tarja-07.webp",
-    "nome": "Premium Dourada"
+    "nome": "Premium Dourada",
+    "thumb": "thumbs/tampa-07.webp"
   },
   {
     "id": "premium-prata",
     "tampa": "tampa-08.webp",
     "tarja": "tarja-08.webp",
-    "nome": "Premium Prata"
+    "nome": "Premium Prata",
+    "thumb": "thumbs/tampa-08.webp"
   },
   {
     "id": "morango-prata",
     "tampa": "tampa-09.webp",
     "tarja": "tarja-09.webp",
-    "nome": "Morango Prata"
+    "nome": "Morango Prata",
+    "thumb": "thumbs/tampa-09.webp"
   },
   {
     "id": "morango-dourado",
     "tampa": "tampa-10.webp",
     "tarja": "tarja-10.webp",
-    "nome": "Morango Dourado"
+    "nome": "Morango Dourado",
+    "thumb": "thumbs/tampa-10.webp"
   }
 ]

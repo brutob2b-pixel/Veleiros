@@ -626,7 +626,7 @@ function pintarLib() {
         f.title = a.nome + ' — ' + im.naturalWidth + ' px de largura: substitua por uma versão maior';
       }
     };
-    im.src = ehKit ? a.dataTop : a.data;
+    im.src = ehKit ? (a.thumb || a.dataTop) : a.data;
     f.addEventListener('click', e => {
       const act = e.target.dataset && e.target.dataset.a;
       if (act === 'dl') {
@@ -733,6 +733,9 @@ async function carregarPasta() {
         lista.forEach((c, i) => achadas.push({
           id: 'srv-' + (c.id || i), servidor: true, tipo: 'kit',
           nome: c.nome || ('Kit ' + (i + 1)),
+          // miniatura leve pra galeria: só baixa o arquivo pesado (tampa/tarja
+          // em resolução real) quando o kit é de fato aplicado no pote
+          thumb: 'artes/' + (c.thumb || c.tampa),
           dataTop: 'artes/' + c.tampa,
           dataWrap: 'artes/' + c.tarja
         }));
@@ -764,7 +767,7 @@ async function carregarPasta() {
     if (top || wrap) {
       falhas = 0;
       if (top && wrap) {
-        achadas.push({ id: 'srv-' + num, servidor: true, tipo: 'kit', nome: 'Kit ' + num, dataTop: top, dataWrap: wrap });
+        achadas.push({ id: 'srv-' + num, servidor: true, tipo: 'kit', nome: 'Kit ' + num, thumb: top, dataTop: top, dataWrap: wrap });
       } else if (top) {
         achadas.push({ id: 'srv-top-' + num, servidor: true, tipo: 'single', nome: 'tampa-' + num, slot: 'top', data: top });
       } else {
