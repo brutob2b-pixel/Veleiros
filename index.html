@@ -607,15 +607,17 @@ let artes = embutida ? JSON.parse(embutida.textContent).artes : [];
 function pintarLib() {
   lib.innerHTML = '';
   artes.forEach(a => {
+    const ehKit = a.tipo === 'kit';
     const f = document.createElement('figure');
-    f.title = a.nome + ' — clique para aplicar';
+    f.title = a.nome + (ehKit ? ' — clique para aplicar tampa + tarja juntas' : ' — clique para aplicar');
     f.innerHTML = '<img alt="">' +
-      '<span class="tag">' + (a.slot === 'top' ? 'TAMPA' : 'TARJA') + (a.servidor ? ' · WEB' : '') + '</span>' +
-      '<div class="act"><span data-a="dl" title="Baixar">\u2193</span>' +
-      (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">\u00d7</span>') + '</div>' +
+      '<span class="tag">' + (ehKit ? 'KIT' : (a.slot === 'top' ? 'TAMPA' : 'TARJA')) + (a.servidor ? ' · WEB' : '') + '</span>' +
+      '<div class="act"><span data-a="dl" title="Baixar">↓</span>' +
+      (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">×</span>') + '</div>' +
       '<figcaption>' + a.nome + '</figcaption>';
     const im = f.querySelector('img');
     im.onload = () => {
+      if (ehKit) return; // resolução checada nos dois arquivos do kit, não no preview
       const min = a.slot === 'wrap' ? 4096 : 1400;
       if (im.naturalWidth < min) {
         const t = f.querySelector('.tag');
@@ -624,14 +626,22 @@ function pintarLib() {
         f.title = a.nome + ' — ' + im.naturalWidth + ' px de largura: substitua por uma versão maior';
       }
     };
-    im.src = a.data;
+    im.src = ehKit ? a.dataTop : a.data;
     f.addEventListener('click', e => {
       const act = e.target.dataset && e.target.dataset.a;
       if (act === 'dl') {
         e.stopPropagation();
-        const el = document.createElement('a');
-        el.href = a.data; el.download = a.nome;
-        document.body.appendChild(el); el.click(); el.remove();
+        const baixarUm = (url, nome) => {
+          const el = document.createElement('a');
+          el.href = url; el.download = nome;
+          document.body.appendChild(el); el.click(); el.remove();
+        };
+        if (ehKit) {
+          baixarUm(a.dataTop, a.nome + ' - tampa');
+          setTimeout(() => baixarUm(a.dataWrap, a.nome + ' - tarja'), 250);
+        } else {
+          baixarUm(a.data, a.nome);
+        }
         return;
       }
       if (act === 'rm') {
@@ -641,8 +651,14 @@ function pintarLib() {
         pintarLib();
         return;
       }
-      applyArt(a.slot, a.data);
-      store[a.slot] = a.data;
+      if (ehKit) {
+        applyArt('top', a.dataTop);
+        applyArt('wrap', a.dataWrap);
+        store.top = a.dataTop; store.wrap = a.dataWrap;
+      } else {
+        applyArt(a.slot, a.data);
+        store[a.slot] = a.data;
+      }
       try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (err) {}
     });
     lib.appendChild(f);
@@ -673,6 +689,7 @@ async function addArte(file) {
   const arte = {
     id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
     nome: file.name,
+    tipo: 'single',
     slot: r.w / r.h > 4 ? 'wrap' : 'top',   // faixa larga = tarja, resto = tampa
     data: r.data
   };
@@ -707,13 +724,23 @@ function carregaImg(url) {
 }
 async function carregarPasta() {
   const achadas = [];
-  // 1) manifesto opcional
+  // 1) manifesto de kits (tampa + tarja pareadas): { id, nome, tampa, tarja }
   try {
     const r = await fetch('artes/artes.json', { cache: 'no-store' });
     if (r.ok) {
       const lista = await r.json();
+      if (Array.isArray(lista) && lista.length && lista[0] && lista[0].tampa) {
+        lista.forEach((c, i) => achadas.push({
+          id: 'srv-' + (c.id || i), servidor: true, tipo: 'kit',
+          nome: c.nome || ('Kit ' + (i + 1)),
+          dataTop: 'artes/' + c.tampa,
+          dataWrap: 'artes/' + c.tarja
+        }));
+        return achadas;
+      }
+      // formato antigo (compatibilidade): lista plana com slot avulso
       lista.forEach((a, i) => achadas.push({
-        id: 'srv-' + i, servidor: true,
+        id: 'srv-' + i, servidor: true, tipo: 'single',
         nome: a.nome || a.arquivo,
         slot: a.slot === 'wrap' || /tarja|corpo/i.test(a.arquivo) ? 'wrap' : 'top',
         data: 'artes/' + a.arquivo
@@ -721,20 +748,29 @@ async function carregarPasta() {
       return achadas;
     }
   } catch (e) { /* sem manifesto: cai na convenção de nomes */ }
-  // 2) convenção tampa-01 / tarja-01
+  // 2) convenção tampa-01 / tarja-01: mesma numeração = mesmo kit
   const exts = ['png', 'jpg', 'jpeg', 'webp'];
-  for (const [pre, slot] of [['tampa', 'top'], ['tarja', 'wrap']]) {
-    let falhas = 0;
-    for (let n = 1; n <= 60 && falhas < 3; n++) {
-      const base = pre + '-' + String(n).padStart(2, '0');
-      let achou = null;
-      for (const e of exts) {
-        const url = 'artes/' + base + '.' + e;
-        if (await carregaImg(url)) { achou = url; break; }
-      }
-      if (achou) { falhas = 0; achadas.push({ id: 'srv-' + base, servidor: true, nome: base, slot: slot, data: achou }); }
-      else falhas++;
+  const achaUrl = async (base) => {
+    for (const e of exts) {
+      const url = 'artes/' + base + '.' + e;
+      if (await carregaImg(url)) return url;
     }
+    return null;
+  };
+  let falhas = 0;
+  for (let n = 1; n <= 60 && falhas < 3; n++) {
+    const num = String(n).padStart(2, '0');
+    const [top, wrap] = await Promise.all([achaUrl('tampa-' + num), achaUrl('tarja-' + num)]);
+    if (top || wrap) {
+      falhas = 0;
+      if (top && wrap) {
+        achadas.push({ id: 'srv-' + num, servidor: true, tipo: 'kit', nome: 'Kit ' + num, dataTop: top, dataWrap: wrap });
+      } else if (top) {
+        achadas.push({ id: 'srv-top-' + num, servidor: true, tipo: 'single', nome: 'tampa-' + num, slot: 'top', data: top });
+      } else {
+        achadas.push({ id: 'srv-wrap-' + num, servidor: true, tipo: 'single', nome: 'tarja-' + num, slot: 'wrap', data: wrap });
+      }
+    } else falhas++;
   }
   return achadas;
 }

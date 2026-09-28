@@ -1,32 +1,43 @@
 PASTA DE ARTES DO SERVIDOR
 ==========================
 
-Jogue os PNG/JPG aqui por FTP. O simulador carrega sozinho, sem
+Jogue os PNG/JPG/WEBP aqui por FTP. O simulador carrega sozinho, sem
 precisar exportar o HTML de novo — basta recarregar a página.
 
-REGRA DE NOME (obrigatória)
+Cada opção da biblioteca é um KIT: tampa + tarja aplicadas juntas com
+um clique só, pra nunca sair uma combinação com cores misturadas
+(ex: tampa Black com tarja Vermelha).
+
+REGRA DE NOME (obrigatória, se não usar artes.json)
 
     tampa-01.png, tampa-02.png, tampa-03.png ...
     tarja-01.png, tarja-02.png, tarja-03.png ...
 
-O prefixo define onde a arte é aplicada: "tampa" no disco da tampa,
-"tarja" na faixa do corpo. A numeração precisa ser sequencial e com
-dois dígitos, começando em 01. Extensões aceitas: .png, .jpg, .jpeg, .webp.
+O prefixo define a peça: "tampa" no disco da tampa, "tarja" na faixa
+do corpo. A NUMERAÇÃO É O QUE FORMA O KIT: tampa-03 + tarja-03 viram
+um kit só, sempre a mesma dupla, nunca aparecem separados na
+biblioteca. Numeração sequencial, dois dígitos, começando em 01.
+Extensões aceitas: .png, .jpg, .jpeg, .webp.
 
-O carregamento para depois de 3 números seguidos sem arquivo, então
-não deixe buracos grandes na sequência (01, 02, 03... e não 01, 09).
+O carregamento para depois de 3 números seguidos sem arquivo (nem
+tampa nem tarja), então não deixe buracos grandes na sequência
+(01, 02, 03... e não 01, 09).
 
-NOME BONITO NA LEGENDA (opcional)
+NOME BONITO DO KIT (recomendado)
 
-Crie um arquivo "artes.json" nesta pasta para controlar a lista à mão:
+Crie um arquivo "artes.json" nesta pasta pra dar nome comercial a
+cada kit e controlar a lista à mão:
 
     [
-      { "arquivo": "tampa-01.png", "slot": "top",  "nome": "Morango — v2" },
-      { "arquivo": "tarja-01.png", "slot": "wrap", "nome": "Tarja morango" }
+      { "id": "morango-dourado", "tampa": "tampa-09.webp", "tarja": "tarja-09.webp", "nome": "Morango Dourado" },
+      { "id": "morango-prata",   "tampa": "tampa-10.webp", "tarja": "tarja-10.webp", "nome": "Morango Prata" }
     ]
 
-Existindo o artes.json, ele manda: a regra de nome acima é ignorada e
-os arquivos podem se chamar o que você quiser.
+Existindo o artes.json nesse formato (com "tampa" e "tarja" no mesmo
+item), ele manda: a regra de numeração acima vira só uma referência,
+e os arquivos podem se chamar o que você quiser. O "id" é só um
+identificador interno (sem espaço/acento); o "nome" é o que aparece
+pro revendedor.
 
 PESO DO ARQUIVO (importante)
 
