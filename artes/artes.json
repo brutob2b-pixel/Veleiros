@@ -1,6 +1,7 @@
 [
   {
     "id": "black-dourado",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-01.webp",
     "tarja": "tarja-01.webp",
     "nome": "Black Dourado",
@@ -8,6 +9,7 @@
   },
   {
     "id": "black-prata",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-02.webp",
     "tarja": "tarja-02.webp",
     "nome": "Black Prata",
@@ -15,6 +17,7 @@
   },
   {
     "id": "classic-dourado",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-03.webp",
     "tarja": "tarja-03.webp",
     "nome": "Classic Dourado",
@@ -22,6 +25,7 @@
   },
   {
     "id": "classic-prata",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-04.webp",
     "tarja": "tarja-04.webp",
     "nome": "Classic Prata",
@@ -29,6 +33,7 @@
   },
   {
     "id": "light-dourado",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-05.webp",
     "tarja": "tarja-05.webp",
     "nome": "Light Dourada",
@@ -36,6 +41,7 @@
   },
   {
     "id": "light-prata",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-06.webp",
     "tarja": "tarja-06.webp",
     "nome": "Light Prata",
@@ -43,6 +49,7 @@
   },
   {
     "id": "premium-dourado",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-07.webp",
     "tarja": "tarja-07.webp",
     "nome": "Premium Dourada",
@@ -50,6 +57,7 @@
   },
   {
     "id": "premium-prata",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-08.webp",
     "tarja": "tarja-08.webp",
     "nome": "Premium Prata",
@@ -57,6 +65,7 @@
   },
   {
     "id": "morango-prata",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-09.webp",
     "tarja": "tarja-09.webp",
     "nome": "Morango Prata",
@@ -64,9 +73,82 @@
   },
   {
     "id": "morango-dourado",
+    "marca": "Veleiros do Caribe",
     "tampa": "tampa-10.webp",
     "tarja": "tarja-10.webp",
     "nome": "Morango Dourado",
     "thumb": "thumbs/tampa-10.webp"
+  },
+  {
+    "id": "rota-black-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-black-prata.webp",
+    "tarja": "rota-do-caribe/tarja-black-prata.webp",
+    "nome": "Black Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-black-prata.webp"
+  },
+  {
+    "id": "rota-classic-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-classic-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-classic-dourado.webp",
+    "nome": "Classic Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-classic-dourado.webp"
+  },
+  {
+    "id": "rota-classic-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-classic-prata.webp",
+    "tarja": "rota-do-caribe/tarja-classic-prata.webp",
+    "nome": "Classic Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-classic-prata.webp"
+  },
+  {
+    "id": "rota-light-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-light-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-light-dourado.webp",
+    "nome": "Light Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-light-dourado.webp"
+  },
+  {
+    "id": "rota-light-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-light-prata.webp",
+    "tarja": "rota-do-caribe/tarja-light-prata.webp",
+    "nome": "Light Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-light-prata.webp"
+  },
+  {
+    "id": "rota-premium-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-premium-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-premium-dourado.webp",
+    "nome": "Premium Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-premium-dourado.webp"
+  },
+  {
+    "id": "rota-premium-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-premium-prata.webp",
+    "tarja": "rota-do-caribe/tarja-premium-prata.webp",
+    "nome": "Premium Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-premium-prata.webp"
+  },
+  {
+    "id": "rota-morango-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-morango-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-morango-dourado.webp",
+    "nome": "Morango Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-morango-dourado.webp"
+  },
+  {
+    "id": "rota-morango-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-morango-prata.webp",
+    "tarja": "rota-do-caribe/tarja-morango-prata.webp",
+    "nome": "Morango Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp"
   }
 ]
