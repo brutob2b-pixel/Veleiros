@@ -47,3 +47,23 @@ artes originais somavam ~204 MB; em .webp ficaram ~57 MB). Ao gerar
 novas artes no Illustrator/Photoshop, exporte como .webp sempre que
 possível (ou rode o PNG por um conversor para .webp qualidade ~90-92
 antes de subir por FTP) para manter o carregamento do simulador leve.
+
+PASTA "display/" (recomendado — deixa a troca de kit mais rápida)
+
+O simulador nunca precisa do arquivo em resolução de impressão pra
+mostrar no pote: a tampa é aplicada em até 2048×2048 e a tarja em até
+4096×219. Os arquivos aqui na raiz (tampa-NN / tarja-NN) ficam na
+resolução real, cheia, usada só quando alguém baixa a arte pelo ícone
+de download da biblioteca.
+
+Pra a troca de kit não ficar baixando o arquivo cheio (2-4,5 MB) toda
+hora, crie uma subpasta "display/" com uma cópia de cada arquivo já
+reduzida pra esse tamanho de uso (mesmo nome do arquivo original):
+
+    artes/display/tampa-01.webp   (2048×2048)
+    artes/display/tarja-01.webp   (4096×219)
+
+Se a versão em display/ existir, o simulador usa ela pra aplicar no
+pote (rápido) e só busca o arquivo cheio da raiz quando alguém clica
+em "baixar". Se não existir, ele cai pro arquivo cheio mesmo — mais
+lento pra trocar de kit, mas funciona normalmente.
