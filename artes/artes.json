@@ -80,6 +80,14 @@
     "thumb": "thumbs/tampa-10.webp"
   },
   {
+    "id": "rota-black-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-black-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-black-dourado.webp",
+    "nome": "Black Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-black-dourado.webp"
+  },
+  {
     "id": "rota-black-prata",
     "marca": "Rota do Caribe",
     "tampa": "rota-do-caribe/tampa-black-prata.webp",
