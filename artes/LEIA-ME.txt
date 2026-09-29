@@ -52,16 +52,21 @@ PASTA "display/" (recomendado — deixa a troca de kit mais rápida)
 
 O simulador nunca precisa do arquivo em resolução de impressão pra
 mostrar no pote: a tampa é aplicada em até 2048×2048 e a tarja em até
-4096×219. Os arquivos aqui na raiz (tampa-NN / tarja-NN) ficam na
+4096px de largura (a altura acompanha a proporção original da arte —
+NÃO force uma altura fixa, senão a tarja fica achatada/esticada no
+pote). Os arquivos aqui na raiz (tampa-NN / tarja-NN) ficam na
 resolução real, cheia, usada só quando alguém baixa a arte pelo ícone
 de download da biblioteca.
 
 Pra a troca de kit não ficar baixando o arquivo cheio (2-4,5 MB) toda
 hora, crie uma subpasta "display/" com uma cópia de cada arquivo já
-reduzida pra esse tamanho de uso (mesmo nome do arquivo original):
+reduzida pra esse tamanho de uso (mesmo nome do arquivo original),
+mantendo a MESMA PROPORÇÃO do arquivo original:
 
     artes/display/tampa-01.webp   (2048×2048)
-    artes/display/tarja-01.webp   (4096×219)
+    artes/display/tarja-01.webp   (4096×386, no caso de uma tarja com
+                                    proporção 10.6:1 — ajuste a altura
+                                    conforme a proporção da sua arte)
 
 Se a versão em display/ existir, o simulador usa ela pra aplicar no
 pote (rápido) e só busca o arquivo cheio da raiz quando alguém clica
