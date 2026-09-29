@@ -303,6 +303,22 @@
       controls.addEventListener('start', () => {
         controls.autoRotate = false;
       });
+      // OrbitControls fires 'change' from inside update() whenever it
+      // actually moves the camera — reliably, for both mouse AND touch.
+      // Touch is the reason this has to be an event listener rather than
+      // reading update()'s return value in the loop below: on touch,
+      // OrbitControls calls update() itself, synchronously, straight from
+      // the touchmove handler (mouse drag does not — it only accumulates
+      // a delta and leaves update() to the loop). So by the time the loop
+      // ran its own update() call, a touch-driven move had already been
+      // applied and "consumed", and update() had nothing new to report —
+      // camMoved came back false and the render was skipped, which is
+      // what made pinch-zoom and touch-drag lag/stutter on mobile. The
+      // 'change' event doesn't have that gap: it fires at the moment of
+      // the real change, however update() was invoked.
+      controls.addEventListener('change', () => {
+        this._needsRender = true;
+      });
 
       const _size = new THREE.Vector2();
       const fit = () => {
@@ -320,12 +336,10 @@
       this._ro = new ResizeObserver(fit);
       this._loop = () => {
         fit();
-        // OrbitControls.update() returns true only when damping/drag/zoom
-        // actually moved the camera this tick — that plus autoRotate and
-        // the manual _needsRender flag are the only reasons to pay for a
-        // full render. Everything else (idle pot on screen) is free.
-        const camMoved = controls.update();
-        if (controls.autoRotate || camMoved || this._needsRender) {
+        // Advances damping/inertia and re-dispatches 'change' above while
+        // it's still settling; harmless (cheap) to call even when idle.
+        controls.update();
+        if (controls.autoRotate || this._needsRender) {
           renderer.render(scene, camera);
           this._needsRender = false;
         }
