@@ -30,6 +30,15 @@
       max-height:calc(100vh - 40px);overflow-y:auto;
       border:1px solid rgba(217,164,65,.35);backdrop-filter:blur(8px);
       font-family:"Barlow Condensed",system-ui,sans-serif;color:#f3e2c4}
+  #toggleUp{display:none}
+  @media (max-width:760px){
+    #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:70vh;
+        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
+    #up.recolhido{max-height:54px;overflow:hidden}
+    #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
+              width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
+    three-d-stage{height:100vh}
+  }
   #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
   #up p{margin:0;font-size:13px;line-height:1.35;color:#bda98c}
   .drop{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;cursor:pointer;
@@ -47,26 +56,28 @@
   #up .dl a{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:12px;letter-spacing:.08em;
             text-transform:uppercase;color:#e0b25c;text-decoration:none;border:1px solid rgba(217,164,65,.3)}
   #up .dl a:hover{color:#f6e8cc;border-color:#e0b25c;background:rgba(176,17,24,.2)}
-  #up .mode{display:flex;gap:6px}
-  #up .mode .m{flex:1;text-align:center;padding:7px 2px;border-radius:7px;font-size:11px;
-                letter-spacing:.06em;text-transform:uppercase;color:#bda98c;
-                border:1px solid rgba(217,164,65,.28);cursor:pointer}
-  #up .mode .m.on{color:#0b0708;background:#e0b25c;border-color:#e0b25c}
+  #up .marcas{display:flex;gap:6px;flex-wrap:wrap}
+  #up .marcas .b{padding:5px 10px;border-radius:20px;font-size:11px;letter-spacing:.04em;
+                 text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.28);cursor:pointer}
+  #up .marcas .b.on{color:#0b0708;background:#e0b25c;border-color:#e0b25c}
   #up .lib{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
   #up .lib figure{margin:0;position:relative;border-radius:6px;overflow:hidden;cursor:pointer;
                   border:1px solid rgba(217,164,65,.28);background:#0b0708;aspect-ratio:1}
   #up .lib figure:hover{border-color:#e0b25c}
+  #up .lib figure.ativo{border:2px solid #e0b25c;box-shadow:0 0 0 2px rgba(224,178,92,.35) inset}
   #up .lib img{width:100%;height:100%;object-fit:contain;display:block}
-  #up .lib figcaption{position:absolute;left:0;right:0;bottom:0;padding:2px 4px;font-size:9px;
-                      letter-spacing:.04em;color:#f6e8cc;background:rgba(8,5,4,.78);
-                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  #up .lib .act{position:absolute;top:2px;right:2px;display:flex;gap:2px;opacity:0;transition:.12s}
+  #up .lib figcaption{position:absolute;left:0;right:0;bottom:0;padding:3px 5px;font-size:10.5px;
+                      line-height:1.2;letter-spacing:.02em;color:#f6e8cc;background:rgba(8,5,4,.82);
+                      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #up .lib .act{position:absolute;top:2px;right:2px;display:flex;gap:2px;opacity:.82;transition:.12s}
   #up .lib figure:hover .act{opacity:1}
-  #up .lib .act span{width:17px;height:17px;display:grid;place-items:center;border-radius:4px;
-                     font-size:10px;color:#f6e8cc;background:rgba(8,5,4,.85)}
+  #up .lib .act span{width:19px;height:19px;display:grid;place-items:center;border-radius:4px;
+                     font-size:11px;color:#f6e8cc;background:rgba(8,5,4,.9)}
   #up .lib .act span:hover{background:#b01118}
   #up .lib .tag{position:absolute;top:2px;left:2px;padding:1px 4px;border-radius:4px;font-size:8px;
                 letter-spacing:.08em;color:#0b0708;background:#e0b25c}
+  #up .lib .check{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+                  background:#e0b25c;color:#0b0708;display:grid;place-items:center;font-size:10px;font-weight:700}
   #up .vazio{font-size:12px;color:#8d7f6c;font-style:italic}
   #up hr{border:none;border-top:1px solid rgba(217,164,65,.22);margin:2px 0}
 </style>
@@ -75,6 +86,7 @@
 <script type="application/json" id="bibliotecaEmbutida">{"artes":[]}</script>
 <three-d-stage name="pote-veleiros-do-caribe" background="#1d1714" autorotate></three-d-stage>
 <div id="up">
+  <div id="toggleUp" title="Mostrar/ocultar painel"></div>
   <h1>SUA ARTE</h1>
   <p>Suba as duas artes para substituir os rótulos do mockup.</p>
   <label class="drop" id="dropTop">
@@ -83,15 +95,10 @@
     <input type="file" id="fileTop" accept="image/*">
   </label>
   <label class="drop" id="dropWrap">
-    <b>Corpo · wrap 360°</b>    <span>faixa deitada · 280 × 15 mm (ex. 4096×219). "Preencher" corta topo e base.</span>
+    <b>Corpo · wrap 360°</b>    <span>faixa deitada · 280 × 15 mm. A arte é encaixada preservando a proporção original (nunca esticada).</span>
     <img id="prevWrap" alt="">
     <input type="file" id="fileWrap" accept="image/*">
   </label>
-  <div class="mode">
-    <button class="m" data-mode="repeat">Repetir</button>
-    <button class="m" data-mode="cover">Preencher</button>
-    <button class="m" data-mode="contain">Encaixar</button>
-  </div>
   <button id="girar">▶ Girar</button>
   <button id="pdf">Salvar PDF (4 cenários)</button>
   <button id="reset">Voltar ao original</button>
@@ -103,6 +110,7 @@
     <b>+ Adicionar artes</b><span>PNG/JPG · vários de uma vez</span>
     <input type="file" id="fileLib" accept="image/*" multiple>
   </label>
+  <div class="marcas" id="marcasBar" style="display:none"></div>
   <div class="lib" id="lib"></div>
   <p class="vazio" id="vazioLib">Nenhuma arte na biblioteca.</p>
   <button id="exportar">Exportar HTML para o cliente</button>
@@ -334,7 +342,8 @@ const slots = {
 };
 const store = JSON.parse(localStorage.getItem(KEY) || '{}');
 
-let mode = store.mode || 'repeat';
+// modo de encaixe da tarja: sempre "encaixar" (nunca esticar/distorcer a arte)
+const mode = 'contain';
 function applyArt(which, dataURL) {
   const s = slots[which];
   const img = new Image();
@@ -342,27 +351,9 @@ function applyArt(which, dataURL) {
     const [W, H] = FIT[which];
     const [c, x] = cv(W, H);
     x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
-    if (which === 'wrap' && mode === 'repeat' && img.width / img.height >= 6) {
-      // arte de volta inteira: largura = circunferência, sem repetir; centraliza na altura
-      const k = W / img.width, th = img.height * k;
-      x.drawImage(img, 0, (H - th) / 2, W, th);
-    } else if (which === 'wrap' && mode === 'repeat') {
-      // repetida ao redor do pote; escala uniforme nos dois eixos, centralizada
-      const nat = img.width * (H / img.height);
-      const n = Math.max(1, Math.round(W / nat));
-      const step = W / n;
-      const k = step / img.width;           // mesma escala em X e Y
-      const th = img.height * k, ty = (H - th) / 2;
-      for (let i = 0; i < n; i++) x.drawImage(img, i * step, ty, step, th);
-    } else if (mode === 'cover') {
-      const k = Math.max(W / img.width, H / img.height);
-      const w = img.width * k, ht = img.height * k;
-      x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
-    } else {
-      const k = Math.min(W / img.width, H / img.height);
-      const w = img.width * k, ht = img.height * k;
-      x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
-    }
+    const k = Math.min(W / img.width, H / img.height);
+    const w = img.width * k, ht = img.height * k;
+    x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
     const t = tex(c, which === 'wrap' ? 1 : 0);
     if (which === 'wrap') t.wrapS = THREE.RepeatWrapping;
     s.mat.map = t; s.mat.needsUpdate = true;
@@ -370,15 +361,6 @@ function applyArt(which, dataURL) {
   img.src = dataURL;
   s.prev.src = dataURL; s.drop.classList.add('has');
 }
-function syncMode() {
-  document.querySelectorAll('#up .m').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
-}
-document.querySelectorAll('#up .m').forEach(b => b.addEventListener('click', () => {
-  mode = b.dataset.mode; store.mode = mode; syncMode();
-  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
-  Object.keys(slots).forEach(w => { if (store[w]) applyArt(w, store[w]); });
-}));
-syncMode();
 function readFile(which, file) {
   if (!file || !file.type.startsWith('image/')) return;
   const fr = new FileReader();
@@ -582,6 +564,11 @@ girar.addEventListener('click', () => {
 if (stage._controls) stage._controls.addEventListener('start', sync);
 sync();
 
+/* ---------- painel retrátil no celular ---------- */
+const up = document.getElementById('up');
+if (window.matchMedia('(max-width: 760px)').matches) up.classList.add('recolhido');
+toggleUp.addEventListener('click', () => up.classList.toggle('recolhido'));
+
 /* ---------- biblioteca de artes ---------- */
 const DB = 'rotulo-biblioteca';
 function idb() {
@@ -603,15 +590,39 @@ function tx(modo, fn) {
 const embutida = document.getElementById('bibliotecaEmbutida');
 const modoCliente = !!embutida;
 let artes = embutida ? JSON.parse(embutida.textContent).artes : [];
+const MARCA_PADRAO = 'Veleiros do Caribe';
+// id do kit atualmente aplicado no pote — tenta recuperar da sessão anterior
+// comparando com o que foi salvo (senão fica sem nenhum card marcado)
+let kitAtivoId = store.kitAtivoId || null;
+let marcaAtual = store.marcaAtual || 'Todas';
+
+function pintarMarcas() {
+  const marcas = [...new Set(artes.map(a => a.marca || MARCA_PADRAO))].sort();
+  if (marcas.length < 2) { marcasBar.style.display = 'none'; marcasBar.innerHTML = ''; return; }
+  if (!marcas.includes(marcaAtual) && marcaAtual !== 'Todas') marcaAtual = 'Todas';
+  marcasBar.style.display = '';
+  marcasBar.innerHTML = ['Todas', ...marcas].map(m =>
+    '<span class="b' + (m === marcaAtual ? ' on' : '') + '" data-marca="' + m.replace(/"/g, '&quot;') + '">' + m + '</span>'
+  ).join('');
+  marcasBar.querySelectorAll('.b').forEach(b => b.addEventListener('click', () => {
+    marcaAtual = b.dataset.marca; store.marcaAtual = marcaAtual;
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+    pintarLib();
+  }));
+}
 
 function pintarLib() {
+  pintarMarcas();
   lib.innerHTML = '';
-  artes.forEach(a => {
+  const visiveis = marcaAtual === 'Todas' ? artes : artes.filter(a => (a.marca || MARCA_PADRAO) === marcaAtual);
+  visiveis.forEach(a => {
     const ehKit = a.tipo === 'kit';
     const f = document.createElement('figure');
+    if (ehKit && a.id === kitAtivoId) f.classList.add('ativo');
     f.title = a.nome + (ehKit ? ' — clique para aplicar tampa + tarja juntas' : ' — clique para aplicar');
     f.innerHTML = '<img alt="">' +
-      '<span class="tag">' + (ehKit ? 'KIT' : (a.slot === 'top' ? 'TAMPA' : 'TARJA')) + (a.servidor ? ' · WEB' : '') + '</span>' +
+      (ehKit ? (a.id === kitAtivoId ? '<span class="check">✓</span>' : '') :
+        '<span class="tag">' + (a.slot === 'top' ? 'TAMPA' : 'TARJA') + '</span>') +
       '<div class="act"><span data-a="dl" title="Baixar">↓</span>' +
       (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">×</span>') + '</div>' +
       '<figcaption>' + a.nome + '</figcaption>';
@@ -655,11 +666,14 @@ function pintarLib() {
         applyArt('top', a.dataTop);
         applyArt('wrap', a.dataWrap);
         store.top = a.dataTop; store.wrap = a.dataWrap;
+        kitAtivoId = a.id; store.kitAtivoId = a.id;
       } else {
         applyArt(a.slot, a.data);
         store[a.slot] = a.data;
+        kitAtivoId = null; store.kitAtivoId = null;
       }
       try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (err) {}
+      pintarLib();
     });
     lib.appendChild(f);
   });
@@ -733,6 +747,9 @@ async function carregarPasta() {
         lista.forEach((c, i) => achadas.push({
           id: 'srv-' + (c.id || i), servidor: true, tipo: 'kit',
           nome: c.nome || ('Kit ' + (i + 1)),
+          // nome da marca — permite mais de uma marca na mesma biblioteca,
+          // com um filtro na UI pra navegar entre elas (ver artes.json)
+          marca: c.marca || MARCA_PADRAO,
           // miniatura leve pra galeria (não baixa nada em resolução alta à toa)
           thumb: 'artes/' + (c.thumb || c.tampa),
           // versão "display" (tamanho real de uso na textura 3D: 2048² / 4096

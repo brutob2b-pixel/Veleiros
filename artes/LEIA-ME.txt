@@ -39,6 +39,28 @@ e os arquivos podem se chamar o que você quiser. O "id" é só um
 identificador interno (sem espaço/acento); o "nome" é o que aparece
 pro revendedor.
 
+MAIS DE UMA MARCA NA MESMA BIBLIOTECA
+
+Quando outras marcas (além de Veleiros do Caribe) forem entrar aqui,
+adicione o campo "marca" em cada kit do artes.json:
+
+    [
+      { "id": "vc-black-dourado", "marca": "Veleiros do Caribe",
+        "tampa": "veleiros/tampa-01.webp", "tarja": "veleiros/tarja-01.webp",
+        "nome": "Black Dourado" },
+      { "id": "outra-marca-01", "marca": "Nome da Outra Marca",
+        "tampa": "outra-marca/tampa-01.webp", "tarja": "outra-marca/tarja-01.webp",
+        "nome": "Kit 01" }
+    ]
+
+Com duas ou mais marcas diferentes no artes.json, o simulador mostra
+sozinho um filtro (Todas / cada marca) acima da biblioteca — não
+precisa mexer em nada além do artes.json. Um kit sem "marca" cai
+automaticamente em "Veleiros do Caribe". Organize os arquivos de
+imagem em subpastas por marca (ex. "artes/veleiros/", "artes/outra-
+marca/") só por organização — o caminho é o que você escrever no
+"tampa"/"tarja" de cada kit, pode ser qualquer estrutura de pastas.
+
 PESO DO ARQUIVO (importante)
 
 As artes aqui foram exportadas como .webp (qualidade 92) em vez de

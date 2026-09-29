@@ -99,6 +99,15 @@
     .toolbar button:hover { background: #fff; }
     .toolbar button:active { transform: translateY(1px); }
     .toolbar button[disabled] { opacity: 0.5; pointer-events: none; }
+    .toolbar .adv-btns {
+      display: none;
+      gap: 8px;
+    }
+    .toolbar.expanded .adv-btns { display: flex; }
+    .toolbar .adv-toggle {
+      opacity: 0.75;
+      font-size: 11.5px !important;
+    }
     .note {
       position: absolute;
       left: 16px;
@@ -162,6 +171,15 @@
       root.appendChild(note);
       this._toolbar = document.createElement('div');
       this._toolbar.className = 'toolbar';
+      this._advToggle = document.createElement('button');
+      this._advToggle.type = 'button';
+      this._advToggle.className = 'adv-toggle';
+      this._advToggle.textContent = 'Avançado ▾';
+      this._advToggle.addEventListener('click', () => {
+        this._toolbar.classList.toggle('expanded');
+      });
+      this._advBtns = document.createElement('div');
+      this._advBtns.className = 'adv-btns';
       this._objBtn = document.createElement('button');
       this._objBtn.type = 'button';
       this._objBtn.textContent = 'Download OBJ + MTL';
@@ -170,8 +188,10 @@
       this._glbBtn.type = 'button';
       this._glbBtn.textContent = 'Download GLB';
       this._glbBtn.addEventListener('click', () => this._runExport('glb'));
-      this._toolbar.appendChild(this._objBtn);
-      this._toolbar.appendChild(this._glbBtn);
+      this._advBtns.appendChild(this._objBtn);
+      this._advBtns.appendChild(this._glbBtn);
+      this._toolbar.appendChild(this._advBtns);
+      this._toolbar.appendChild(this._advToggle);
       root.appendChild(this._toolbar);
       this._setButtonsEnabled(false);
       /** Resolves with { THREE } once the scene is live — build the model
