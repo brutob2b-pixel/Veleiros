@@ -100,6 +100,8 @@
     <input type="file" id="fileWrap" accept="image/*">
   </label>
   <button id="girar">▶ Girar</button>
+  <button id="abrirTampa">⇧ Abrir tampa</button>
+  <button id="gravarVideo">🎬 Gravar vídeo (abertura)</button>
   <button id="pdf">Salvar PDF (4 cenários)</button>
   <button id="reset">Voltar ao original</button>
   <p id="aviso" style="color:#e0b25c"></p>
@@ -300,7 +302,34 @@ const [wrapC, wc] = cv(4096, 219);
 const plastic = new THREE.MeshStandardMaterial({ name: 'plastico_preto', color: 0x141314, roughness: .28, metalness: .18 });
 const plasticSide = new THREE.MeshStandardMaterial({ name: 'plastico_preto_fosco', color: 0x0f0e0f, roughness: .5, metalness: .1 });
 const gold = new THREE.MeshStandardMaterial({ name: 'dourado', color: 0xe0b25c, roughness: .3, metalness: .38 });
-const paste = new THREE.MeshStandardMaterial({ name: 'pasta_morango', color: 0xf3dfe2, roughness: .6, metalness: 0 });
+// textura da pasta: leve redemoinho (como se tivesse sido colhida com uma
+// espátula) + brilho de clearcoat, pra vender "consistência cremosa"
+// em vez de um disco liso — é revelado pela animação de abrir a tampa.
+const [pasteC, pctx] = cv(512, 512);
+(() => {
+  const S = 512, cx = S / 2;
+  const base = '#f3dfe2';
+  pctx.fillStyle = base; pctx.fillRect(0, 0, S, S);
+  const grad = pctx.createRadialGradient(cx * .92, cx * .85, S * .05, cx, cx, S * .62);
+  grad.addColorStop(0, 'rgba(255,255,255,.55)');
+  grad.addColorStop(.4, 'rgba(255,255,255,.12)');
+  grad.addColorStop(1, 'rgba(0,0,0,.06)');
+  pctx.fillStyle = grad; pctx.fillRect(0, 0, S, S);
+  pctx.strokeStyle = 'rgba(0,0,0,.05)'; pctx.lineWidth = 2.5;
+  for (let r = S * .08; r < S * .5; r += S * .045) {
+    pctx.beginPath();
+    for (let a = 0; a <= Math.PI * 2 + 0.4; a += 0.06) {
+      const rr = r + Math.sin(a * 3 + r) * S * .012;
+      const x = cx + Math.cos(a + r * .01) * rr, y = cx + Math.sin(a + r * .01) * rr;
+      a === 0 ? pctx.moveTo(x, y) : pctx.lineTo(x, y);
+    }
+    pctx.stroke();
+  }
+})();
+const paste = new THREE.MeshPhysicalMaterial({
+  name: 'pasta_morango', map: tex(pasteC), roughness: .42, metalness: 0,
+  clearcoat: .35, clearcoatRoughness: .2
+});
 const labelTop = new THREE.MeshStandardMaterial({ name: 'rotulo_tampa', map: tex(topC), roughness: .22, metalness: .12 });
 const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: tex(wrapC), roughness: .26, metalness: .12 });
 
@@ -317,7 +346,12 @@ const add = (name, geo, mat, y, rx, ry, rz) => {
 };
 
 // corpo
-add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, false), plasticSide, BODY_H / 2);
+// aberto (sem tampas próprias): um cilindro "fechado" (openEnded=false)
+// tem um disco opaco no topo, que tapava a visão da pasta por baixo mesmo
+// com a tampa aberta — abrimos o topo e o fundo e recriamos só o fundo
+// como peça separada, senão o pote fica sem chão visto de baixo.
+add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, true), plasticSide, BODY_H / 2);
+add('fundo_pote', new THREE.CircleGeometry(R * .97, 96), plasticSide, 0.0002, -Math.PI / 2);
 add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, -1.42);
 add('pasta', new THREE.CylinderGeometry(R - .0025, R - .0025, .0005, 64), paste, BODY_H - .0016);
 add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plastic, .0014, Math.PI / 2);
@@ -328,8 +362,149 @@ add('tampa_topo', new THREE.CylinderGeometry(LID_R, LID_R, .0035, 96), plastic, 
 add('rotulo_tampa', new THREE.CircleGeometry(0.04455, 96), labelTop, TOP_Y + .0002, -Math.PI / 2, 0, 0.675);
 add('aro_base_tampa', new THREE.TorusGeometry(LID_R - .0012, .0012, 14, 128), plastic, BODY_H - OVER + .0004, Math.PI / 2);
 
+/* ---------- agrupa a tampa (peça única, gira em torno do próprio centro) ---------- */
+// pivô no centro vertical da tampa: assim inclinar o grupo tomba a tampa
+// "na mão", em vez de girar em torno da base do pote.
+const LID_PIVOT_Y = BODY_H + LID_H / 2 - OVER;
+const tampaGroup = new THREE.Group();
+tampaGroup.name = 'tampa';
+tampaGroup.position.y = LID_PIVOT_Y;
+['tampa_lateral', 'tampa_topo', 'rotulo_tampa', 'aro_base_tampa'].forEach(n => {
+  const m = jar.getObjectByName(n);
+  jar.remove(m);
+  m.position.y -= LID_PIVOT_Y;
+  tampaGroup.add(m);
+});
+jar.add(tampaGroup);
+
 jar.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
 stage.setObject(jar);
+
+/* ---------- animação: abrir/fechar a tampa ---------- */
+// tudo aqui força um render manual a cada frame do tween — o loop do
+// stage só redesenha sob demanda, então uma animação externa como esta
+// tem que avisar (stage.requestRender()) ou fica "congelada" na tela.
+const LID_CLOSED = { y: LID_PIVOT_Y, x: 0, z: 0, rz: 0, rx: 0 };
+const LID_OPEN = { y: LID_PIVOT_Y + 0.05, x: 0.034, z: 0.006, rz: -0.62, rx: 0.16 };
+let lidState = 'closed'; // 'closed' | 'open' | 'animating'
+let lidTween = null;
+const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function tweenTampa(to, duration, onDone) {
+  if (lidTween) cancelAnimationFrame(lidTween.raf);
+  const from = {
+    y: tampaGroup.position.y, x: tampaGroup.position.x, z: tampaGroup.position.z,
+    rz: tampaGroup.rotation.z, rx: tampaGroup.rotation.x
+  };
+  const t0 = performance.now();
+  lidTween = { raf: 0 };
+  const step = now => {
+    const t = Math.min(1, (now - t0) / duration);
+    const k = easeInOutCubic(t);
+    tampaGroup.position.set(from.x + (to.x - from.x) * k, from.y + (to.y - from.y) * k, from.z + (to.z - from.z) * k);
+    tampaGroup.rotation.z = from.rz + (to.rz - from.rz) * k;
+    tampaGroup.rotation.x = from.rx + (to.rx - from.rx) * k;
+    stage.requestRender();
+    if (t < 1) { lidTween.raf = requestAnimationFrame(step); }
+    else { lidTween = null; if (onDone) onDone(); }
+  };
+  lidTween.raf = requestAnimationFrame(step);
+}
+// a tampa levantada e inclinada fica entre a luz principal e a pasta —
+// se continuar projetando sombra, a pasta que a animação deveria mostrar
+// escurece na hora exata em que devia aparecer. Sem sombra da tampa
+// durante a abertura; volta a projetar sombra (o filete embaixo da borda)
+// só quando fechada de novo.
+function setTampaCastShadow(v) {
+  tampaGroup.traverse(o => { if (o.isMesh) o.castShadow = v; });
+}
+function abrirTampaFn(duration) {
+  return new Promise(resolve => {
+    lidState = 'animating';
+    setTampaCastShadow(false);
+    tweenTampa(LID_OPEN, duration != null ? duration : 900, () => { lidState = 'open'; resolve(); });
+  });
+}
+function fecharTampaFn(duration) {
+  return new Promise(resolve => {
+    lidState = 'animating';
+    tweenTampa(LID_CLOSED, duration != null ? duration : 900, () => {
+      lidState = 'closed'; setTampaCastShadow(true); stage.requestRender(); resolve();
+    });
+  });
+}
+abrirTampa.addEventListener('click', () => {
+  if (lidState === 'animating') return;
+  if (lidState === 'closed') {
+    abrirTampa.textContent = '⇩ Fechar tampa';
+    abrirTampaFn();
+  } else {
+    abrirTampa.textContent = '⇧ Abrir tampa';
+    fecharTampaFn();
+  }
+});
+
+/* ---------- gravar a abertura como vídeo (.webm ou .mp4, o que o navegador suportar) ---------- */
+function escolherMimeType() {
+  const opcoes = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+  for (const t of opcoes) { if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t; }
+  return '';
+}
+gravarVideo.addEventListener('click', async () => {
+  if (lidState === 'animating' || gravarVideo.disabled) return;
+  if (!window.MediaRecorder || !stage._renderer.domElement.captureStream) {
+    aviso.textContent = 'Este navegador não suporta gravação de vídeo direto da tela (captureStream/MediaRecorder).';
+    return;
+  }
+  const oldAutoRotate = stage._controls.autoRotate;
+  stage._controls.autoRotate = false;
+  // canvas.captureStream() só grava os pixels do canvas — o fundo que
+  // aparece no app é um CSS atrás do canvas (que é transparente, alpha:true),
+  // então sem isto o vídeo sai com fundo preto. Mesmo truque do export de PDF.
+  const oldBG = stage._scene.background;
+  const bgAttr = stage.getAttribute('background');
+  if (bgAttr) stage._scene.background = new THREE.Color(bgAttr);
+  stage.requestRender();
+  abrirTampa.disabled = true;
+  gravarVideo.disabled = true;
+  const textoOriginal = gravarVideo.textContent;
+  gravarVideo.textContent = 'Gravando…';
+  try {
+    if (lidState !== 'closed') { await fecharTampaFn(400); }
+    const mime = escolherMimeType();
+    const stream = stage._renderer.domElement.captureStream(30);
+    const rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+    const chunks = [];
+    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    const gravado = new Promise(resolve => { rec.onstop = resolve; });
+    rec.start();
+    await new Promise(r => setTimeout(r, 200)); // um respiro antes de animar, pra não cortar o 1º frame
+    await abrirTampaFn(1400);
+    await new Promise(r => setTimeout(r, 1200)); // segura a tampa aberta um instante, pra dar tempo de ver a pasta
+    rec.stop();
+    await gravado;
+    const blob = new Blob(chunks, { type: mime ? mime.split(';')[0] : 'video/webm' });
+    const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'pote-abrindo-tampa.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    if (ext === 'webm') {
+      aviso.textContent = 'Vídeo baixado em .webm (seu navegador não grava .mp4 direto). Pra usar em Instagram/WhatsApp, converta em cloudconvert.com ou similar — é gratuito e rápido.';
+    } else {
+      aviso.textContent = '';
+    }
+  } catch (e) {
+    aviso.textContent = 'Falha ao gravar o vídeo: ' + e.message;
+  }
+  stage._scene.background = oldBG;
+  stage.requestRender();
+  gravarVideo.textContent = textoOriginal;
+  abrirTampa.disabled = false;
+  gravarVideo.disabled = false;
+  abrirTampa.textContent = lidState === 'open' ? '⇩ Fechar tampa' : '⇧ Abrir tampa';
+  stage._controls.autoRotate = oldAutoRotate;
+});
 
 /* ---------- upload das artes do usuário ---------- */
 const KEY = 'veleiros-labels';
