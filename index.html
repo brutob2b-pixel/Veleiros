@@ -357,6 +357,7 @@ function applyArt(which, dataURL) {
     const t = tex(c, which === 'wrap' ? 1 : 0);
     if (which === 'wrap') t.wrapS = THREE.RepeatWrapping;
     s.mat.map = t; s.mat.needsUpdate = true;
+    stage.requestRender();
   };
   img.src = dataURL;
   s.prev.src = dataURL; s.drop.classList.add('has');
@@ -469,6 +470,7 @@ function renderCena(dir, roll) {
   r.setSize(size.x, size.y, false);
   ctr.target.copy(oldTarget);
   ctr.autoRotate = oldRot;
+  stage.requestRender();
   return { data: data, dim: dim };
 }
 
@@ -871,6 +873,7 @@ reset.addEventListener('click', () => {
     s.prev.removeAttribute('src'); s.drop.classList.remove('has');
     delete store[which];
   });
+  stage.requestRender();
   localStorage.setItem(KEY, JSON.stringify(store));
 });
 </script>

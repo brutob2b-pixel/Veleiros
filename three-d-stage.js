@@ -200,14 +200,31 @@
         this._readyResolve = resolve;
         this._readyReject = reject;
       });
+      // Render-on-demand: the loop below only calls renderer.render() when
+      // this is true (or the camera actually moved, or autoRotate is on).
+      // Without this, the loop redraws the whole scene — shadows, AA, all
+      // of it — every single frame forever, even with a static, untouched
+      // pot on screen. On phones that is what drives the GPU hard enough
+      // to heat the device and drain the battery while nothing is
+      // happening. Start true so the first frame(s) after boot render.
+      this._needsRender = true;
+    }
+
+    /** Call after changing anything the render loop can't detect on its
+     *  own (a material/texture swap, a manual camera move outside
+     *  OrbitControls, etc.) to force the next loop tick to redraw. */
+    requestRender() {
+      this._needsRender = true;
     }
 
     connectedCallback() {
       if (this._booted) {
         // Re-attached after a removal — resume what disconnected stopped.
         if (this._renderer) {
+          this._needsRender = true;
           this._renderer.setAnimationLoop(this._loop);
           this._ro && this._ro.observe(this);
+          document.addEventListener('visibilitychange', this._onVisibility);
         }
         return;
       }
@@ -297,13 +314,33 @@
         renderer.setSize(w, h);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
+        this._needsRender = true;
       };
       fit();
       this._ro = new ResizeObserver(fit);
       this._loop = () => {
         fit();
-        controls.update();
-        renderer.render(scene, camera);
+        // OrbitControls.update() returns true only when damping/drag/zoom
+        // actually moved the camera this tick — that plus autoRotate and
+        // the manual _needsRender flag are the only reasons to pay for a
+        // full render. Everything else (idle pot on screen) is free.
+        const camMoved = controls.update();
+        if (controls.autoRotate || camMoved || this._needsRender) {
+          renderer.render(scene, camera);
+          this._needsRender = false;
+        }
+      };
+      // Pause the loop entirely while the tab/page isn't visible (screen
+      // locked, app backgrounded, switched tabs) instead of relying on
+      // the browser to throttle requestAnimationFrame on its own.
+      this._onVisibility = () => {
+        if (!this._renderer) return;
+        if (document.hidden) {
+          this._renderer.setAnimationLoop(null);
+        } else if (this.isConnected) {
+          this._needsRender = true;
+          this._renderer.setAnimationLoop(this._loop);
+        }
       };
       // Detached while three.js was fetching? Stay idle — the
       // connectedCallback resume starts the loop and observer on
@@ -311,6 +348,7 @@
       if (this.isConnected) {
         this._ro.observe(this);
         renderer.setAnimationLoop(this._loop);
+        document.addEventListener('visibilitychange', this._onVisibility);
       }
 
       this._readyResolve({ THREE });
@@ -322,6 +360,7 @@
       // document must not rebuild the scene.)
       if (this._renderer) this._renderer.setAnimationLoop(null);
       if (this._ro) this._ro.disconnect();
+      document.removeEventListener('visibilitychange', this._onVisibility);
     }
 
     /** Show (and own) the object. Replaces any previous object, enables
@@ -363,6 +402,7 @@
       }
       this._scene.add(object);
       this._setButtonsEnabled(true);
+      this._needsRender = true;
     }
 
     get _basename() {
