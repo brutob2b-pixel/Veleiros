@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frasco de talco — mockup 3D</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+    "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js",
+    "three/addons/exporters/OBJExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js",
+    "three/addons/exporters/GLTFExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js"
+  },
+  "integrity": {
+    "https://unpkg.com/three@0.184.0/build/three.module.js": "sha384-8FCZ1eVO6it4+pbec2aDtnTrwjWXZLJRC+MAGCIPDgsYnUrl/E0A2YlF8ioMKI/J",
+    "https://unpkg.com/three@0.184.0/build/three.core.js": "sha384-dw2ooPewaEIrAgl6oFDBmmBWCE9oW9LxRGcfwZ0hLvEprzo202wXl7vCYHRlSnOT",
+    "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js": "sha384-4rziNxOBZKQ69i+w+f89KJ55TCYquwchVbByQwmaOeIOXdOU2PLDn3kOfXHwIJC9",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js": "sha384-nbwtoZENJD3Vq+ACK0CuGQdPMuDWHkamC2KJD70EV5nfg6jQjfppKOea07YJN+N3",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js": "sha384-VofkvpG6HERhFCYbsUOHeNXBCqID2nfqkQqnVzE1jc/oPcz+qJ13ADdXH08hE+cQ"
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#17120f}
+  three-d-stage:not(:defined){visibility:hidden}
+  three-d-stage{display:block;width:100vw;height:100vh}
+  #up{position:fixed;top:20px;left:20px;z-index:5;display:flex;flex-direction:column;gap:12px;
+      width:250px;padding:16px;border-radius:12px;background:rgba(12,9,8,.82);
+      max-height:calc(100vh - 40px);overflow-y:auto;box-sizing:border-box;
+      border:1px solid rgba(217,164,65,.35);backdrop-filter:blur(8px);
+      font-family:"Barlow Condensed",system-ui,sans-serif;color:#f3e2c4}
+  #toggleUp{display:none}
+  @media (max-width:760px){
+    #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:60vh;
+        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
+    #up.recolhido{max-height:54px;overflow:hidden}
+    #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
+              width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
+  }
+  #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
+  #up p{margin:0;font-size:13px;line-height:1.35;color:#bda98c}
+  #up hr{width:100%;border:0;border-top:1px solid rgba(217,164,65,.25);margin:2px 0}
+  .drop{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;cursor:pointer;
+        border:1px dashed rgba(217,164,65,.5);background:rgba(176,17,24,.10);transition:.15s}
+  .drop:hover,.drop.over{background:rgba(176,17,24,.28);border-color:#e0b25c}
+  .drop b{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#f6e8cc}
+  .drop span{font-size:12px;color:#bda98c}
+  .drop img{height:90px;object-fit:contain;align-self:center;display:none}
+  .drop.has img{display:block}
+  #up button{all:unset;text-align:center;padding:8px;border-radius:7px;cursor:pointer;font-size:12px;
+             letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
+  #up button:hover{color:#f6e8cc;border-color:#e0b25c}
+  #up input[type=file]{display:none}
+  .cores{display:flex;gap:10px}
+  .cores label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.08em;
+               text-transform:uppercase;color:#bda98c}
+  .cores input[type=color]{width:100%;height:32px;border:1px solid rgba(217,164,65,.3);border-radius:6px;
+                           background:transparent;padding:2px;cursor:pointer}
+</style>
+</head>
+<body>
+<three-d-stage name="frasco-talco" background="#1d1714" autorotate></three-d-stage>
+<div id="up">
+  <div id="toggleUp" title="Mostrar/ocultar painel"></div>
+  <h1>FRASCO · TALCO</h1>
+  <p>Rótulo recortado 60 × 117 mm. Envie PNG com fundo transparente (no formato do recorte).</p>
+  <label class="drop" id="dropVerso">
+    <b>Verso</b><span>composição, fabricante, lote</span>
+    <img id="prevVerso" alt="">
+    <input type="file" id="fileVerso" accept="image/png,image/webp,image/jpeg">
+  </label>
+  <label class="drop" id="dropFrente">
+    <b>Frente</b><span>ainda sem arte — clique para enviar</span>
+    <img id="prevFrente" alt="">
+    <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
+  </label>
+  <div class="cores">
+    <label>Frasco<input type="color" id="corFrasco" value="#141414"></label>
+    <label>Tampa<input type="color" id="corTampa" value="#e0761e"></label>
+  </div>
+  <button id="girar">❚❚ Pausar</button>
+  <button id="png">Salvar imagem (PNG)</button>
+  <button id="reset">Voltar ao original</button>
+  <p id="aviso" style="color:#e0b25c"></p>
+  <hr>
+  <p>Frasco estimado a partir do contorno do rótulo (sem medidas do frasco real): ~65 × 36 × 172 mm.</p>
+</div>
+<script src="three-d-stage.js"></script>
+<script type="module">
+const stage = document.querySelector('three-d-stage');
+const { THREE } = await stage.ready;
+const MM = 0.001;
+
+/* ---------- perfil do frasco (mm) ----------
+   Estimado a partir do contorno do rótulo: o rótulo é simétrico em
+   "violão" — 60 mm nas partes largas (a 20% e 80% da altura) e 50 mm
+   na cintura. O frasco segue a mesma silhueta com ~4 mm de folga de
+   cada lado, base arredondada, ombro que fecha no gargalo Ø27 e uma
+   tampa flip-top Ø33. Seção oval achatada (superelipse), como os
+   frascos de talco. */
+const LABEL_W = 60, LABEL_H = 117, LABEL_Y0 = 10;           // rótulo: 10 → 127 mm
+const PERFIL = [ // [y, largura total]
+  [0, 57], [1.5, 61.5], [4, 64], [33.4, 68], [68.5, 58.5], [103.6, 68],
+  [118, 64.5], [128, 57], [136, 44], [141, 32], [144, 27], [152, 27]
+];
+const NECK_Y = 144, BODY_TOP = 152;
+
+// interpolação cúbica monotônica (sem "barriga" entre os pontos)
+function monotone(pts) {
+  const n = pts.length, xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const d = [], m = new Array(n);
+  for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) { m[i] = m[i + 1] = 0; continue; }
+    const a = m[i] / d[i], b = m[i + 1] / d[i], s = a * a + b * b;
+    if (s > 9) { const t = 3 / Math.sqrt(s); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+  }
+  return x => {
+    if (x <= xs[0]) return ys[0];
+    if (x >= xs[n - 1]) return ys[n - 1];
+    let i = 0; while (x > xs[i + 1]) i++;
+    const h = xs[i + 1] - xs[i], t = (x - xs[i]) / h, t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * ys[i] + (t3 - 2 * t2 + t) * h * m[i]
+         + (-2 * t3 + 3 * t2) * ys[i + 1] + (t3 - t2) * h * m[i + 1];
+  };
+}
+const largura = monotone(PERFIL);
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+// seção: semi-eixos a (x), b (z) e expoente da superelipse
+function secao(y) {
+  const W = largura(y), k = smooth(116, NECK_Y, y);
+  const ratio = 0.56 + (1 - 0.56) * k;
+  return { a: W / 2, b: W * ratio / 2, n: 2.6 + (2 - 2.6) * k };
+}
+function ponto(s, th) {
+  const c = Math.cos(th), si = Math.sin(th), e = 2 / s.n;
+  return [s.a * Math.sign(c) * Math.pow(Math.abs(c), e), s.b * Math.sign(si) * Math.pow(Math.abs(si), e)];
+}
+function normalXZ(s, x, z) {
+  const nx = s.n * Math.sign(x) * Math.pow(Math.abs(x) / s.a, s.n - 1) / s.a;
+  const nz = s.n * Math.sign(z) * Math.pow(Math.abs(z) / s.b, s.n - 1) / s.b;
+  const l = Math.hypot(nx, nz) || 1;
+  return [nx / l, nz / l];
+}
+
+/* ---------- materiais ---------- */
+const matFrasco = new THREE.MeshPhysicalMaterial({ name: 'frasco', color: 0x141414, roughness: .32, metalness: 0, clearcoat: .7, clearcoatRoughness: .18 });
+const matTampa = new THREE.MeshStandardMaterial({ name: 'tampa', color: 0xe0761e, roughness: .42, metalness: 0 });
+const matTampaDet = new THREE.MeshStandardMaterial({ name: 'tampa_detalhe', color: 0x0d0d0d, roughness: .6, metalness: 0 });
+
+/* ---------- corpo do frasco ---------- */
+function corpoGeo() {
+  const SEG = 160, ROWS = 220, pos = [], idx = [];
+  for (let r = 0; r <= ROWS; r++) {
+    const y = BODY_TOP * r / ROWS, s = secao(y);
+    for (let c = 0; c < SEG; c++) {
+      const [x, z] = ponto(s, c / SEG * Math.PI * 2);
+      pos.push(x * MM, y * MM, z * MM);
+    }
+  }
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < SEG; c++) {
+    const a = r * SEG + c, b = r * SEG + (c + 1) % SEG, d = a + SEG, e = b + SEG;
+    idx.push(a, d, b, b, d, e);
+  }
+  // fundo (leque até o centro)
+  const centro = pos.length / 3; pos.push(0, 0.3 * MM, 0);
+  for (let c = 0; c < SEG; c++) idx.push(centro, c, (c + 1) % SEG);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+
+/* ---------- rótulo curvado sobre a superfície ----------
+   A arte (60 × 117 mm) é "colada" medindo o comprimento de arco na
+   seção oval: 30 mm para cada lado do centro da face, em cada altura,
+   como um rótulo de papel de verdade (não é projeção plana). */
+function rotuloGeo(lado) { // lado +1 = face +Z, -1 = face -Z
+  const COLS = 120, ROWS = 200, OFF = 0.25, pos = [], uv = [], idx = [];
+  const thC = lado > 0 ? Math.PI / 2 : -Math.PI / 2;
+  for (let r = 0; r <= ROWS; r++) {
+    const v = r / ROWS, y = LABEL_Y0 + v * LABEL_H, s = secao(y);
+    // tabela de comprimento de arco a partir do centro, para os dois lados
+    const tab = dir => {
+      const pts = [[0, thC]]; let acc = 0, th = thC, [px, pz] = ponto(s, th);
+      while (acc < LABEL_W / 2 + 2) {
+        th += dir * 0.002; const [x, z] = ponto(s, th);
+        acc += Math.hypot(x - px, z - pz); px = x; pz = z; pts.push([acc, th]);
+      }
+      return pts;
+    };
+    const dir = tab(-1), esq = tab(+1); // "direita de quem olha" = theta decrescente nas duas faces
+    const thAt = (t, sArc) => { let i = 1; while (t[i][0] < sArc) i++; const [s0, a0] = t[i - 1], [s1, a1] = t[i]; return a0 + (a1 - a0) * (sArc - s0) / (s1 - s0); };
+    for (let c = 0; c <= COLS; c++) {
+      const u = c / COLS, sArc = (u - 0.5) * LABEL_W;
+      const th = sArc >= 0 ? thAt(dir, sArc) : thAt(esq, -sArc);
+      const [x, z] = ponto(s, th), [nx, nz] = normalXZ(s, x, z);
+      pos.push((x + nx * OFF) * MM, y * MM, (z + nz * OFF) * MM);
+      uv.push(u, v);
+    }
+  }
+  const W = COLS + 1;
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const a = r * W + c, b = a + 1, d = a + W, e = d + 1;
+    idx.push(a, b, d, b, e, d); // b = direita de quem olha, d = acima: normal sai da face nos dois lados
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+
+/* ---------- tampa flip-top ---------- */
+function tampa() {
+  const g = new THREE.Group(); g.name = 'tampa';
+  const R0 = 16.8, R1 = 16.2, Y0 = 148, H = 24, CORTE = 17; // flip-top: base até 17 mm, tampinha acima
+  const rAt = y => R0 + (R1 - R0) * (y / H);
+  const add = (name, geo, mat, y, rx) => { const m = new THREE.Mesh(geo, mat); m.name = name; m.position.y = y * MM; if (rx) m.rotation.x = rx; g.add(m); return m; };
+  add('tampa_base', new THREE.CylinderGeometry(rAt(CORTE) * MM, R0 * MM, CORTE * MM, 96), matTampa, Y0 + CORTE / 2);
+  // fresta da dobradiça: a tampinha é 0,25 mm mais estreita e começa 0,35 mm acima — a sombra desenha a linha sozinha
+  const hTop = H - CORTE - 0.35;
+  add('tampa_flip', new THREE.CylinderGeometry((R1 - 0.25) * MM, (rAt(CORTE) - 0.25) * MM, hTop * MM, 96), matTampa, Y0 + CORTE + 0.35 + hTop / 2);
+  add('tampa_fresta', new THREE.CylinderGeometry((rAt(CORTE) - 0.6) * MM, (rAt(CORTE) - 0.6) * MM, 0.4 * MM, 96), matTampaDet, Y0 + CORTE + 0.17);
+  add('tampa_topo_aro', new THREE.TorusGeometry((R1 - 1.2) * MM, 1.0 * MM, 16, 96), matTampa, Y0 + H - 0.9, Math.PI / 2);
+  add('tampa_topo', new THREE.CylinderGeometry((R1 - 1.2) * MM, (R1 - 1.2) * MM, 0.8 * MM, 96), matTampa, Y0 + H - 0.2);
+  add('tampa_aro_inferior', new THREE.TorusGeometry((R0 - 0.3) * MM, 0.7 * MM, 12, 96), matTampa, Y0 + 0.6, Math.PI / 2);
+  // aba de abrir (flip-top) na frente (-Z), logo acima da fresta
+  const aba = add('tampa_aba', new THREE.BoxGeometry(9 * MM, 2.2 * MM, 2.4 * MM), matTampa, Y0 + CORTE + 1.6);
+  aba.position.z = -(R1 + 0.7) * MM;
+  return g;
+}
+
+/* ---------- monta ---------- */
+const frasco = new THREE.Group(); frasco.name = 'frasco_talco';
+const corpo = new THREE.Mesh(corpoGeo(), matFrasco); corpo.name = 'corpo'; frasco.add(corpo);
+frasco.add(tampa());
+
+const loader = new THREE.TextureLoader();
+function matRotulo(name) {
+  return new THREE.MeshStandardMaterial({ name, transparent: false, alphaTest: 0.5, roughness: .38, metalness: 0,
+    polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+}
+const rotulos = {
+  verso: new THREE.Mesh(rotuloGeo(+1), matRotulo('rotulo_verso')),
+  frente: new THREE.Mesh(rotuloGeo(-1), matRotulo('rotulo_frente'))
+};
+rotulos.verso.name = 'rotulo_verso'; rotulos.frente.name = 'rotulo_frente';
+rotulos.frente.visible = false;
+frasco.add(rotulos.verso, rotulos.frente);
+frasco.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+stage.setObject(frasco);
+
+const ORIGINAL = { verso: 'frasco/rotulo-talco-verso.webp', frente: null };
+function aplicarRotulo(qual, url) {
+  const mesh = rotulos[qual], prev = qual === 'verso' ? prevVerso : prevFrente, drop = qual === 'verso' ? dropVerso : dropFrente;
+  if (!url) { mesh.visible = false; prev.removeAttribute('src'); drop.classList.remove('has'); stage.requestRender(); return; }
+  loader.load(url, t => {
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = stage._renderer.capabilities.getMaxAnisotropy();
+    if (mesh.material.map) mesh.material.map.dispose();
+    mesh.material.map = t; mesh.material.needsUpdate = true;
+    mesh.visible = true;
+    stage.requestRender();
+  }, undefined, () => { aviso.textContent = 'Não consegui carregar a arte (' + qual + ').'; });
+  prev.src = url; drop.classList.add('has');
+}
+aplicarRotulo('verso', ORIGINAL.verso);
+
+[['verso', fileVerso, dropVerso], ['frente', fileFrente, dropFrente]].forEach(([qual, input, drop]) => {
+  const usar = f => { if (f && f.type.startsWith('image/')) aplicarRotulo(qual, URL.createObjectURL(f)); };
+  input.addEventListener('change', e => usar(e.target.files[0]));
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => usar(e.dataTransfer.files[0]));
+});
+
+corFrasco.addEventListener('input', () => { matFrasco.color.set(corFrasco.value); stage.requestRender(); });
+corTampa.addEventListener('input', () => { matTampa.color.set(corTampa.value); stage.requestRender(); });
+
+const sync = () => { girar.textContent = stage._controls.autoRotate ? '❚❚ Pausar' : '▶ Girar'; };
+girar.addEventListener('click', () => { stage._controls.autoRotate = !stage._controls.autoRotate; sync(); });
+stage._controls.addEventListener('start', () => setTimeout(sync, 0));
+
+reset.addEventListener('click', () => {
+  corFrasco.value = '#141414'; corTampa.value = '#e0761e';
+  matFrasco.color.set('#141414'); matTampa.color.set('#e0761e');
+  aplicarRotulo('verso', ORIGINAL.verso); aplicarRotulo('frente', ORIGINAL.frente);
+});
+
+// PNG em alta: fundo da cena (o do app é CSS atrás do canvas transparente)
+png.addEventListener('click', () => {
+  const r = stage._renderer, sc = stage._scene, cam = stage._camera;
+  const size = new THREE.Vector2(); r.getSize(size);
+  const oldBG = sc.background, oldDPR = r.getPixelRatio();
+  sc.background = new THREE.Color(stage.getAttribute('background') || '#1d1714');
+  r.setPixelRatio(Math.max(2, oldDPR));
+  r.render(sc, cam);
+  const url = r.domElement.toDataURL('image/png');
+  sc.background = oldBG; r.setPixelRatio(oldDPR); r.setSize(size.x, size.y, false);
+  stage.requestRender();
+  const a = document.createElement('a'); a.href = url; a.download = 'frasco-talco.png';
+  document.body.appendChild(a); a.click(); a.remove();
+});
+
+toggleUp.addEventListener('click', () => up.classList.toggle('recolhido'));
+// no celular o painel abre recolhido: o frasco aparece inteiro e a alça abre as opções
+if (matchMedia('(max-width:760px)').matches) up.classList.add('recolhido');
+</script>
+</body>
+</html>
