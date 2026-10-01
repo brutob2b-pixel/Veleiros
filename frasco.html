@@ -32,13 +32,6 @@
       border:1px solid rgba(217,164,65,.35);backdrop-filter:blur(8px);
       font-family:"Barlow Condensed",system-ui,sans-serif;color:#f3e2c4}
   #toggleUp{display:none}
-  @media (max-width:760px){
-    #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:60vh;
-        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
-    #up.recolhido{max-height:54px;overflow:hidden}
-    #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
-              width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
-  }
   #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
   #up p{margin:0;font-size:13px;line-height:1.35;color:#bda98c}
   #up hr{width:100%;border:0;border-top:1px solid rgba(217,164,65,.25);margin:2px 0}
@@ -53,11 +46,30 @@
              letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
   #up button:hover{color:#f6e8cc;border-color:#e0b25c}
   #up input[type=file]{display:none}
+  .mods{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .mods figure{margin:0;border-radius:6px;overflow:hidden;cursor:pointer;aspect-ratio:160/312;
+               border:1px solid rgba(217,164,65,.25);background:#0b0708;transition:.12s}
+  .mods figure:hover{border-color:#e0b25c}
+  .mods figure.ativo{border:2px solid #e0b25c;box-shadow:0 0 0 2px rgba(224,178,92,.3)}
+  .mods img{width:100%;height:100%;object-fit:contain;display:block}
+  #nomeModelo{font-size:14px;letter-spacing:.06em;color:#f6e8cc;min-height:18px}
   .cores{display:flex;gap:10px}
   .cores label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.08em;
                text-transform:uppercase;color:#bda98c}
   .cores input[type=color]{width:100%;height:32px;border:1px solid rgba(217,164,65,.3);border-radius:6px;
                            background:transparent;padding:2px;cursor:pointer}
+  @media (max-width:760px){
+    #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:60vh;
+        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
+    /* recolhido mostra título + faixa de modelos: o cliente desliza e toca vendo o frasco */
+    #up.recolhido{max-height:150px;overflow:hidden}
+    #up > p:first-of-type{display:none}
+    .mods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:none;padding-bottom:2px}
+    .mods::-webkit-scrollbar{display:none}
+    .mods figure{flex:0 0 46px;height:90px;aspect-ratio:auto}
+    #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
+              width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
+  }
 </style>
 </head>
 <body>
@@ -65,12 +77,9 @@
 <div id="up">
   <div id="toggleUp" title="Mostrar/ocultar painel"></div>
   <h1>FRASCO · TALCO</h1>
-  <p>Rótulo recortado 60 × 117 mm. Envie PNG com fundo transparente (no formato do recorte).</p>
-  <label class="drop" id="dropFrente">
-    <b>Rótulo</b><span>clique ou arraste para trocar a arte</span>
-    <img id="prevFrente" alt="">
-    <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
-  </label>
+  <p>Escolha o modelo do rótulo:</p>
+  <div class="mods" id="mods"></div>
+  <p id="nomeModelo"></p>
   <div class="cores">
     <label>Frasco<input type="color" id="corFrasco" value="#141414"></label>
     <label>Tampa<input type="color" id="corTampa" value="#141414"></label>
@@ -80,6 +89,10 @@
   <button id="reset">Voltar ao original</button>
   <p id="aviso" style="color:#e0b25c"></p>
   <hr>
+  <label class="drop" id="dropFrente">
+    <b>Testar outra arte</b><span>PNG com fundo transparente, no recorte 60 × 117 mm</span>
+    <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
+  </label>
   <p>Frasco estimado a partir do contorno do rótulo (sem medidas do frasco real): ~65 × 36 × 172 mm.</p>
 </div>
 <script src="three-d-stage.js"></script>
@@ -248,10 +261,9 @@ frasco.add(rotulos.frente);
 frasco.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
 stage.setObject(frasco);
 
-const ORIGINAL = { frente: 'frasco/rotulo-talco.webp' };
 function aplicarRotulo(qual, url) {
-  const mesh = rotulos[qual], prev = prevFrente, drop = dropFrente;
-  if (!url) { mesh.visible = false; prev.removeAttribute('src'); drop.classList.remove('has'); stage.requestRender(); return; }
+  const mesh = rotulos[qual];
+  if (!url) { mesh.visible = false; stage.requestRender(); return; }
   loader.load(url, t => {
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = stage._renderer.capabilities.getMaxAnisotropy();
@@ -260,12 +272,36 @@ function aplicarRotulo(qual, url) {
     mesh.visible = true;
     stage.requestRender();
   }, undefined, () => { aviso.textContent = 'Não consegui carregar a arte (' + qual + ').'; });
-  prev.src = url; drop.classList.add('has');
 }
-aplicarRotulo('frente', ORIGINAL.frente);
+
+/* ---------- galeria de modelos (frasco/modelos.json) ---------- */
+let MODELOS = [], atual = null;
+function escolher(m) {
+  atual = m;
+  aplicarRotulo('frente', m.arte);
+  nomeModelo.textContent = m.nome;
+  mods.querySelectorAll('figure').forEach(f => f.classList.toggle('ativo', f.dataset.id === m.id));
+}
+try {
+  MODELOS = await (await fetch('frasco/modelos.json', { cache: 'no-cache' })).json();
+} catch (e) { aviso.textContent = 'Não consegui carregar a lista de modelos.'; }
+MODELOS.forEach(m => {
+  const f = document.createElement('figure');
+  f.dataset.id = m.id; f.title = m.nome;
+  const im = document.createElement('img'); im.src = m.thumb; im.alt = m.nome; im.loading = 'lazy';
+  f.appendChild(im); f.addEventListener('click', () => escolher(m));
+  mods.appendChild(f);
+});
+if (MODELOS.length) escolher(MODELOS[0]);
 
 [['frente', fileFrente, dropFrente]].forEach(([qual, input, drop]) => {
-  const usar = f => { if (f && f.type.startsWith('image/')) aplicarRotulo(qual, URL.createObjectURL(f)); };
+  const usar = f => {
+    if (!f || !f.type.startsWith('image/')) return;
+    aplicarRotulo(qual, URL.createObjectURL(f));
+    atual = { id: 'arte-enviada', nome: 'Arte enviada: ' + f.name };
+    nomeModelo.textContent = atual.nome;
+    mods.querySelectorAll('figure').forEach(el => el.classList.remove('ativo'));
+  };
   input.addEventListener('change', e => usar(e.target.files[0]));
   ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
   ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
@@ -282,7 +318,7 @@ stage._controls.addEventListener('start', () => setTimeout(sync, 0));
 reset.addEventListener('click', () => {
   corFrasco.value = '#141414'; corTampa.value = '#141414';
   matFrasco.color.set('#141414'); matTampa.color.set('#141414');
-  aplicarRotulo('frente', ORIGINAL.frente);
+  if (MODELOS.length) escolher(MODELOS[0]);
 });
 
 // PNG em alta: fundo da cena (o do app é CSS atrás do canvas transparente)
@@ -296,7 +332,7 @@ png.addEventListener('click', () => {
   const url = r.domElement.toDataURL('image/png');
   sc.background = oldBG; r.setPixelRatio(oldDPR); r.setSize(size.x, size.y, false);
   stage.requestRender();
-  const a = document.createElement('a'); a.href = url; a.download = 'frasco-talco.png';
+  const a = document.createElement('a'); a.href = url; a.download = 'frasco-talco-' + (atual ? atual.id : 'mockup') + '.png';
   document.body.appendChild(a); a.click(); a.remove();
 });
 
