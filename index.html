@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Veleiros do Caribe — mockup 3D</title>
 <script type="importmap">
 {
@@ -80,6 +81,18 @@
                   background:#e0b25c;color:#0b0708;display:grid;place-items:center;font-size:10px;font-weight:700}
   #up .vazio{font-size:12px;color:#8d7f6c;font-style:italic}
   #up hr{border:none;border-top:1px solid rgba(217,164,65,.22);margin:2px 0}
+  /* celular: biblioteca primeiro, em faixa deslizável — recolhido mostra
+     título + filtro de marca + kits, para trocar de kit vendo o pote */
+  @media (max-width:760px){
+    #up.recolhido{max-height:178px}
+    #tituloLib{order:-4} #marcasBar{order:-3} #lib{order:-2} #vazioLib{order:-1}
+    #up .lib{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:none;padding-bottom:2px}
+    #up .lib::-webkit-scrollbar{display:none}
+    #up .lib figure{flex:0 0 76px}
+    #up .marcas{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex:none}
+    #up .marcas::-webkit-scrollbar{display:none}
+    #up .marcas .b{white-space:nowrap}
+  }
 </style>
 </head>
 <body>
@@ -350,8 +363,12 @@ const add = (name, geo, mat, y, rx, ry, rz) => {
 // tem um disco opaco no topo, que tapava a visão da pasta por baixo mesmo
 // com a tampa aberta — abrimos o topo e o fundo e recriamos só o fundo
 // como peça separada, senão o pote fica sem chão visto de baixo.
-add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, true), plasticSide, BODY_H / 2);
-add('fundo_pote', new THREE.CircleGeometry(R * .97, 96), plasticSide, 0.0002, -Math.PI / 2);
+// corpo e fundo visíveis dos dois lados: o fundo precisa aparecer visto de baixo
+// (antes era um disco só com a face de cima, e o pote parecia sem base) e a
+// parede interna precisa aparecer com a tampa aberta, olhando para dentro.
+const plasticSide2 = plasticSide.clone(); plasticSide2.side = THREE.DoubleSide;
+add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, true), plasticSide2, BODY_H / 2);
+add('fundo_pote', new THREE.CircleGeometry(R * .97, 96), plasticSide2, 0.0002, Math.PI / 2);
 add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, -1.42);
 add('pasta', new THREE.CylinderGeometry(R - .0025, R - .0025, .0005, 64), paste, BODY_H - .0016);
 add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plastic, .0014, Math.PI / 2);
