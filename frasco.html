@@ -66,19 +66,19 @@
   <div id="toggleUp" title="Mostrar/ocultar painel"></div>
   <h1>FRASCO · TALCO</h1>
   <p>Rótulo recortado 60 × 117 mm. Envie PNG com fundo transparente (no formato do recorte).</p>
+  <label class="drop" id="dropFrente">
+    <b>Frente</b><span>marca e nome do produto</span>
+    <img id="prevFrente" alt="">
+    <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
+  </label>
   <label class="drop" id="dropVerso">
     <b>Verso</b><span>composição, fabricante, lote</span>
     <img id="prevVerso" alt="">
     <input type="file" id="fileVerso" accept="image/png,image/webp,image/jpeg">
   </label>
-  <label class="drop" id="dropFrente">
-    <b>Frente</b><span>ainda sem arte — clique para enviar</span>
-    <img id="prevFrente" alt="">
-    <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
-  </label>
   <div class="cores">
     <label>Frasco<input type="color" id="corFrasco" value="#141414"></label>
-    <label>Tampa<input type="color" id="corTampa" value="#e0761e"></label>
+    <label>Tampa<input type="color" id="corTampa" value="#141414"></label>
   </div>
   <button id="girar">❚❚ Pausar</button>
   <button id="png">Salvar imagem (PNG)</button>
@@ -149,7 +149,7 @@ function normalXZ(s, x, z) {
 
 /* ---------- materiais ---------- */
 const matFrasco = new THREE.MeshPhysicalMaterial({ name: 'frasco', color: 0x141414, roughness: .32, metalness: 0, clearcoat: .7, clearcoatRoughness: .18 });
-const matTampa = new THREE.MeshStandardMaterial({ name: 'tampa', color: 0xe0761e, roughness: .42, metalness: 0 });
+const matTampa = new THREE.MeshStandardMaterial({ name: 'tampa', color: 0x141414, roughness: .42, metalness: 0 });
 const matTampaDet = new THREE.MeshStandardMaterial({ name: 'tampa_detalhe', color: 0x0d0d0d, roughness: .6, metalness: 0 });
 
 /* ---------- corpo do frasco ---------- */
@@ -229,9 +229,9 @@ function tampa() {
   add('tampa_topo_aro', new THREE.TorusGeometry((R1 - 1.2) * MM, 1.0 * MM, 16, 96), matTampa, Y0 + H - 0.9, Math.PI / 2);
   add('tampa_topo', new THREE.CylinderGeometry((R1 - 1.2) * MM, (R1 - 1.2) * MM, 0.8 * MM, 96), matTampa, Y0 + H - 0.2);
   add('tampa_aro_inferior', new THREE.TorusGeometry((R0 - 0.3) * MM, 0.7 * MM, 12, 96), matTampa, Y0 + 0.6, Math.PI / 2);
-  // aba de abrir (flip-top) na frente (-Z), logo acima da fresta
+  // aba de abrir (flip-top) na frente (+Z), logo acima da fresta
   const aba = add('tampa_aba', new THREE.BoxGeometry(9 * MM, 2.2 * MM, 2.4 * MM), matTampa, Y0 + CORTE + 1.6);
-  aba.position.z = -(R1 + 0.7) * MM;
+  aba.position.z = (R1 + 0.7) * MM;
   return g;
 }
 
@@ -246,16 +246,15 @@ function matRotulo(name) {
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
 }
 const rotulos = {
-  verso: new THREE.Mesh(rotuloGeo(+1), matRotulo('rotulo_verso')),
-  frente: new THREE.Mesh(rotuloGeo(-1), matRotulo('rotulo_frente'))
+  frente: new THREE.Mesh(rotuloGeo(+1), matRotulo('rotulo_frente')), // +Z: lado que a câmera mostra primeiro
+  verso: new THREE.Mesh(rotuloGeo(-1), matRotulo('rotulo_verso'))
 };
 rotulos.verso.name = 'rotulo_verso'; rotulos.frente.name = 'rotulo_frente';
-rotulos.frente.visible = false;
 frasco.add(rotulos.verso, rotulos.frente);
 frasco.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
 stage.setObject(frasco);
 
-const ORIGINAL = { verso: 'frasco/rotulo-talco-verso.webp', frente: null };
+const ORIGINAL = { frente: 'frasco/rotulo-talco-frente.webp', verso: 'frasco/rotulo-talco-verso.webp' };
 function aplicarRotulo(qual, url) {
   const mesh = rotulos[qual], prev = qual === 'verso' ? prevVerso : prevFrente, drop = qual === 'verso' ? dropVerso : dropFrente;
   if (!url) { mesh.visible = false; prev.removeAttribute('src'); drop.classList.remove('has'); stage.requestRender(); return; }
@@ -269,6 +268,7 @@ function aplicarRotulo(qual, url) {
   }, undefined, () => { aviso.textContent = 'Não consegui carregar a arte (' + qual + ').'; });
   prev.src = url; drop.classList.add('has');
 }
+aplicarRotulo('frente', ORIGINAL.frente);
 aplicarRotulo('verso', ORIGINAL.verso);
 
 [['verso', fileVerso, dropVerso], ['frente', fileFrente, dropFrente]].forEach(([qual, input, drop]) => {
@@ -287,8 +287,8 @@ girar.addEventListener('click', () => { stage._controls.autoRotate = !stage._con
 stage._controls.addEventListener('start', () => setTimeout(sync, 0));
 
 reset.addEventListener('click', () => {
-  corFrasco.value = '#141414'; corTampa.value = '#e0761e';
-  matFrasco.color.set('#141414'); matTampa.color.set('#e0761e');
+  corFrasco.value = '#141414'; corTampa.value = '#141414';
+  matFrasco.color.set('#141414'); matTampa.color.set('#141414');
   aplicarRotulo('verso', ORIGINAL.verso); aplicarRotulo('frente', ORIGINAL.frente);
 });
 
