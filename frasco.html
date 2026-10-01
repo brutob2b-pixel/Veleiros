@@ -67,14 +67,9 @@
   <h1>FRASCO · TALCO</h1>
   <p>Rótulo recortado 60 × 117 mm. Envie PNG com fundo transparente (no formato do recorte).</p>
   <label class="drop" id="dropFrente">
-    <b>Frente</b><span>marca e nome do produto</span>
+    <b>Rótulo</b><span>clique ou arraste para trocar a arte</span>
     <img id="prevFrente" alt="">
     <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
-  </label>
-  <label class="drop" id="dropVerso">
-    <b>Verso</b><span>composição, fabricante, lote</span>
-    <img id="prevVerso" alt="">
-    <input type="file" id="fileVerso" accept="image/png,image/webp,image/jpeg">
   </label>
   <div class="cores">
     <label>Frasco<input type="color" id="corFrasco" value="#141414"></label>
@@ -246,17 +241,16 @@ function matRotulo(name) {
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
 }
 const rotulos = {
-  frente: new THREE.Mesh(rotuloGeo(+1), matRotulo('rotulo_frente')), // +Z: lado que a câmera mostra primeiro
-  verso: new THREE.Mesh(rotuloGeo(-1), matRotulo('rotulo_verso'))
+  frente: new THREE.Mesh(rotuloGeo(+1), matRotulo('rotulo')) // rótulo único, na face +Z (a que a câmera mostra primeiro)
 };
-rotulos.verso.name = 'rotulo_verso'; rotulos.frente.name = 'rotulo_frente';
-frasco.add(rotulos.verso, rotulos.frente);
+rotulos.frente.name = 'rotulo';
+frasco.add(rotulos.frente);
 frasco.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
 stage.setObject(frasco);
 
-const ORIGINAL = { frente: 'frasco/rotulo-talco-frente.webp', verso: 'frasco/rotulo-talco-verso.webp' };
+const ORIGINAL = { frente: 'frasco/rotulo-talco.webp' };
 function aplicarRotulo(qual, url) {
-  const mesh = rotulos[qual], prev = qual === 'verso' ? prevVerso : prevFrente, drop = qual === 'verso' ? dropVerso : dropFrente;
+  const mesh = rotulos[qual], prev = prevFrente, drop = dropFrente;
   if (!url) { mesh.visible = false; prev.removeAttribute('src'); drop.classList.remove('has'); stage.requestRender(); return; }
   loader.load(url, t => {
     t.colorSpace = THREE.SRGBColorSpace;
@@ -269,9 +263,8 @@ function aplicarRotulo(qual, url) {
   prev.src = url; drop.classList.add('has');
 }
 aplicarRotulo('frente', ORIGINAL.frente);
-aplicarRotulo('verso', ORIGINAL.verso);
 
-[['verso', fileVerso, dropVerso], ['frente', fileFrente, dropFrente]].forEach(([qual, input, drop]) => {
+[['frente', fileFrente, dropFrente]].forEach(([qual, input, drop]) => {
   const usar = f => { if (f && f.type.startsWith('image/')) aplicarRotulo(qual, URL.createObjectURL(f)); };
   input.addEventListener('change', e => usar(e.target.files[0]));
   ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
@@ -289,7 +282,7 @@ stage._controls.addEventListener('start', () => setTimeout(sync, 0));
 reset.addEventListener('click', () => {
   corFrasco.value = '#141414'; corTampa.value = '#141414';
   matFrasco.color.set('#141414'); matTampa.color.set('#141414');
-  aplicarRotulo('verso', ORIGINAL.verso); aplicarRotulo('frente', ORIGINAL.frente);
+  aplicarRotulo('frente', ORIGINAL.frente);
 });
 
 // PNG em alta: fundo da cena (o do app é CSS atrás do canvas transparente)
