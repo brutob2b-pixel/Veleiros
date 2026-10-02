@@ -36,9 +36,15 @@
     "thumb": "frasco/modelos/thumbs/preto-verde-titulo-escuro.webp"
   },
   {
-    "id": "amarelo",
-    "nome": "Amarelo",
-    "arte": "frasco/modelos/amarelo.webp",
-    "thumb": "frasco/modelos/thumbs/amarelo.webp"
+    "id": "amarelo-titulo-branco",
+    "nome": "Amarelo · título branco",
+    "arte": "frasco/modelos/amarelo-titulo-branco.webp",
+    "thumb": "frasco/modelos/thumbs/amarelo-titulo-branco.webp"
+  },
+  {
+    "id": "amarelo-titulo-escuro",
+    "nome": "Amarelo · título escuro",
+    "arte": "frasco/modelos/amarelo-titulo-escuro.webp",
+    "thumb": "frasco/modelos/thumbs/amarelo-titulo-escuro.webp"
   }
 ]
