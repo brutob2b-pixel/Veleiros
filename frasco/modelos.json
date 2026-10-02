@@ -1,21 +1,15 @@
 [
   {
-    "id": "verde-borda-amarela",
-    "nome": "Verde · borda amarela",
-    "arte": "frasco/modelos/verde-borda-amarela.webp",
-    "thumb": "frasco/modelos/thumbs/verde-borda-amarela.webp"
-  },
-  {
     "id": "verde-branco",
-    "nome": "Verde · branco",
+    "nome": "Verde · título branco",
     "arte": "frasco/modelos/verde-branco.webp",
     "thumb": "frasco/modelos/thumbs/verde-branco.webp"
   },
   {
-    "id": "preto-dourado-titulo-escuro",
-    "nome": "Preto · dourado (título escuro)",
-    "arte": "frasco/modelos/preto-dourado-titulo-escuro.webp",
-    "thumb": "frasco/modelos/thumbs/preto-dourado-titulo-escuro.webp"
+    "id": "verde-titulo-escuro",
+    "nome": "Verde · título escuro",
+    "arte": "frasco/modelos/verde-titulo-escuro.webp",
+    "thumb": "frasco/modelos/thumbs/verde-titulo-escuro.webp"
   },
   {
     "id": "preto-dourado",
@@ -24,16 +18,22 @@
     "thumb": "frasco/modelos/thumbs/preto-dourado.webp"
   },
   {
-    "id": "preto-verde-titulo-escuro",
-    "nome": "Preto · verde (título escuro)",
-    "arte": "frasco/modelos/preto-verde-titulo-escuro.webp",
-    "thumb": "frasco/modelos/thumbs/preto-verde-titulo-escuro.webp"
+    "id": "preto-dourado-titulo-escuro",
+    "nome": "Preto · dourado (título escuro)",
+    "arte": "frasco/modelos/preto-dourado-titulo-escuro.webp",
+    "thumb": "frasco/modelos/thumbs/preto-dourado-titulo-escuro.webp"
   },
   {
     "id": "preto-verde",
     "nome": "Preto · verde",
     "arte": "frasco/modelos/preto-verde.webp",
     "thumb": "frasco/modelos/thumbs/preto-verde.webp"
+  },
+  {
+    "id": "preto-verde-titulo-escuro",
+    "nome": "Preto · verde (título escuro)",
+    "arte": "frasco/modelos/preto-verde-titulo-escuro.webp",
+    "thumb": "frasco/modelos/thumbs/preto-verde-titulo-escuro.webp"
   },
   {
     "id": "amarelo",
