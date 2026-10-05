@@ -206,5 +206,21 @@
     "tarja": "pistache/tarja-prata.webp",
     "nome": "Pistache Oliva Prata",
     "thumb": "pistache/thumbs/tampa-oliva-prata.webp"
+  },
+  {
+    "id": "rota-caveira-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-caveira-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-caveira-dourado.webp",
+    "nome": "Caveira Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-caveira-dourado.webp"
+  },
+  {
+    "id": "rota-caveira-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-caveira-prata.webp",
+    "tarja": "rota-do-caribe/tarja-caveira-prata.webp",
+    "nome": "Caveira Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp"
   }
 ]
