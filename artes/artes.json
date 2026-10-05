@@ -222,5 +222,37 @@
     "tarja": "rota-do-caribe/tarja-caveira-prata.webp",
     "nome": "Caveira Prata",
     "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp"
+  },
+  {
+    "id": "classic-cinza-navio-dourado",
+    "marca": "Veleiros do Caribe",
+    "tampa": "classic-cinza/tampa-navio-dourado.webp",
+    "tarja": "classic-cinza/tarja-dourado.webp",
+    "nome": "Classic Cinza Navio Dourado",
+    "thumb": "classic-cinza/thumbs/tampa-navio-dourado.webp"
+  },
+  {
+    "id": "classic-cinza-navio-prata",
+    "marca": "Veleiros do Caribe",
+    "tampa": "classic-cinza/tampa-navio-prata.webp",
+    "tarja": "classic-cinza/tarja-prata.webp",
+    "nome": "Classic Cinza Navio Prata",
+    "thumb": "classic-cinza/thumbs/tampa-navio-prata.webp"
+  },
+  {
+    "id": "classic-cinza-liso-dourado",
+    "marca": "Veleiros do Caribe",
+    "tampa": "classic-cinza/tampa-liso-dourado.webp",
+    "tarja": "classic-cinza/tarja-dourado.webp",
+    "nome": "Classic Cinza Liso Dourado",
+    "thumb": "classic-cinza/thumbs/tampa-liso-dourado.webp"
+  },
+  {
+    "id": "classic-cinza-liso-prata",
+    "marca": "Veleiros do Caribe",
+    "tampa": "classic-cinza/tampa-liso-prata.webp",
+    "tarja": "classic-cinza/tarja-prata.webp",
+    "nome": "Classic Cinza Liso Prata",
+    "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp"
   }
 ]
