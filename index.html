@@ -36,8 +36,10 @@
     #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:70vh;
         border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
     #up.recolhido{max-height:54px;overflow:hidden}
-    #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
-              width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
+    #toggleUp{display:block;position:absolute;top:0;left:0;right:0;height:34px;cursor:grab;touch-action:none;z-index:2;-webkit-tap-highlight-color:transparent}
+    #toggleUp::after{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);transition:.15s}
+    #toggleUp:active::after{width:56px;background:rgba(217,164,65,.9)}
+    #up.arrastando{transition:none!important;overflow:hidden}
     three-d-stage{height:100vh}
   }
   #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
@@ -779,10 +781,52 @@ sync();
 /* ---------- painel retrátil no celular ---------- */
 const up = document.getElementById('up');
 if (window.matchMedia('(max-width: 760px) and (orientation: portrait)').matches) up.classList.add('recolhido');
-toggleUp.addEventListener('click', () => up.classList.toggle('recolhido'));
 /* ---------- pote sempre centralizado na área livre (sem painel por cima) ---------- */
 const mqRetrato = matchMedia('(max-width:760px) and (orientation:portrait)');
 const mqPaisagem = matchMedia('(max-height:500px) and (orientation:landscape)');
+
+/* ---------- alça: toque alterna; puxar/arrastar redimensiona e encaixa ---------- */
+(function () {
+  let d = null;
+  const limites = () => {
+    const had = up.classList.contains('recolhido');
+    up.style.transition = 'none'; up.style.maxHeight = '';
+    up.classList.add('recolhido'); const lo = parseFloat(getComputedStyle(up).maxHeight);
+    up.classList.remove('recolhido'); const hi = Math.min(parseFloat(getComputedStyle(up).maxHeight), Math.max(up.scrollHeight, lo));
+    up.classList.toggle('recolhido', had); up.style.transition = '';
+    return [lo, hi];
+  };
+  toggleUp.addEventListener('pointerdown', e => {
+    if (!mqRetrato.matches) return;
+    const h0 = up.getBoundingClientRect().height, [lo, hi] = limites();
+    d = { id: e.pointerId, y0: e.clientY, h0, lo, hi, h: h0, moved: false, t: performance.now(), y: e.clientY, v: 0 };
+    toggleUp.setPointerCapture(e.pointerId);
+  });
+  toggleUp.addEventListener('pointermove', e => {
+    if (!d || e.pointerId !== d.id) return;
+    if (!d.moved) {
+      if (Math.abs(e.clientY - d.y0) < 6) return;
+      d.moved = true; up.classList.add('arrastando'); up.classList.remove('recolhido');
+    }
+    const now = performance.now();
+    d.v = (d.y - e.clientY) / Math.max(1, now - d.t); d.t = now; d.y = e.clientY;   // px/ms, positivo = subindo
+    d.h = Math.min(d.hi, Math.max(d.lo, d.h0 + d.y0 - e.clientY));
+    up.style.maxHeight = d.h + 'px';
+  });
+  const fim = e => {
+    if (!d || e.pointerId !== d.id) return;
+    const s = d; d = null;
+    if (!s.moved) { up.classList.toggle('recolhido'); return; }
+    const abrir = Math.abs(s.v) > 0.4 ? s.v > 0 : s.h > (s.lo + s.hi) / 2;
+    up.style.maxHeight = s.h + 'px'; up.classList.remove('arrastando');
+    void up.offsetHeight;                       // fixa a altura atual para a transição partir daqui
+    up.classList.toggle('recolhido', !abrir);
+    up.style.maxHeight = '';
+  };
+  toggleUp.addEventListener('pointerup', fim);
+  toggleUp.addEventListener('pointercancel', fim);
+})();
+
 const stageEl = document.querySelector('three-d-stage');
 const STAGE_PROPS = ['position', 'left', 'right', 'top', 'bottom', 'width', 'height'];
 function ajustaStage() {
