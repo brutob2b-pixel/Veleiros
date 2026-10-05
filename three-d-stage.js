@@ -272,6 +272,8 @@
       const controls = new controlsMod.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.08;
+      // o objeto fica sempre no centro: sem arrastar de lado (pan), só girar e dar zoom
+      controls.enablePan = false;
       this._controls = controls;
 
       // Neutral studio: soft sky/ground wash, a shadow-casting key light,
@@ -406,6 +408,8 @@
         this._camera.far = dist * 100;
         this._camera.updateProjectionMatrix();
         this._controls.target.copy(sphere.center);
+        this._controls.minDistance = sphere.radius * 0.6;
+        this._controls.maxDistance = dist * 4;
         this._controls.update();
         const span = sphere.radius * 3;
         this._key.shadow.camera.left = -span;

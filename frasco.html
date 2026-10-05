@@ -58,7 +58,7 @@
                text-transform:uppercase;color:#bda98c}
   .cores input[type=color]{width:100%;height:32px;border:1px solid rgba(217,164,65,.3);border-radius:6px;
                            background:transparent;padding:2px;cursor:pointer}
-  @media (max-width:760px){
+  @media (max-width:760px) and (orientation:portrait){
     #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:60vh;
         border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
     /* recolhido mostra título + faixa de modelos: o cliente desliza e toca vendo o frasco */
@@ -69,6 +69,12 @@
     .mods figure{flex:0 0 46px;height:90px;aspect-ratio:auto}
     #toggleUp{display:block;position:absolute;top:9px;left:50%;transform:translateX(-50%);
               width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);cursor:pointer}
+  }
+  /* celular deitado: a barra sai da parte de baixo e vira painel lateral; o pote fica centralizado no espaço restante */
+  @media (max-height:500px) and (orientation:landscape){
+    #up{top:0;left:0;bottom:0;width:230px;max-height:none;box-sizing:border-box;padding:14px;
+        border-radius:0 16px 16px 0}
+    #toggleUp{display:none}
   }
 </style>
 </head>
@@ -338,7 +344,25 @@ png.addEventListener('click', () => {
 
 toggleUp.addEventListener('click', () => up.classList.toggle('recolhido'));
 // no celular o painel abre recolhido: o frasco aparece inteiro e a alça abre as opções
-if (matchMedia('(max-width:760px)').matches) up.classList.add('recolhido');
+if (matchMedia('(max-width:760px) and (orientation:portrait)').matches) up.classList.add('recolhido');
+/* ---------- pote sempre centralizado na área livre (sem painel por cima) ---------- */
+const mqRetrato = matchMedia('(max-width:760px) and (orientation:portrait)');
+const mqPaisagem = matchMedia('(max-height:500px) and (orientation:landscape)');
+const stageEl = document.querySelector('three-d-stage');
+const STAGE_PROPS = ['position', 'left', 'right', 'top', 'bottom', 'width', 'height'];
+function ajustaStage() {
+  const r = document.getElementById('up').getBoundingClientRect();
+  let v = null;
+  if (mqRetrato.matches) v = { position: 'fixed', left: '0', right: '0', top: '0', width: 'auto', height: 'auto', bottom: Math.max(0, innerHeight - r.top) + 'px' };
+  else if (mqPaisagem.matches) v = { position: 'fixed', top: '0', bottom: '0', right: '0', width: 'auto', height: 'auto', left: Math.max(0, r.right) + 'px' };
+  STAGE_PROPS.forEach(p => v ? stageEl.style.setProperty(p, v[p]) : stageEl.style.removeProperty(p));
+}
+new ResizeObserver(ajustaStage).observe(document.getElementById('up'));
+['resize', 'orientationchange'].forEach(e => addEventListener(e, ajustaStage));
+mqRetrato.addEventListener('change', e => { if (e.matches) document.getElementById('up').classList.add('recolhido'); ajustaStage(); });
+mqPaisagem.addEventListener('change', ajustaStage);
+ajustaStage();
+
 </script>
 </body>
 </html>
