@@ -254,5 +254,21 @@
     "tarja": "classic-cinza/tarja-prata.webp",
     "nome": "Classic Cinza Liso Prata",
     "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp"
+  },
+  {
+    "id": "rota-teia-dourado",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-teia-dourado.webp",
+    "tarja": "rota-do-caribe/tarja-teia-dourado.webp",
+    "nome": "Teia Dourado",
+    "thumb": "rota-do-caribe/thumbs/tampa-teia-dourado.webp"
+  },
+  {
+    "id": "rota-teia-prata",
+    "marca": "Rota do Caribe",
+    "tampa": "rota-do-caribe/tampa-teia-prata.webp",
+    "tarja": "rota-do-caribe/tarja-teia-prata.webp",
+    "nome": "Teia Prata",
+    "thumb": "rota-do-caribe/thumbs/tampa-teia-prata.webp"
   }
 ]
