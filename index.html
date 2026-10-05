@@ -369,6 +369,10 @@ const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: te
 const R = 0.04406, LID_R = 0.0453, BODY_H = 0.020, LID_H = 0.020, OVER = 0.002;
 const TOP_Y = BODY_H + LID_H - OVER;
 const BAND_H = 0.015;
+// "frente" do produto = azimute da câmera inicial (3, 2.2, 4): tarja centralizada e tampa nivelada para esse lado
+const AZ_FRENTE = Math.atan2(3, 4);
+// o bloco principal da tarja (bússola + marca + navio) fica em ~60% da largura da arte; é ele que deve ficar de frente
+const U_FOCO = 0.60;
 const jar = new THREE.Group(); jar.name = 'pote_pasta_modeladora';
 const add = (name, geo, mat, y, rx, ry, rz) => {
   const m = new THREE.Mesh(geo, mat);
@@ -388,7 +392,7 @@ const add = (name, geo, mat, y, rx, ry, rz) => {
 const plasticSide2 = plasticSide.clone(); plasticSide2.side = THREE.DoubleSide;
 add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, true), plasticSide2, BODY_H / 2);
 add('fundo_pote', new THREE.CircleGeometry(R * .97, 96), plasticSide2, 0.0002, Math.PI / 2);
-add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, -1.42);
+add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, AZ_FRENTE - 2 * Math.PI * U_FOCO);   // bloco central da arte (marca + bússola) voltado para a frente
 add('pasta', new THREE.CylinderGeometry(R - .0025, R - .0025, .0005, 64), paste, BODY_H - .0016);
 const plasticFoot = plastic.clone();
 add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plasticFoot, .0014, Math.PI / 2);
@@ -396,7 +400,7 @@ add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plasticFoot, .00
 // tampa
 add('tampa_lateral', new THREE.CylinderGeometry(LID_R, LID_R, LID_H, 96, 1, true), plasticSide, BODY_H + LID_H / 2 - OVER);
 add('tampa_topo', new THREE.CylinderGeometry(LID_R, LID_R, .0035, 96), plastic, TOP_Y - .0018);
-add('rotulo_tampa', new THREE.CircleGeometry(0.04455, 96), labelTop, TOP_Y + .0002, -Math.PI / 2, 0, 0.675);
+add('rotulo_tampa', new THREE.CircleGeometry(0.04455, 96), labelTop, TOP_Y + .0002, -Math.PI / 2, 0, AZ_FRENTE);   // arte da tampa nivelada vista da frente
 add('aro_base_tampa', new THREE.TorusGeometry(LID_R - .0012, .0012, 14, 128), plastic, BODY_H - OVER + .0004, Math.PI / 2);
 
 /* ---------- agrupa a tampa (peça única, gira em torno do próprio centro) ---------- */
@@ -609,11 +613,12 @@ Object.entries(slots).forEach(([which, s]) => {
   if (store[which]) applyArt(which, store[which]);
 });
 /* ---------- export PDF: 4 cenários em alta resolução ---------- */
+const polar = (az, el) => [Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)];
 const CENAS = [
-  { nome: '3/4 frontal',   dir: [ 0.62,  0.42,  0.95] },
-  { nome: 'frente',        dir: [ 0.00,  0.16,  1.00] },
-  { nome: 'topo',          dir: [ 0.00,  0.80,  0.55] },
-  { nome: '3/4 posterior', dir: [-0.78,  0.30, -0.82] }
+  { nome: '3/4 frontal',   dir: polar(AZ_FRENTE - 0.40, 0.35) },            // centro da tarja ainda visível
+  { nome: 'frente',        dir: polar(AZ_FRENTE, 0.16) },                   // centro da tarja de frente
+  { nome: 'topo',          dir: polar(AZ_FRENTE, 0.97) },                   // arte da tampa nivelada
+  { nome: '3/4 posterior', dir: polar(AZ_FRENTE + Math.PI + 0.70, 0.26) }
 ];
 const PX = [3300, 2160]; // ~300 dpi, proporção da área útil do A4 paisagem
 
