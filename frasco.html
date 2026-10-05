@@ -45,6 +45,16 @@
   #up button{all:unset;text-align:center;padding:8px;border-radius:7px;cursor:pointer;font-size:12px;
              letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
   #up button:hover{color:#f6e8cc;border-color:#e0b25c}
+  /* mosaico de funções: ícones vazados (traço), sem emoji */
+  #up .mosaico{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  #up .mosaico button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+        aspect-ratio:1/.92;padding:6px 3px;font-size:10px;line-height:1.15;letter-spacing:.06em;
+        border-radius:9px;background:rgba(217,164,65,.05);transition:.12s}
+  #up .mosaico button:hover{background:rgba(176,17,24,.22)}
+  #up .mosaico button:active{transform:scale(.96)}
+  #up .mosaico button:disabled{opacity:.4;cursor:default;pointer-events:none}
+  #up .mosaico .ic{width:25px;height:25px;flex:none;fill:none;stroke:#e0b25c;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  #up .mosaico button:hover .ic{stroke:#f6e8cc}
   #up input[type=file]{display:none}
   .mods{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
   .mods figure{margin:0;border-radius:6px;overflow:hidden;cursor:pointer;aspect-ratio:160/312;
@@ -81,6 +91,7 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <three-d-stage name="frasco-talco" background="#1d1714" autorotate></three-d-stage>
 <div id="up">
   <div id="toggleUp" title="Mostrar/ocultar painel"></div>
@@ -92,9 +103,11 @@
     <label>Frasco<input type="color" id="corFrasco" value="#141414"></label>
     <label>Tampa<input type="color" id="corTampa" value="#141414"></label>
   </div>
-  <button id="girar">❚❚ Pausar</button>
-  <button id="png">Salvar imagem (PNG)</button>
-  <button id="reset">Voltar ao original</button>
+  <div class="mosaico">
+    <button id="girar"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pause"/></svg><span class="tx">Pausar</span></button>
+    <button id="png" title="Salvar imagem (PNG)"><svg class="ic" viewBox="0 0 24 24"><use href="#i-png"/></svg><span class="tx">Salvar PNG</span></button>
+    <button id="reset" title="Voltar ao original"><svg class="ic" viewBox="0 0 24 24"><use href="#i-reset"/></svg><span class="tx">Original</span></button>
+  </div>
   <p id="aviso" style="color:#e0b25c"></p>
   <hr>
   <label class="drop" id="dropFrente">
@@ -319,7 +332,7 @@ if (MODELOS.length) escolher(MODELOS[0]);
 corFrasco.addEventListener('input', () => { matFrasco.color.set(corFrasco.value); stage.requestRender(); });
 corTampa.addEventListener('input', () => { matTampa.color.set(corTampa.value); stage.requestRender(); });
 
-const sync = () => { girar.textContent = stage._controls.autoRotate ? '❚❚ Pausar' : '▶ Girar'; };
+const sync = () => { stage._controls.autoRotate ? rot(girar, 'Pausar', 'pause') : rot(girar, 'Girar', 'play'); };
 girar.addEventListener('click', () => { stage._controls.autoRotate = !stage._controls.autoRotate; sync(); });
 stage._controls.addEventListener('start', () => setTimeout(sync, 0));
 
@@ -349,6 +362,13 @@ if (matchMedia('(max-width:760px) and (orientation:portrait)').matches) up.class
 /* ---------- pote sempre centralizado na área livre (sem painel por cima) ---------- */
 const mqRetrato = matchMedia('(max-width:760px) and (orientation:portrait)');
 const mqPaisagem = matchMedia('(max-height:500px) and (orientation:landscape)');
+
+
+/* rótulo + ícone vazado dos botões do mosaico */
+function rot(btn, texto, icone) {
+  btn.querySelector('.tx').textContent = texto;
+  if (icone) btn.querySelector('use').setAttribute('href', '#i-' + icone);
+}
 
 /* ---------- alça: toque alterna; puxar/arrastar redimensiona e encaixa ---------- */
 (function () {

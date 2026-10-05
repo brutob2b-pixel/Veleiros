@@ -54,6 +54,16 @@
   #up button{all:unset;text-align:center;padding:8px;border-radius:7px;cursor:pointer;font-size:12px;
              letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
   #up button:hover{color:#f6e8cc;border-color:#e0b25c}
+  /* mosaico de funções: ícones vazados (traço), sem emoji */
+  #up .mosaico{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  #up .mosaico button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+        aspect-ratio:1/.92;padding:6px 3px;font-size:10px;line-height:1.15;letter-spacing:.06em;
+        border-radius:9px;background:rgba(217,164,65,.05);transition:.12s}
+  #up .mosaico button:hover{background:rgba(176,17,24,.22)}
+  #up .mosaico button:active{transform:scale(.96)}
+  #up .mosaico button:disabled{opacity:.4;cursor:default;pointer-events:none}
+  #up .mosaico .ic{width:25px;height:25px;flex:none;fill:none;stroke:#e0b25c;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  #up .mosaico button:hover .ic{stroke:#f6e8cc}
   #up input{display:none}
   #up .cores{display:flex;gap:10px}
   #up .cores label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.08em;
@@ -111,6 +121,7 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <script type="application/json" id="bibliotecaEmbutida">{"artes":[]}</script>
 <three-d-stage name="pote-veleiros-do-caribe" background="#1d1714" autorotate></three-d-stage>
 <div id="up">
@@ -131,11 +142,14 @@
     <label>Cor do pote<input type="color" id="corPote" value="#0f0e0f"></label>
     <label>Cor da tampa<input type="color" id="corTampaPlastico" value="#0f0e0f"></label>
   </div>
-  <button id="girar">▶ Girar</button>
-  <button id="abrirTampa">⇧ Abrir tampa</button>
-  <button id="gravarVideo">🎬 Gravar vídeo (abertura)</button>
-  <button id="pdf">Salvar PDF (4 cenários)</button>
-  <button id="reset">Voltar ao original</button>
+  <div class="mosaico">
+    <button id="girar"><svg class="ic" viewBox="0 0 24 24"><use href="#i-play"/></svg><span class="tx">Girar</span></button>
+    <button id="abrirTampa"><svg class="ic" viewBox="0 0 24 24"><use href="#i-abrir"/></svg><span class="tx">Abrir tampa</span></button>
+    <button id="gravarVideo" title="Gravar vídeo da abertura da tampa"><svg class="ic" viewBox="0 0 24 24"><use href="#i-video"/></svg><span class="tx">Gravar vídeo</span></button>
+    <button id="pdf" title="Salvar PDF (4 cenários)"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pdf"/></svg><span class="tx">Salvar PDF</span></button>
+    <button id="reset" title="Voltar ao original"><svg class="ic" viewBox="0 0 24 24"><use href="#i-reset"/></svg><span class="tx">Original</span></button>
+    <button id="exportar" title="Exportar HTML para o cliente"><svg class="ic" viewBox="0 0 24 24"><use href="#i-html"/></svg><span class="tx">Exportar HTML</span></button>
+  </div>
   <p id="aviso" style="color:#e0b25c"></p>
   <hr>
   <h1 id="tituloLib">BIBLIOTECA DE ARTES</h1>
@@ -147,7 +161,6 @@
   <div class="marcas" id="marcasBar" style="display:none"></div>
   <div class="lib" id="lib"></div>
   <p class="vazio" id="vazioLib">Nenhuma arte na biblioteca.</p>
-  <button id="exportar">Exportar HTML para o cliente</button>
   <hr>
   <p>Gabaritos em mm com corte, sangria e área segura — abra no Illustrator.</p>
   <div class="dl">
@@ -476,10 +489,10 @@ function fecharTampaFn(duration) {
 abrirTampa.addEventListener('click', () => {
   if (lidState === 'animating') return;
   if (lidState === 'closed') {
-    abrirTampa.textContent = '⇩ Fechar tampa';
+    rot(abrirTampa, 'Fechar tampa', 'fechar');
     abrirTampaFn();
   } else {
-    abrirTampa.textContent = '⇧ Abrir tampa';
+    rot(abrirTampa, 'Abrir tampa', 'abrir');
     fecharTampaFn();
   }
 });
@@ -507,8 +520,7 @@ gravarVideo.addEventListener('click', async () => {
   stage.requestRender();
   abrirTampa.disabled = true;
   gravarVideo.disabled = true;
-  const textoOriginal = gravarVideo.textContent;
-  gravarVideo.textContent = 'Gravando…';
+    rot(gravarVideo, 'Gravando…');
   try {
     if (lidState !== 'closed') { await fecharTampaFn(400); }
     const mime = escolherMimeType();
@@ -540,10 +552,10 @@ gravarVideo.addEventListener('click', async () => {
   }
   stage._scene.background = oldBG;
   stage.requestRender();
-  gravarVideo.textContent = textoOriginal;
+  rot(gravarVideo, 'Gravar vídeo');
   abrirTampa.disabled = false;
   gravarVideo.disabled = false;
-  abrirTampa.textContent = lidState === 'open' ? '⇩ Fechar tampa' : '⇧ Abrir tampa';
+  lidState === 'open' ? rot(abrirTampa, 'Fechar tampa', 'fechar') : rot(abrirTampa, 'Abrir tampa', 'abrir');
   stage._controls.autoRotate = oldAutoRotate;
 });
 
@@ -753,7 +765,7 @@ function dataURLtoBytes(u) {
 }
 
 pdf.addEventListener('click', () => {
-  pdf.textContent = 'Gerando…';
+  rot(pdf, 'Gerando…');
   setTimeout(() => {
     try {
       const shots = CENAS.map(c => renderCena(c.dir, c.roll));
@@ -767,12 +779,12 @@ pdf.addEventListener('click', () => {
     } catch (e) {
       aviso.textContent = 'Falha ao gerar o PDF: ' + e.message;
     }
-    pdf.textContent = 'Salvar PDF (4 cenários)';
+    rot(pdf, 'Salvar PDF');
   }, 30);
 });
 
 const sync = () => {
-  girar.textContent = stage._controls && stage._controls.autoRotate ? '❚❚ Pausar' : '▶ Girar';
+  stage._controls && stage._controls.autoRotate ? rot(girar, 'Pausar', 'pause') : rot(girar, 'Girar', 'play');
 };
 girar.addEventListener('click', () => {
   const c = stage._controls;
@@ -782,6 +794,13 @@ girar.addEventListener('click', () => {
 });
 if (stage._controls) stage._controls.addEventListener('start', sync);
 sync();
+
+
+/* rótulo + ícone vazado dos botões do mosaico */
+function rot(btn, texto, icone) {
+  btn.querySelector('.tx').textContent = texto;
+  if (icone) btn.querySelector('use').setAttribute('href', '#i-' + icone);
+}
 
 /* ---------- painel retrátil no celular ---------- */
 const up = document.getElementById('up');
@@ -1107,12 +1126,12 @@ if (modoCliente) {
 }
 
 exportar.addEventListener('click', async () => {
-  exportar.textContent = 'Gerando…';
+  rot(exportar, 'Gerando…');
   let motor = '';
   try { motor = await (await fetch('three-d-stage.js')).text(); }
   catch (e) {
     aviso.textContent = 'Nao consegui ler three-d-stage.js para embutir.';
-    exportar.textContent = 'Exportar HTML para o cliente';
+    rot(exportar, 'Exportar HTML');
     return;
   }
   setTimeout(() => {
@@ -1140,7 +1159,7 @@ exportar.addEventListener('click', async () => {
     a.href = url; a.download = 'simulador-rotulo-cliente.html';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    exportar.textContent = 'Exportar HTML para o cliente';
+    rot(exportar, 'Exportar HTML');
   }, 30);
 });
 
