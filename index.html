@@ -53,6 +53,11 @@
              letter-spacing:.1em;text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.3)}
   #up button:hover{color:#f6e8cc;border-color:#e0b25c}
   #up input{display:none}
+  #up .cores{display:flex;gap:10px}
+  #up .cores label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.08em;
+                   text-transform:uppercase;color:#bda98c}
+  #up .cores input[type=color]{display:block;width:100%;height:32px;border:1px solid rgba(217,164,65,.3);
+                   border-radius:6px;background:transparent;padding:2px;cursor:pointer}
   #up .dl{display:flex;gap:8px}
   #up .dl a{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:12px;letter-spacing:.08em;
             text-transform:uppercase;color:#e0b25c;text-decoration:none;border:1px solid rgba(217,164,65,.3)}
@@ -84,7 +89,9 @@
   /* celular: biblioteca primeiro, em faixa deslizável — recolhido mostra
      título + filtro de marca + kits, para trocar de kit vendo o pote */
   @media (max-width:760px){
-    #up.recolhido{max-height:178px}
+    #up.recolhido{max-height:178px;overflow:hidden}
+    /* recolhido: só a faixa de kits; o resto (uploads, botões, cores) aparece ao puxar a alça */
+    #up.recolhido > :not(#tituloLib):not(#marcasBar):not(#lib):not(#vazioLib):not(#toggleUp){display:none}
     #tituloLib{order:-4} #marcasBar{order:-3} #lib{order:-2} #vazioLib{order:-1}
     #up .lib{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:none;padding-bottom:2px}
     #up .lib::-webkit-scrollbar{display:none}
@@ -112,6 +119,10 @@
     <img id="prevWrap" alt="">
     <input type="file" id="fileWrap" accept="image/*">
   </label>
+  <div class="cores">
+    <label>Cor do pote<input type="color" id="corPote" value="#0f0e0f"></label>
+    <label>Cor da tampa<input type="color" id="corTampaPlastico" value="#0f0e0f"></label>
+  </div>
   <button id="girar">▶ Girar</button>
   <button id="abrirTampa">⇧ Abrir tampa</button>
   <button id="gravarVideo">🎬 Gravar vídeo (abertura)</button>
@@ -371,7 +382,8 @@ add('corpo', new THREE.CylinderGeometry(R, R * .97, BODY_H, 96, 1, true), plasti
 add('fundo_pote', new THREE.CircleGeometry(R * .97, 96), plasticSide2, 0.0002, Math.PI / 2);
 add('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), labelWrap, BODY_H / 2 - .0005, 0, -1.42);
 add('pasta', new THREE.CylinderGeometry(R - .0025, R - .0025, .0005, 64), paste, BODY_H - .0016);
-add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plastic, .0014, Math.PI / 2);
+const plasticFoot = plastic.clone();
+add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plasticFoot, .0014, Math.PI / 2);
 
 // tampa
 add('tampa_lateral', new THREE.CylinderGeometry(LID_R, LID_R, LID_H, 96, 1, true), plasticSide, BODY_H + LID_H / 2 - OVER);
@@ -1059,12 +1071,21 @@ exportar.addEventListener('click', async () => {
   }, 30);
 });
 
+/* ---------- cor do pote e da tampa (plástico; a arte dos rótulos não muda) ---------- */
+const POTE_MATS = [plasticSide2, plasticFoot];
+const TAMPA_MATS = [plasticSide, plastic];
+const COR_ORIG = new Map([...POTE_MATS, ...TAMPA_MATS].map(m => [m, m.color.clone()]));
+corPote.addEventListener('input', () => { POTE_MATS.forEach(m => m.color.set(corPote.value)); stage.requestRender(); });
+corTampaPlastico.addEventListener('input', () => { TAMPA_MATS.forEach(m => m.color.set(corTampaPlastico.value)); stage.requestRender(); });
+
 reset.addEventListener('click', () => {
   Object.entries(slots).forEach(([which, s]) => {
     s.mat.map = s.base; s.mat.needsUpdate = true;
     s.prev.removeAttribute('src'); s.drop.classList.remove('has');
     delete store[which];
   });
+  COR_ORIG.forEach((c, m) => m.color.copy(c));
+  corPote.value = corTampaPlastico.value = '#0f0e0f';
   stage.requestRender();
   localStorage.setItem(KEY, JSON.stringify(store));
 });
