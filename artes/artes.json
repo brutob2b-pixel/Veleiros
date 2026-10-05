@@ -158,5 +158,53 @@
     "tarja": "rota-do-caribe/tarja-morango-prata.webp",
     "nome": "Morango Prata",
     "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp"
+  },
+  {
+    "id": "pistache-claro-dourado",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-claro-dourado.webp",
+    "tarja": "pistache/tarja-dourado.webp",
+    "nome": "Pistache Claro Dourado",
+    "thumb": "pistache/thumbs/tampa-claro-dourado.webp"
+  },
+  {
+    "id": "pistache-claro-prata",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-claro-prata.webp",
+    "tarja": "pistache/tarja-prata.webp",
+    "nome": "Pistache Claro Prata",
+    "thumb": "pistache/thumbs/tampa-claro-prata.webp"
+  },
+  {
+    "id": "pistache-veleiro-dourado",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-veleiro-dourado.webp",
+    "tarja": "pistache/tarja-dourado.webp",
+    "nome": "Pistache Veleiro Dourado",
+    "thumb": "pistache/thumbs/tampa-veleiro-dourado.webp"
+  },
+  {
+    "id": "pistache-veleiro-prata",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-veleiro-prata.webp",
+    "tarja": "pistache/tarja-prata.webp",
+    "nome": "Pistache Veleiro Prata",
+    "thumb": "pistache/thumbs/tampa-veleiro-prata.webp"
+  },
+  {
+    "id": "pistache-oliva-dourado",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-oliva-dourado.webp",
+    "tarja": "pistache/tarja-dourado.webp",
+    "nome": "Pistache Oliva Dourado",
+    "thumb": "pistache/thumbs/tampa-oliva-dourado.webp"
+  },
+  {
+    "id": "pistache-oliva-prata",
+    "marca": "Veleiros do Caribe",
+    "tampa": "pistache/tampa-oliva-prata.webp",
+    "tarja": "pistache/tarja-prata.webp",
+    "nome": "Pistache Oliva Prata",
+    "thumb": "pistache/thumbs/tampa-oliva-prata.webp"
   }
 ]
