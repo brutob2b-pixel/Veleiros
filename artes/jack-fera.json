@@ -1,0 +1,13 @@
+[
+ {
+  "id": "jack-fera-uva",
+  "marca": "Jack Fera",
+  "tampa": "jack-fera/tampa-uva.webp",
+  "tarja": "jack-fera/tarja-uva.webp",
+  "nome": "Uva",
+  "thumb": "jack-fera/thumbs/tampa-uva.webp",
+  "alt": 19.1,
+  "tampaMm": 85,
+  "foco": 0.23
+ }
+]
