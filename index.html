@@ -412,7 +412,8 @@ add('base_pe', new THREE.TorusGeometry(R * .94, .0014, 14, 96), plasticFoot, .00
 
 // tampa
 add('tampa_lateral', new THREE.CylinderGeometry(LID_R, LID_R, LID_H, 96, 1, true), plasticSide, BODY_H + LID_H / 2 - OVER);
-add('tampa_topo', new THREE.CylinderGeometry(LID_R, LID_R, .0035, 96), plastic, TOP_Y - .0018);
+// raio 0,15 mm menor que a lateral: com o mesmo raio, as duas paredes brigavam na profundidade (z-fighting) e abriam manchas recortadas no arco da tampa
+add('tampa_topo', new THREE.CylinderGeometry(LID_R - .00015, LID_R - .00015, .0035, 96), plastic, TOP_Y - .0018);
 add('rotulo_tampa', new THREE.CircleGeometry(0.04455, 96), labelTop, TOP_Y + .0002, -Math.PI / 2, 0, AZ_FRENTE);   // arte da tampa nivelada vista da frente
 add('aro_base_tampa', new THREE.TorusGeometry(LID_R - .0012, .0012, 14, 128), plastic, BODY_H - OVER + .0004, Math.PI / 2);
 
