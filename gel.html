@@ -288,6 +288,7 @@ const [wrapC, wc] = cv(4096, 247);
 /* ---------- materiais ---------- */
 const plastic = new THREE.MeshStandardMaterial({ name: 'plastico_preto', color: 0x141314, roughness: .28, metalness: .18 });
 const plasticSide = new THREE.MeshStandardMaterial({ name: 'plastico_preto_fosco', color: 0x0f0e0f, roughness: .5, metalness: .1 });
+plasticSide.side = THREE.DoubleSide;   // a parede da tampa precisa aparecer por dentro também (tampa aberta vista de baixo ficava "vazada")
 const gold = new THREE.MeshStandardMaterial({ name: 'dourado', color: 0xe0b25c, roughness: .3, metalness: .38 });
 // textura da pasta: leve redemoinho (como se tivesse sido colhida com uma
 // espátula) + brilho de clearcoat, pra vender "consistência cremosa"
