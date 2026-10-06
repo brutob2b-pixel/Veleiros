@@ -6,6 +6,12 @@
   "tarja": "fildercut/tarja-gold.webp",
   "nome": "Premium Gold",
   "thumb": "fildercut/thumbs/tampa-gold.webp",
-  "foco": 0.62
+  "pote": {
+   "tarjaMm": [
+    135,
+    35
+   ],
+   "respiroMm": 3
+  }
  }
 ]

@@ -134,7 +134,7 @@
     <input type="file" id="fileTop" accept="image/*">
   </label>
   <label class="drop" id="dropWrap">
-    <b>Corpo · wrap 360°</b>    <span>faixa deitada · 280 × 15 mm. A arte é encaixada preservando a proporção original (nunca esticada).</span>
+    <b>Corpo · tarja</b>    <span>arte da tarja do kit. A arte é encaixada preservando a proporção original (nunca esticada).</span>
     <img id="prevWrap" alt="">
     <input type="file" id="fileWrap" accept="image/*">
   </label>
@@ -385,6 +385,54 @@ stage.setObject(jar);
 const LID_CLOSED = { y: LID_PIVOT_Y, x: 0, z: 0, rz: 0, rx: 0 };
 const LID_OPEN = { y: LID_PIVOT_Y + 0.05, x: 0.034, z: 0.006, rz: -0.62, rx: 0.16 };
 let lidState = 'closed'; // 'closed' | 'open' | 'animating'
+
+/* ---------- pote por kit ----------
+   Padrão: corpo de 20 mm e tarja 360° (283,5 × 17,1 mm).
+   Kit com pote diferente traz no artes.json: "pote": { "corpoMm": 43, "tarjaMm": [135, 35], "respiroMm": 3 }
+   - tarjaMm = [comprimento, altura] de uma tarja parcial (não dá a volta): vira um arco centralizado na frente
+   - corpoMm (opcional) = altura do corpo; sem ele, calcula altura da tarja + respiro em cima e embaixo
+   A tampa não muda. */
+let POTE_CHAVE = null, TARJA_PARCIAL = false, WRAP_ASPECT = 17.1 / 283.5;
+function trocaGeo(nome, geo, y) {
+  const m = jar.getObjectByName(nome);
+  m.geometry.dispose(); m.geometry = geo; m.position.y = y;
+}
+function aplicaPote(p) {
+  p = p || {};
+  const tarja = p.tarjaMm || null;
+  const resp = p.respiroMm != null ? p.respiroMm : 3;
+  const corpoMm = p.corpoMm || (tarja ? OVER * 1000 + tarja[1] + 2 * resp : BODY_H * 1000);
+  const chave = JSON.stringify([corpoMm, tarja, resp]);
+  if (chave === POTE_CHAVE) return false;
+  POTE_CHAVE = chave;
+  const H = corpoMm / 1000, rBase = R * .97;
+  const rCorpo = y => rBase + (R - rBase) * y / H;          // raio do corpo (levemente cônico) na altura y
+  trocaGeo('corpo', new THREE.CylinderGeometry(R, rBase, H, 96, 1, true), H / 2);
+  trocaGeo('pasta', jar.getObjectByName('pasta').geometry.clone(), H - .0016);
+  const faixa = jar.getObjectByName('rotulo_corpo');
+  if (tarja) {
+    // arco centralizado na área visível do corpo (entre a base e a borda da tampa), acompanhando a conicidade
+    const a = tarja[1] / 1000, yc = (H - OVER) / 2, y0 = yc - a / 2;
+    const rT = rCorpo(y0 + a) + .0004, rB = rCorpo(y0) + .0004;
+    const arco = (tarja[0] / 1000) / ((rT + rB) / 2);
+    trocaGeo('rotulo_corpo', new THREE.CylinderGeometry(rT, rB, a, 96, 1, true, AZ_FRENTE - arco / 2, arco), yc);
+    faixa.rotation.y = 0;
+    TARJA_PARCIAL = true; WRAP_ASPECT = tarja[1] / tarja[0];
+  } else {
+    trocaGeo('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), H / 2 - .0005);
+    TARJA_PARCIAL = false; WRAP_ASPECT = 17.1 / 283.5;
+  }
+  LID_CLOSED.y = H + LID_H / 2 - OVER;
+  LID_OPEN.y = LID_CLOSED.y + 0.05;
+  tampaGroup.position.y = lidState === 'open' ? LID_OPEN.y : LID_CLOSED.y;
+  _verts = null;                // enquadramento do PDF recalcula com a nova altura
+  stage.setObject(jar);         // reenquadra a câmera no pote novo
+  return true;
+}
+function orientaTarja(foco) {
+  if (TARJA_PARCIAL) return;    // a tarja parcial já nasce centralizada na frente
+  jar.getObjectByName('rotulo_corpo').rotation.y = AZ_FRENTE - 2 * Math.PI * (foco != null ? foco : U_FOCO);
+}
 let lidTween = null;
 const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 function tweenTampa(to, duration, onDone) {
@@ -520,14 +568,15 @@ function applyArt(which, dataURL) {
   const s = slots[which];
   const img = new Image();
   img.onload = () => {
-    const [W, H] = FIT[which];
+    const [W, H] = which === 'wrap' ? [FIT.wrap[0], Math.round(FIT.wrap[0] * WRAP_ASPECT)] : FIT.top;
     const [c, x] = cv(W, H);
     x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
     const k = Math.min(W / img.width, H / img.height);
     const w = img.width * k, ht = img.height * k;
     x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
-    const t = tex(c, which === 'wrap' ? 1 : 0);
-    if (which === 'wrap') t.wrapS = THREE.RepeatWrapping;
+    const volta = which === 'wrap' && !TARJA_PARCIAL;   // tarja 360° repete na emenda; a parcial não
+    const t = tex(c, volta ? 1 : 0);
+    if (volta) t.wrapS = THREE.RepeatWrapping;
     s.mat.map = t; s.mat.needsUpdate = true;
     stage.requestRender();
   };
@@ -905,9 +954,10 @@ function pintarLib() {
         return;
       }
       if (ehKit) {
+        aplicaPote(a.pote);
+        orientaTarja(a.foco);
         applyArt('top', a.dataTop);
         applyArt('wrap', a.dataWrap);
-        jar.getObjectByName('rotulo_corpo').rotation.y = AZ_FRENTE - 2 * Math.PI * (a.foco != null ? a.foco : U_FOCO);
         store.top = a.dataTop; store.wrap = a.dataWrap;
         kitAtivoId = a.id; store.kitAtivoId = a.id;
       } else {
@@ -1002,7 +1052,7 @@ async function carregarPasta() {
           dataTop: 'gel/display/' + c.tampa,
           dataWrap: 'gel/display/' + c.tarja,
           // arquivo mestre em resolução real — só usado no botão de download
-          foco: c.foco,
+          foco: c.foco, pote: c.pote,
           fullTop: 'gel/' + c.tampa,
           fullWrap: 'gel/' + c.tarja
         }));
@@ -1053,11 +1103,11 @@ async function carregarPasta() {
   return achadas;
 }
 
-// vista inicial: reaplica o foco do kit salvo ou já abre o primeiro kit da biblioteca
+// vista inicial: reaplica o kit salvo ou já abre o primeiro kit da biblioteca
 function kitInicial() {
-  const ativo = artes.find(x => x.id === kitAtivoId);
-  if (ativo) jar.getObjectByName('rotulo_corpo').rotation.y = AZ_FRENTE - 2 * Math.PI * (ativo.foco != null ? ativo.foco : U_FOCO);
-  else { const k = lib.querySelector('figure'); if (k) k.click(); }
+  // reaplica o kit salvo (ou o primeiro) por completo: pote, tarja e tampa
+  const k = lib.querySelector('figure.ativo') || lib.querySelector('figure');
+  if (k) k.click();
 }
 
 if (modoCliente) {
