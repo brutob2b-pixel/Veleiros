@@ -1,0 +1,10 @@
+Simulador do gel modelador (gel.html) — pasta de artes
+
+artes.json: um item por kit {id, marca, nome, tampa, tarja, thumb, foco}
+  foco = posição (0 a 1) da largura da tarja que deve ficar de frente no PDF e na vista inicial (padrão 0.62)
+
+Estrutura por marca:
+  gel/<marca>/tampa-<nome>.webp   mestre da tampa, quadrado 4320 px, RGBA (recorte do círculo Ø85,1 mm)
+  gel/<marca>/tarja-<nome>.webp   mestre da tarja, 8000 px de largura, proporção 283,5 × 17,1 mm
+  gel/<marca>/thumbs/tampa-<nome>.webp   miniatura 320 px
+  gel/display/<marca>/...         versões leves usadas no 3D (tampa 2048 px, tarja 4096 px)
