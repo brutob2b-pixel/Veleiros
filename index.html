@@ -570,13 +570,29 @@ const slots = {
 };
 const store = JSON.parse(localStorage.getItem(KEY) || '{}');
 
+/* geometria por kit: altura da tarja (mm, em 280 mm de circunferência), diâmetro da arte da tampa (mm) e foco (0–1) da tarja.
+   Padrão = Veleiros (tarja 280 × 15, tampa Ø89,1). Kits com outras medidas trazem alt / tampaMm / foco no artes.json. */
+const GEO_PADRAO = { alt: 15, tampa: 89.1, foco: null };
+let GEO = Object.assign({}, GEO_PADRAO, store.geo || {});
+function aplicaGeo(g) {
+  GEO = Object.assign({}, GEO_PADRAO);
+  Object.entries(g || {}).forEach(([k, v]) => { if (v != null) GEO[k] = v; });   // campos ausentes no kit mantêm o padrão
+  const faixa = jar.getObjectByName('rotulo_corpo'), disco = jar.getObjectByName('rotulo_tampa');
+  faixa.scale.y = GEO.alt / 15;
+  faixa.rotation.y = AZ_FRENTE - 2 * Math.PI * (GEO.foco != null ? GEO.foco : U_FOCO);
+  disco.scale.set(GEO.tampa / 89.1, GEO.tampa / 89.1, 1);
+  store.geo = GEO;
+  stage.requestRender();
+}
+aplicaGeo(GEO);
+
 // modo de encaixe da tarja: sempre "encaixar" (nunca esticar/distorcer a arte)
 const mode = 'contain';
 function applyArt(which, dataURL) {
   const s = slots[which];
   const img = new Image();
   img.onload = () => {
-    const [W, H] = FIT[which];
+    const [W, H] = which === 'wrap' ? [FIT.wrap[0], Math.round(FIT.wrap[0] * GEO.alt / 280)] : FIT.top;
     const [c, x] = cv(W, H);
     x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
     const k = Math.min(W / img.width, H / img.height);
@@ -961,6 +977,7 @@ function pintarLib() {
         return;
       }
       if (ehKit) {
+        aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco });
         applyArt('top', a.dataTop);
         applyArt('wrap', a.dataWrap);
         store.top = a.dataTop; store.wrap = a.dataWrap;
@@ -1058,6 +1075,7 @@ async function carregarPasta() {
           dataWrap: 'artes/display/' + c.tarja,
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: 'artes/' + c.tampa,
+          alt: c.alt, tampaMm: c.tampaMm, foco: c.foco,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
@@ -1177,6 +1195,7 @@ reset.addEventListener('click', () => {
     delete store[which];
   });
   COR_ORIG.forEach((c, m) => m.color.copy(c));
+  aplicaGeo(null); delete store.kitAtivoId; kitAtivoId = null; pintarLib();
   corPote.value = corTampaPlastico.value = '#0f0e0f';
   stage.requestRender();
   localStorage.setItem(KEY, JSON.stringify(store));

@@ -1,274 +1,285 @@
 [
-  {
-    "id": "black-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-01.webp",
-    "tarja": "tarja-01.webp",
-    "nome": "Black Dourado",
-    "thumb": "thumbs/tampa-01.webp"
-  },
-  {
-    "id": "black-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-02.webp",
-    "tarja": "tarja-02.webp",
-    "nome": "Black Prata",
-    "thumb": "thumbs/tampa-02.webp"
-  },
-  {
-    "id": "classic-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-03.webp",
-    "tarja": "tarja-03.webp",
-    "nome": "Classic Dourado",
-    "thumb": "thumbs/tampa-03.webp"
-  },
-  {
-    "id": "classic-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-04.webp",
-    "tarja": "tarja-04.webp",
-    "nome": "Classic Prata",
-    "thumb": "thumbs/tampa-04.webp"
-  },
-  {
-    "id": "light-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-05.webp",
-    "tarja": "tarja-05.webp",
-    "nome": "Light Dourada",
-    "thumb": "thumbs/tampa-05.webp"
-  },
-  {
-    "id": "light-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-06.webp",
-    "tarja": "tarja-06.webp",
-    "nome": "Light Prata",
-    "thumb": "thumbs/tampa-06.webp"
-  },
-  {
-    "id": "premium-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-07.webp",
-    "tarja": "tarja-07.webp",
-    "nome": "Premium Dourada",
-    "thumb": "thumbs/tampa-07.webp"
-  },
-  {
-    "id": "premium-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-08.webp",
-    "tarja": "tarja-08.webp",
-    "nome": "Premium Prata",
-    "thumb": "thumbs/tampa-08.webp"
-  },
-  {
-    "id": "morango-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-09.webp",
-    "tarja": "tarja-09.webp",
-    "nome": "Morango Prata",
-    "thumb": "thumbs/tampa-09.webp"
-  },
-  {
-    "id": "morango-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "tampa-10.webp",
-    "tarja": "tarja-10.webp",
-    "nome": "Morango Dourado",
-    "thumb": "thumbs/tampa-10.webp"
-  },
-  {
-    "id": "rota-black-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-black-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-black-dourado.webp",
-    "nome": "Black Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-black-dourado.webp"
-  },
-  {
-    "id": "rota-black-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-black-prata.webp",
-    "tarja": "rota-do-caribe/tarja-black-prata.webp",
-    "nome": "Black Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-black-prata.webp"
-  },
-  {
-    "id": "rota-classic-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-classic-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-classic-dourado.webp",
-    "nome": "Classic Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-classic-dourado.webp"
-  },
-  {
-    "id": "rota-classic-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-classic-prata.webp",
-    "tarja": "rota-do-caribe/tarja-classic-prata.webp",
-    "nome": "Classic Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-classic-prata.webp"
-  },
-  {
-    "id": "rota-light-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-light-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-light-dourado.webp",
-    "nome": "Light Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-light-dourado.webp"
-  },
-  {
-    "id": "rota-light-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-light-prata.webp",
-    "tarja": "rota-do-caribe/tarja-light-prata.webp",
-    "nome": "Light Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-light-prata.webp"
-  },
-  {
-    "id": "rota-premium-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-premium-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-premium-dourado.webp",
-    "nome": "Premium Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-premium-dourado.webp"
-  },
-  {
-    "id": "rota-premium-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-premium-prata.webp",
-    "tarja": "rota-do-caribe/tarja-premium-prata.webp",
-    "nome": "Premium Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-premium-prata.webp"
-  },
-  {
-    "id": "rota-morango-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-morango-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-morango-dourado.webp",
-    "nome": "Morango Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-morango-dourado.webp"
-  },
-  {
-    "id": "rota-morango-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-morango-prata.webp",
-    "tarja": "rota-do-caribe/tarja-morango-prata.webp",
-    "nome": "Morango Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp"
-  },
-  {
-    "id": "pistache-claro-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-claro-dourado.webp",
-    "tarja": "pistache/tarja-dourado.webp",
-    "nome": "Pistache Claro Dourado",
-    "thumb": "pistache/thumbs/tampa-claro-dourado.webp"
-  },
-  {
-    "id": "pistache-claro-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-claro-prata.webp",
-    "tarja": "pistache/tarja-prata.webp",
-    "nome": "Pistache Claro Prata",
-    "thumb": "pistache/thumbs/tampa-claro-prata.webp"
-  },
-  {
-    "id": "pistache-veleiro-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-veleiro-dourado.webp",
-    "tarja": "pistache/tarja-dourado.webp",
-    "nome": "Pistache Veleiro Dourado",
-    "thumb": "pistache/thumbs/tampa-veleiro-dourado.webp"
-  },
-  {
-    "id": "pistache-veleiro-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-veleiro-prata.webp",
-    "tarja": "pistache/tarja-prata.webp",
-    "nome": "Pistache Veleiro Prata",
-    "thumb": "pistache/thumbs/tampa-veleiro-prata.webp"
-  },
-  {
-    "id": "pistache-oliva-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-oliva-dourado.webp",
-    "tarja": "pistache/tarja-dourado.webp",
-    "nome": "Pistache Oliva Dourado",
-    "thumb": "pistache/thumbs/tampa-oliva-dourado.webp"
-  },
-  {
-    "id": "pistache-oliva-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "pistache/tampa-oliva-prata.webp",
-    "tarja": "pistache/tarja-prata.webp",
-    "nome": "Pistache Oliva Prata",
-    "thumb": "pistache/thumbs/tampa-oliva-prata.webp"
-  },
-  {
-    "id": "rota-caveira-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-caveira-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-caveira-dourado.webp",
-    "nome": "Caveira Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-caveira-dourado.webp"
-  },
-  {
-    "id": "rota-caveira-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-caveira-prata.webp",
-    "tarja": "rota-do-caribe/tarja-caveira-prata.webp",
-    "nome": "Caveira Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp"
-  },
-  {
-    "id": "classic-cinza-navio-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "classic-cinza/tampa-navio-dourado.webp",
-    "tarja": "classic-cinza/tarja-dourado.webp",
-    "nome": "Classic Cinza Navio Dourado",
-    "thumb": "classic-cinza/thumbs/tampa-navio-dourado.webp"
-  },
-  {
-    "id": "classic-cinza-navio-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "classic-cinza/tampa-navio-prata.webp",
-    "tarja": "classic-cinza/tarja-prata.webp",
-    "nome": "Classic Cinza Navio Prata",
-    "thumb": "classic-cinza/thumbs/tampa-navio-prata.webp"
-  },
-  {
-    "id": "classic-cinza-liso-dourado",
-    "marca": "Veleiros do Caribe",
-    "tampa": "classic-cinza/tampa-liso-dourado.webp",
-    "tarja": "classic-cinza/tarja-dourado.webp",
-    "nome": "Classic Cinza Liso Dourado",
-    "thumb": "classic-cinza/thumbs/tampa-liso-dourado.webp"
-  },
-  {
-    "id": "classic-cinza-liso-prata",
-    "marca": "Veleiros do Caribe",
-    "tampa": "classic-cinza/tampa-liso-prata.webp",
-    "tarja": "classic-cinza/tarja-prata.webp",
-    "nome": "Classic Cinza Liso Prata",
-    "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp"
-  },
-  {
-    "id": "rota-teia-dourado",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-teia-dourado.webp",
-    "tarja": "rota-do-caribe/tarja-teia-dourado.webp",
-    "nome": "Teia Dourado",
-    "thumb": "rota-do-caribe/thumbs/tampa-teia-dourado.webp"
-  },
-  {
-    "id": "rota-teia-prata",
-    "marca": "Rota do Caribe",
-    "tampa": "rota-do-caribe/tampa-teia-prata.webp",
-    "tarja": "rota-do-caribe/tarja-teia-prata.webp",
-    "nome": "Teia Prata",
-    "thumb": "rota-do-caribe/thumbs/tampa-teia-prata.webp"
-  }
+ {
+  "id": "black-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-01.webp",
+  "tarja": "tarja-01.webp",
+  "nome": "Black Dourado",
+  "thumb": "thumbs/tampa-01.webp"
+ },
+ {
+  "id": "black-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-02.webp",
+  "tarja": "tarja-02.webp",
+  "nome": "Black Prata",
+  "thumb": "thumbs/tampa-02.webp"
+ },
+ {
+  "id": "classic-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-03.webp",
+  "tarja": "tarja-03.webp",
+  "nome": "Classic Dourado",
+  "thumb": "thumbs/tampa-03.webp"
+ },
+ {
+  "id": "classic-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-04.webp",
+  "tarja": "tarja-04.webp",
+  "nome": "Classic Prata",
+  "thumb": "thumbs/tampa-04.webp"
+ },
+ {
+  "id": "light-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-05.webp",
+  "tarja": "tarja-05.webp",
+  "nome": "Light Dourada",
+  "thumb": "thumbs/tampa-05.webp"
+ },
+ {
+  "id": "light-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-06.webp",
+  "tarja": "tarja-06.webp",
+  "nome": "Light Prata",
+  "thumb": "thumbs/tampa-06.webp"
+ },
+ {
+  "id": "premium-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-07.webp",
+  "tarja": "tarja-07.webp",
+  "nome": "Premium Dourada",
+  "thumb": "thumbs/tampa-07.webp"
+ },
+ {
+  "id": "premium-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-08.webp",
+  "tarja": "tarja-08.webp",
+  "nome": "Premium Prata",
+  "thumb": "thumbs/tampa-08.webp"
+ },
+ {
+  "id": "morango-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-09.webp",
+  "tarja": "tarja-09.webp",
+  "nome": "Morango Prata",
+  "thumb": "thumbs/tampa-09.webp"
+ },
+ {
+  "id": "morango-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "tampa-10.webp",
+  "tarja": "tarja-10.webp",
+  "nome": "Morango Dourado",
+  "thumb": "thumbs/tampa-10.webp"
+ },
+ {
+  "id": "rota-black-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-black-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-black-dourado.webp",
+  "nome": "Black Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-black-dourado.webp"
+ },
+ {
+  "id": "rota-black-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-black-prata.webp",
+  "tarja": "rota-do-caribe/tarja-black-prata.webp",
+  "nome": "Black Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-black-prata.webp"
+ },
+ {
+  "id": "rota-classic-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-classic-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-classic-dourado.webp",
+  "nome": "Classic Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-classic-dourado.webp"
+ },
+ {
+  "id": "rota-classic-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-classic-prata.webp",
+  "tarja": "rota-do-caribe/tarja-classic-prata.webp",
+  "nome": "Classic Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-classic-prata.webp"
+ },
+ {
+  "id": "rota-light-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-light-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-light-dourado.webp",
+  "nome": "Light Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-light-dourado.webp"
+ },
+ {
+  "id": "rota-light-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-light-prata.webp",
+  "tarja": "rota-do-caribe/tarja-light-prata.webp",
+  "nome": "Light Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-light-prata.webp"
+ },
+ {
+  "id": "rota-premium-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-premium-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-premium-dourado.webp",
+  "nome": "Premium Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-premium-dourado.webp"
+ },
+ {
+  "id": "rota-premium-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-premium-prata.webp",
+  "tarja": "rota-do-caribe/tarja-premium-prata.webp",
+  "nome": "Premium Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-premium-prata.webp"
+ },
+ {
+  "id": "rota-morango-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-morango-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-morango-dourado.webp",
+  "nome": "Morango Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-morango-dourado.webp"
+ },
+ {
+  "id": "rota-morango-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-morango-prata.webp",
+  "tarja": "rota-do-caribe/tarja-morango-prata.webp",
+  "nome": "Morango Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp"
+ },
+ {
+  "id": "pistache-claro-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-claro-dourado.webp",
+  "tarja": "pistache/tarja-dourado.webp",
+  "nome": "Pistache Claro Dourado",
+  "thumb": "pistache/thumbs/tampa-claro-dourado.webp"
+ },
+ {
+  "id": "pistache-claro-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-claro-prata.webp",
+  "tarja": "pistache/tarja-prata.webp",
+  "nome": "Pistache Claro Prata",
+  "thumb": "pistache/thumbs/tampa-claro-prata.webp"
+ },
+ {
+  "id": "pistache-veleiro-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-veleiro-dourado.webp",
+  "tarja": "pistache/tarja-dourado.webp",
+  "nome": "Pistache Veleiro Dourado",
+  "thumb": "pistache/thumbs/tampa-veleiro-dourado.webp"
+ },
+ {
+  "id": "pistache-veleiro-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-veleiro-prata.webp",
+  "tarja": "pistache/tarja-prata.webp",
+  "nome": "Pistache Veleiro Prata",
+  "thumb": "pistache/thumbs/tampa-veleiro-prata.webp"
+ },
+ {
+  "id": "pistache-oliva-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-oliva-dourado.webp",
+  "tarja": "pistache/tarja-dourado.webp",
+  "nome": "Pistache Oliva Dourado",
+  "thumb": "pistache/thumbs/tampa-oliva-dourado.webp"
+ },
+ {
+  "id": "pistache-oliva-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "pistache/tampa-oliva-prata.webp",
+  "tarja": "pistache/tarja-prata.webp",
+  "nome": "Pistache Oliva Prata",
+  "thumb": "pistache/thumbs/tampa-oliva-prata.webp"
+ },
+ {
+  "id": "rota-caveira-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-caveira-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-caveira-dourado.webp",
+  "nome": "Caveira Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-caveira-dourado.webp"
+ },
+ {
+  "id": "rota-caveira-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-caveira-prata.webp",
+  "tarja": "rota-do-caribe/tarja-caveira-prata.webp",
+  "nome": "Caveira Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp"
+ },
+ {
+  "id": "classic-cinza-navio-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "classic-cinza/tampa-navio-dourado.webp",
+  "tarja": "classic-cinza/tarja-dourado.webp",
+  "nome": "Classic Cinza Navio Dourado",
+  "thumb": "classic-cinza/thumbs/tampa-navio-dourado.webp"
+ },
+ {
+  "id": "classic-cinza-navio-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "classic-cinza/tampa-navio-prata.webp",
+  "tarja": "classic-cinza/tarja-prata.webp",
+  "nome": "Classic Cinza Navio Prata",
+  "thumb": "classic-cinza/thumbs/tampa-navio-prata.webp"
+ },
+ {
+  "id": "classic-cinza-liso-dourado",
+  "marca": "Veleiros do Caribe",
+  "tampa": "classic-cinza/tampa-liso-dourado.webp",
+  "tarja": "classic-cinza/tarja-dourado.webp",
+  "nome": "Classic Cinza Liso Dourado",
+  "thumb": "classic-cinza/thumbs/tampa-liso-dourado.webp"
+ },
+ {
+  "id": "classic-cinza-liso-prata",
+  "marca": "Veleiros do Caribe",
+  "tampa": "classic-cinza/tampa-liso-prata.webp",
+  "tarja": "classic-cinza/tarja-prata.webp",
+  "nome": "Classic Cinza Liso Prata",
+  "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp"
+ },
+ {
+  "id": "rota-teia-dourado",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-teia-dourado.webp",
+  "tarja": "rota-do-caribe/tarja-teia-dourado.webp",
+  "nome": "Teia Dourado",
+  "thumb": "rota-do-caribe/thumbs/tampa-teia-dourado.webp"
+ },
+ {
+  "id": "rota-teia-prata",
+  "marca": "Rota do Caribe",
+  "tampa": "rota-do-caribe/tampa-teia-prata.webp",
+  "tarja": "rota-do-caribe/tarja-teia-prata.webp",
+  "nome": "Teia Prata",
+  "thumb": "rota-do-caribe/thumbs/tampa-teia-prata.webp"
+ },
+ {
+  "id": "jack-fera-uva",
+  "marca": "Jack Fera",
+  "tampa": "jack-fera/tampa-uva.webp",
+  "tarja": "jack-fera/tarja-uva.webp",
+  "nome": "Uva",
+  "thumb": "jack-fera/thumbs/tampa-uva.webp",
+  "alt": 19.1,
+  "tampaMm": 85,
+  "foco": 0.23
+ }
 ]
