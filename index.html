@@ -1062,6 +1062,54 @@ function iniciarMarca() {
   if (achada) escolherMarca(achada); else abrirEscolha();
 }
 
+/* ---------- ao escolher um modelo com a barra aberta (celular em pé):
+   a barra recolhe devagar e o pote gira até a vista ampla padrão, já com a arte nova ---------- */
+function mostrarResultado() {
+  if (!mqRetrato.matches || up.classList.contains('recolhido')) return;   // barra recolhida: só aplica, sem animação
+  // recolhido esconde os blocos de baixo na hora; por isso anima a altura antes e só então aplica a classe
+  const cs = getComputedStyle(up);
+  const extra = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);   // max-height vale para o conteúdo
+  const h0 = up.getBoundingClientRect().height - extra;
+  up.style.transition = 'none'; up.classList.add('recolhido');
+  const h1 = up.getBoundingClientRect().height - extra;       // altura final (barra recolhida)
+  up.classList.remove('recolhido');
+  up.style.maxHeight = h0 + 'px'; up.style.overflow = 'hidden';
+  void up.offsetHeight;
+  up.style.transition = 'max-height .85s cubic-bezier(.4,0,.2,1)';
+  up.style.maxHeight = h1 + 'px';
+  setTimeout(() => {
+    up.classList.add('recolhido');
+    up.style.transition = 'none'; up.style.maxHeight = ''; up.style.overflow = '';
+    void up.offsetHeight; up.style.transition = '';
+  }, 880);
+  girarAteVistaPadrao(1700);
+}
+function girarAteVistaPadrao(dur) {
+  const cam = stage._camera, ctr = stage._controls;
+  if (!cam || !ctr || !stage._object) return;
+  const sphere = new THREE.Box3().setFromObject(stage._object).getBoundingSphere(new THREE.Sphere());
+  const dist = sphere.radius / Math.tan(cam.fov * Math.PI / 360) * 1.35;      // mesmo enquadramento do stage
+  const alvoDir = new THREE.Vector3(1, 0.55, 1.25).normalize();
+  const t0 = ctr.target.clone(), t1 = sphere.center.clone();
+  const o0 = cam.position.clone().sub(t0);
+  const r0 = o0.length(), r1 = dist;
+  const az0 = Math.atan2(o0.x, o0.z), el0 = Math.asin(THREE.MathUtils.clamp(o0.y / r0, -1, 1));
+  const azAlvo = Math.atan2(alvoDir.x, alvoDir.z), el1 = Math.asin(alvoDir.y);
+  let dAz = ((azAlvo - az0) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);   // sempre no mesmo sentido…
+  dAz += 2 * Math.PI;                                                          // …com uma volta completa
+  const giravaSozinho = ctr.autoRotate; ctr.autoRotate = false;
+  const ini = performance.now();
+  const passo = agora => {
+    const k = Math.min(1, (agora - ini) / dur), e = easeInOutCubic(k);
+    const az = az0 + dAz * e, el = el0 + (el1 - el0) * e, r = r0 + (r1 - r0) * e;
+    ctr.target.lerpVectors(t0, t1, e);
+    cam.position.set(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)).multiplyScalar(r).add(ctr.target);
+    cam.lookAt(ctr.target); ctr.update(); stage.requestRender();
+    if (k < 1) requestAnimationFrame(passo); else ctr.autoRotate = giravaSozinho;
+  };
+  requestAnimationFrame(passo);
+}
+
 /* ---------- PDF de impressão (tampa + tarja) do modelo escolhido ---------- */
 let kitAtivo = null;
 const nomeArquivoPdf = a => a.pdf.split('/').pop();   // ex.: fildercut-evoluxion-dourado-inclinada.pdf
@@ -1137,6 +1185,7 @@ function pintarLib() {
         store.top = a.dataTop; store.wrap = a.dataWrap;
         kitAtivoId = a.id; store.kitAtivoId = a.id;
         kitAtivo = a; atualizaBaixarArte();
+        if (e.isTrusted) mostrarResultado();   // escolha feita pela pessoa (não a automática da abertura)
       } else {
         applyArt(a.slot, a.data);
         store[a.slot] = a.data;
