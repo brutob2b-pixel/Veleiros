@@ -114,6 +114,7 @@
   #up .lib .act span{width:19px;height:19px;display:grid;place-items:center;border-radius:4px;
                      font-size:11px;color:#f6e8cc;background:rgba(8,5,4,.9)}
   #up .lib .act span:hover{background:#b01118}
+  #up .lib .selo{position:absolute;left:2px;right:2px;bottom:29px;padding:1px 2px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:0;white-space:nowrap;overflow:hidden;text-transform:uppercase;text-align:center;color:#fff;background:rgba(176,17,24,.92)}
   #up .lib .tag{position:absolute;top:2px;left:2px;padding:1px 4px;border-radius:4px;font-size:8px;
                 letter-spacing:.08em;color:#0b0708;background:#e0b25c}
   #up .lib .check{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
@@ -1083,12 +1084,13 @@ function pintarLib() {
     const ehKit = a.tipo === 'kit';
     const f = document.createElement('figure');
     if (ehKit && a.id === kitAtivoId) f.classList.add('ativo');
-    f.title = a.nome + (ehKit ? ' — clique para aplicar tampa + tarja juntas' : ' — clique para aplicar');
+    f.title = a.nome + (a.selo ? ' (' + a.selo + ')' : '') + (ehKit ? ' — clique para aplicar tampa + tarja juntas' : ' — clique para aplicar');
     f.innerHTML = '<img alt="">' +
       (ehKit ? (a.id === kitAtivoId ? '<span class="check">✓</span>' : '') :
         '<span class="tag">' + (a.slot === 'top' ? 'TAMPA' : 'TARJA') + '</span>') +
       '<div class="act"><span data-a="dl" title="Baixar">↓</span>' +
       (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">×</span>') + '</div>' +
+      (a.selo ? '<span class="selo">' + a.selo + '</span>' : '') +
       '<figcaption>' + a.nome + '</figcaption>';
     const im = f.querySelector('img');
     im.onload = () => {
@@ -1230,7 +1232,7 @@ async function carregarPasta() {
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: 'artes/' + c.tampa,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
-          pdf: c.pdf ? 'artes/' + c.pdf : null,
+          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;

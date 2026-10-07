@@ -283,30 +283,12 @@
   "foco": 0.23
  },
  {
-  "id": "fildercut-premium-gold",
-  "nome": "Premium Gold",
-  "tampa": "fildercut/tampa-premium-gold.webp",
-  "tarja": "fildercut/tarja-premium-gold.webp",
-  "thumb": "fildercut/thumbs/tampa-premium-gold.webp",
-  "marca": "FilderCut",
-  "tampaMm": 85,
-  "pote": {
-   "tarjaMm": [
-    135,
-    34.8
-   ],
-   "respiroMm": 3
-  },
-  "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-premium-gold.pdf"
- },
- {
   "id": "fildercut-evoluxion-dourado-inclinada",
-  "nome": "Dourado · Inclinada",
-  "tampa": "fildercut/tampa-evoluxion-dourado-inclinada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-inclinada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Dourado · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-dourado-inclinada.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-inclinada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -320,11 +302,11 @@
  },
  {
   "id": "fildercut-evoluxion-dourado-arredondada",
-  "nome": "Dourado · Arredondada",
-  "tampa": "fildercut/tampa-evoluxion-dourado-arredondada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-arredondada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Dourado · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-dourado-arredondada.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-arredondada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -338,11 +320,11 @@
  },
  {
   "id": "fildercut-evoluxion-dourado-contorno",
-  "nome": "Dourado · Contorno",
-  "tampa": "fildercut/tampa-evoluxion-dourado-contorno-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-contorno-v2.webp",
   "marca": "FilderCut",
+  "nome": "Dourado · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-dourado-contorno.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-contorno.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -356,11 +338,11 @@
  },
  {
   "id": "fildercut-evoluxion-degrade-inclinada",
-  "nome": "Degradê · Inclinada",
-  "tampa": "fildercut/tampa-evoluxion-degrade-inclinada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-inclinada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Degradê · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-degrade-inclinada.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-inclinada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -374,11 +356,11 @@
  },
  {
   "id": "fildercut-evoluxion-degrade-arredondada",
-  "nome": "Degradê · Arredondada",
-  "tampa": "fildercut/tampa-evoluxion-degrade-arredondada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-arredondada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Degradê · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-degrade-arredondada.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-arredondada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -392,11 +374,11 @@
  },
  {
   "id": "fildercut-evoluxion-degrade-contorno",
-  "nome": "Degradê · Contorno",
-  "tampa": "fildercut/tampa-evoluxion-degrade-contorno-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-contorno-v2.webp",
   "marca": "FilderCut",
+  "nome": "Degradê · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-degrade-contorno.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-contorno.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -410,11 +392,11 @@
  },
  {
   "id": "fildercut-evoluxion-vermelho-inclinada",
-  "nome": "Vermelho · Inclinada",
-  "tampa": "fildercut/tampa-evoluxion-vermelho-inclinada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-inclinada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Vermelho · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-inclinada.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-inclinada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -428,11 +410,11 @@
  },
  {
   "id": "fildercut-evoluxion-vermelho-arredondada",
-  "nome": "Vermelho · Arredondada",
-  "tampa": "fildercut/tampa-evoluxion-vermelho-arredondada-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-arredondada-v2.webp",
   "marca": "FilderCut",
+  "nome": "Vermelho · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-arredondada.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-arredondada.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -446,11 +428,11 @@
  },
  {
   "id": "fildercut-evoluxion-vermelho-contorno",
-  "nome": "Vermelho · Contorno",
-  "tampa": "fildercut/tampa-evoluxion-vermelho-contorno-v2.webp",
-  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
-  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-contorno-v2.webp",
   "marca": "FilderCut",
+  "nome": "Vermelho · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-contorno.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-contorno.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -461,5 +443,176 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-contorno.pdf"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-dourado-inclinada",
+  "marca": "FilderCut",
+  "nome": "Dourado · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-dourado-inclinada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-inclinada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-inclinada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-dourado-arredondada",
+  "marca": "FilderCut",
+  "nome": "Dourado · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-dourado-arredondada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-arredondada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-arredondada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-dourado-contorno",
+  "marca": "FilderCut",
+  "nome": "Dourado · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-dourado-contorno-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-dourado-contorno-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-contorno.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-degrade-inclinada",
+  "marca": "FilderCut",
+  "nome": "Degradê · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-degrade-inclinada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-inclinada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-inclinada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-degrade-arredondada",
+  "marca": "FilderCut",
+  "nome": "Degradê · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-degrade-arredondada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-arredondada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-arredondada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-degrade-contorno",
+  "marca": "FilderCut",
+  "nome": "Degradê · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-degrade-contorno-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-dourado-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-degrade-contorno-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-contorno.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-vermelho-inclinada",
+  "marca": "FilderCut",
+  "nome": "Vermelho · Inclinada",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-inclinada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-inclinada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-inclinada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-vermelho-arredondada",
+  "marca": "FilderCut",
+  "nome": "Vermelho · Arredondada",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-arredondada-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-arredondada-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-arredondada.pdf",
+  "selo": "Extra Forte"
+ },
+ {
+  "id": "fildercut-evoluxion-extra-forte-vermelho-contorno",
+  "marca": "FilderCut",
+  "nome": "Vermelho · Contorno",
+  "tampa": "fildercut/tampa-evoluxion-vermelho-contorno-v2.webp",
+  "tarja": "fildercut/tarja-evoluxion-vermelho-v2.webp",
+  "thumb": "fildercut/thumbs/tampa-evoluxion-vermelho-contorno-v2.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-contorno.pdf",
+  "selo": "Extra Forte"
  }
 ]
