@@ -192,7 +192,8 @@
       this._advBtns.appendChild(this._glbBtn);
       this._toolbar.appendChild(this._advBtns);
       this._toolbar.appendChild(this._advToggle);
-      root.appendChild(this._toolbar);
+      // barra "Avançado" (download OBJ/GLB) fica fora da tela: o cliente final não usa e confundia
+      // root.appendChild(this._toolbar);
       this._setButtonsEnabled(false);
       /** Resolves with { THREE } once the scene is live — build the model
        *  in `await stage.ready` so nothing races the library load. */

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Veleiros do Caribe — mockup 3D</title>
+<title>Simulador 3D de rótulos</title>
 <script type="importmap">
 {
   "imports": {
@@ -34,11 +34,16 @@
   #toggleUp{display:none}
   @media (max-width:760px) and (orientation:portrait){
     #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:70vh;
-        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
-    #up.recolhido{max-height:54px;overflow:hidden}
-    #toggleUp{display:block;position:absolute;top:0;left:0;right:0;height:34px;cursor:grab;touch-action:none;z-index:2;-webkit-tap-highlight-color:transparent}
-    #toggleUp::after{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);transition:.15s}
-    #toggleUp:active::after{width:56px;background:rgba(217,164,65,.9)}
+        border-radius:16px 16px 0 0;padding-top:56px;transition:max-height .2s ease}
+    #up.recolhido{max-height:84px;overflow:hidden}
+    #toggleUp{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;position:absolute;top:0;left:0;right:0;height:50px;padding-top:7px;box-sizing:border-box;cursor:grab;touch-action:none;z-index:2;-webkit-tap-highlight-color:transparent;user-select:none}
+    #toggleUp .puxador{width:52px;height:5px;border-radius:3px;background:rgba(217,164,65,.7);transition:.15s}
+    #toggleUp .rotulo{display:flex;align-items:center;gap:6px;padding:4px 14px 4px 10px;border-radius:20px;font:600 12px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#f3d590;border:1px solid rgba(217,164,65,.55);background:rgba(217,164,65,.14)}
+    #toggleUp .rotulo svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+    #up:not(.recolhido) #toggleUp .rotulo svg{transform:rotate(180deg)}
+    #toggleUp:active .puxador{width:64px;background:#e0b25c}
+    #up.recolhido #toggleUp .rotulo{animation:dicaAlca 1.4s ease-in-out 2.5s 3}
+    @keyframes dicaAlca{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}60%{transform:translateY(0)}75%{transform:translateY(-2px)}}
     #up.arrastando{transition:none!important;overflow:hidden}
     three-d-stage{height:100vh}
   }
@@ -74,6 +79,22 @@
   #up .dl a{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:12px;letter-spacing:.08em;
             text-transform:uppercase;color:#e0b25c;text-decoration:none;border:1px solid rgba(217,164,65,.3)}
   #up .dl a:hover{color:#f6e8cc;border-color:#e0b25c;background:rgba(176,17,24,.2)}
+  /* ---------- escolha da marca (primeira tela) ---------- */
+  #escolhaMarca{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;
+                background:rgba(12,9,8,.94);backdrop-filter:blur(6px);overflow-y:auto;font-family:"Barlow Condensed",system-ui,sans-serif}
+  #escolhaMarca[hidden]{display:none}
+  #escolhaMarca .em-caixa{width:min(760px,100%);text-align:center;margin:auto}
+  #escolhaMarca h2{margin:0 0 6px;font-family:Cinzel,serif;font-size:clamp(20px,5vw,28px);letter-spacing:.06em;color:#e0b25c}
+  #escolhaMarca .em-sub{margin:0 0 20px;font-size:16px;color:#bda98c}
+  #escolhaMarca .em-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  #escolhaMarca .em-marca{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;cursor:pointer;
+                border-radius:14px;border:1px solid rgba(217,164,65,.35);background:rgba(217,164,65,.06);transition:.15s}
+  #escolhaMarca .em-marca:hover,#escolhaMarca .em-marca:focus-visible{border-color:#e0b25c;background:rgba(176,17,24,.25)}
+  #escolhaMarca .em-marca img{width:104px;height:104px;border-radius:50%;object-fit:cover;background:#0b0708}
+  #escolhaMarca .em-marca img.frasco{border-radius:10px;object-fit:contain;width:64px}
+  #escolhaMarca .em-marca b{font-size:19px;letter-spacing:.04em;color:#f6e8cc}
+  #escolhaMarca .em-marca span{font-size:14px;color:#bda98c}
+  #up .marcas .b.trocar{color:#f3d590;border-color:rgba(217,164,65,.6);background:rgba(217,164,65,.14)}
   #up .marcas{display:flex;gap:6px;flex-wrap:wrap}
   #up .marcas .b{padding:5px 10px;border-radius:20px;font-size:11px;letter-spacing:.04em;
                  text-transform:uppercase;color:#bda98c;border:1px solid rgba(217,164,65,.28);cursor:pointer}
@@ -101,7 +122,7 @@
   /* celular: biblioteca primeiro, em faixa deslizável — recolhido mostra
      título + filtro de marca + kits, para trocar de kit vendo o pote */
   @media (max-width:760px) and (orientation:portrait){
-    #up.recolhido{max-height:178px;overflow:hidden}
+    #up.recolhido{max-height:210px;overflow:hidden}
     /* recolhido: só a faixa de kits; o resto (uploads, botões, cores) aparece ao puxar a alça */
     #up.recolhido > :not(#tituloLib):not(#marcasBar):not(#lib):not(#vazioLib):not(#toggleUp){display:none}
     #tituloLib{order:-4} #marcasBar{order:-3} #lib{order:-2} #vazioLib{order:-1}
@@ -123,9 +144,16 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <script type="application/json" id="bibliotecaEmbutida">{"artes":[]}</script>
-<three-d-stage name="pote-veleiros-do-caribe" background="#1d1714" autorotate></three-d-stage>
+<three-d-stage name="pote-simulador-3d" background="#1d1714" autorotate></three-d-stage>
+<div id="escolhaMarca" role="dialog" aria-modal="true" aria-labelledby="emTitulo">
+  <div class="em-caixa">
+    <h2 id="emTitulo">Qual marca você quer ver?</h2>
+    <p class="em-sub">Toque na marca para abrir o simulador 3D.</p>
+    <div class="em-grade" id="emGrade"><p class="em-sub">Carregando marcas…</p></div>
+  </div>
+</div>
 <div id="up">
-  <div id="toggleUp" title="Mostrar/ocultar painel"></div>
+  <div id="toggleUp" role="button" tabindex="0" aria-expanded="false" title="Toque ou arraste para cima para ver mais opções"><span class="puxador"></span><span class="rotulo"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg><span class="txt">Mais opções</span></span></div>
   <h1>SUA ARTE</h1>
   <p>Suba as duas artes para substituir os rótulos do mockup.</p>
   <label class="drop" id="dropTop">
@@ -134,7 +162,7 @@
     <input type="file" id="fileTop" accept="image/*">
   </label>
   <label class="drop" id="dropWrap">
-    <b>Corpo · wrap 360°</b>    <span>faixa deitada · 280 × 15 mm. A arte é encaixada preservando a proporção original (nunca esticada).</span>
+    <b>Corpo · tarja</b>    <span>faixa da tarja (o formato muda conforme a marca). A arte é encaixada preservando a proporção original (nunca esticada).</span>
     <img id="prevWrap" alt="">
     <input type="file" id="fileWrap" accept="image/*">
   </label>
@@ -161,11 +189,13 @@
   <div class="marcas" id="marcasBar" style="display:none"></div>
   <div class="lib" id="lib"></div>
   <p class="vazio" id="vazioLib">Nenhuma arte na biblioteca.</p>
+  <div id="gabaritos">
   <hr>
   <p>Gabaritos em mm com corte, sangria e área segura — abra no Illustrator.</p>
   <div class="dl">
     <a href="#" id="dlTampa">Tampa</a>
     <a href="#" id="dlCorpo">Corpo</a>
+  </div>
   </div>
 <script type="text/plain" id="svgTampa"><svg xmlns="http://www.w3.org/2000/svg" width="95mm" height="95mm" viewBox="0 0 95 95" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxMWE0MDU3ZC1hOGQ2LTQ1NjUtOWU2Yy1jMGY1MGIxMWZmNTgAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaNXPE0sJ+GN9h3ZyJJgSj98AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpjZWJiNGFiNy02NmIwLTQ3NzQtYjgyNC00MmE2OWY4MjdmMWVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoM+ySU4e3TKaiPhzhDk+pXQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgghWHBfKzmmRq2XF9/mcCa5rd0Ev841M7iUuSO62Cj0QKkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaIj4WjxxW/5/fsOIJ+evArcAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBOMfnnfaLgKPTFVPuKzo6iwzfQ74XQZNb5lPQtnPy2XmRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiWZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjExYTQwNTdkLWE4ZDYtNDU2NS05ZTZjLWMwZjUwYjExZmY1OC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmY4NzNmMTFjLTMzNDMtNDBkYy1hNjc4LWJkYzYxYzNmZTkwM3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCFYcF8rOaZGrZcX3+ZwJrmt3QS/zjUzuJS5I7rYKPRAqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggwZaGVBxKc29nrs8ItqHE0IZ30PF2bzfGxFoEjS+1UU+iY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggrp8G4svFuyoL1Rv0RbEZYpWKaCFOxBI8ejsgNCMY1CJ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQEdH8PWtB5YWfj5Y9lW7T26FWI04tJIpK4O4odsl4xYeDFZDHa62o/lZAXBp0Jym13Fga6IXl7Iv421PmvxHSeg=</c2pa:manifest></metadata>
   <title>Gabarito — rótulo da tampa (Ø89,1 mm)</title>
@@ -352,9 +382,8 @@ const gold = new THREE.MeshStandardMaterial({ name: 'dourado', color: 0xe0b25c, 
 // espátula) + brilho de clearcoat, pra vender "consistência cremosa"
 // em vez de um disco liso — é revelado pela animação de abrir a tampa.
 const [pasteC, pctx] = cv(512, 512);
-(() => {
+function pintaPasta(base) {
   const S = 512, cx = S / 2;
-  const base = '#f3dfe2';
   pctx.fillStyle = base; pctx.fillRect(0, 0, S, S);
   const grad = pctx.createRadialGradient(cx * .92, cx * .85, S * .05, cx, cx, S * .62);
   grad.addColorStop(0, 'rgba(255,255,255,.55)');
@@ -371,7 +400,8 @@ const [pasteC, pctx] = cv(512, 512);
     }
     pctx.stroke();
   }
-})();
+}
+pintaPasta('#f3dfe2');
 const paste = new THREE.MeshPhysicalMaterial({
   name: 'pasta_morango', map: tex(pasteC), roughness: .42, metalness: 0,
   clearcoat: .35, clearcoatRoughness: .2
@@ -572,20 +602,68 @@ const slots = {
 };
 const store = JSON.parse(localStorage.getItem(KEY) || '{}');
 
-/* geometria por kit: altura da tarja (mm, em 280 mm de circunferência), diâmetro da arte da tampa (mm) e foco (0–1) da tarja.
-   Padrão = Veleiros (tarja 280 × 15, tampa Ø89,1). Kits com outras medidas trazem alt / tampaMm / foco no artes.json. */
-const GEO_PADRAO = { alt: 15, tampa: 89.1, foco: null };
+/* ---------- geometria por kit ----------
+   Padrão = Veleiros: corpo 20 mm, tarja 360° de 280 × 15 mm, arte da tampa Ø89,1.
+   Campos opcionais do kit no artes.json:
+     alt      altura (mm) de uma tarja 360° com 280 mm de volta (ex.: Jack Fera 19,1)
+     tampaMm  diâmetro da arte da tampa (ex.: 85)
+     foco     0–1: ponto da largura da tarja 360° que fica de frente
+     pote     { tarjaMm: [comprimento, altura], respiroMm: 3, corpoMm }  → pote mais alto com tarja parcial
+              (adesivo frontal centralizado). Sem corpoMm: altura da tarja + respiro em cima e embaixo.
+     corPasta cor do produto dentro do pote (ex.: gel)
+   A tampa nunca muda de forma. */
+let _verts = null;   // cache de vértices do enquadramento do PDF (zerado quando o pote muda)
+const GEO_PADRAO = { alt: 15, tampa: 89.1, foco: null, pote: null, corPasta: null };
+const COR_PASTA_PADRAO = '#f3dfe2';
 let GEO = Object.assign({}, GEO_PADRAO, store.geo || {});
+let POTE_CHAVE = JSON.stringify([BODY_H * 1000, null, 3]), TARJA_PARCIAL = false;
+function montaPote(p) {
+  p = p || {};
+  const tarja = p.tarjaMm || null;
+  const resp = p.respiroMm != null ? p.respiroMm : 3;
+  const corpoMm = p.corpoMm || (tarja ? OVER * 1000 + tarja[1] + 2 * resp : BODY_H * 1000);
+  const chave = JSON.stringify([corpoMm, tarja, resp]);
+  if (chave === POTE_CHAVE) return;
+  POTE_CHAVE = chave;
+  const H = corpoMm / 1000, rBase = R * .97;
+  const rCorpo = y => rBase + (R - rBase) * y / H;          // raio do corpo (levemente cônico) na altura y
+  const troca = (nome, geo, y) => { const m = jar.getObjectByName(nome); m.geometry.dispose(); m.geometry = geo; m.position.y = y; };
+  troca('corpo', new THREE.CylinderGeometry(R, rBase, H, 96, 1, true), H / 2);
+  jar.getObjectByName('pasta').position.y = H - .0016;
+  if (tarja) {
+    // adesivo frontal: arco centralizado na frente, no meio da área visível (base até a borda da tampa)
+    const a = tarja[1] / 1000, yc = (H - OVER) / 2, y0 = yc - a / 2;
+    const rT = rCorpo(y0 + a) + .0004, rB = rCorpo(y0) + .0004;
+    const arco = (tarja[0] / 1000) / ((rT + rB) / 2);
+    troca('rotulo_corpo', new THREE.CylinderGeometry(rT, rB, a, 96, 1, true, AZ_FRENTE - arco / 2, arco), yc);
+  } else {
+    troca('rotulo_corpo', new THREE.CylinderGeometry(0.044563, 0.044563, BAND_H, 96, 1, true), H / 2 - .0005);
+  }
+  TARJA_PARCIAL = !!tarja;
+  LID_CLOSED.y = H + LID_H / 2 - OVER;
+  LID_OPEN.y = LID_CLOSED.y + 0.05;
+  tampaGroup.position.y = lidState === 'open' ? LID_OPEN.y : LID_CLOSED.y;
+  _verts = null;
+  stage.setObject(jar);          // reenquadra a câmera no pote novo
+}
 function aplicaGeo(g) {
   GEO = Object.assign({}, GEO_PADRAO);
   Object.entries(g || {}).forEach(([k, v]) => { if (v != null) GEO[k] = v; });   // campos ausentes no kit mantêm o padrão
+  montaPote(GEO.pote);
   const faixa = jar.getObjectByName('rotulo_corpo'), disco = jar.getObjectByName('rotulo_tampa');
-  faixa.scale.y = GEO.alt / 15;
-  faixa.rotation.y = AZ_FRENTE - 2 * Math.PI * (GEO.foco != null ? GEO.foco : U_FOCO);
+  if (TARJA_PARCIAL) { faixa.scale.y = 1; faixa.rotation.y = 0; }
+  else {
+    faixa.scale.y = GEO.alt / 15;
+    faixa.rotation.y = AZ_FRENTE - 2 * Math.PI * (GEO.foco != null ? GEO.foco : U_FOCO);
+  }
   disco.scale.set(GEO.tampa / 89.1, GEO.tampa / 89.1, 1);
+  const corP = GEO.corPasta || COR_PASTA_PADRAO;
+  if (corP !== pintaPasta.atual) { pintaPasta(corP); pintaPasta.atual = corP; paste.map.needsUpdate = true; }
   store.geo = GEO;
   stage.requestRender();
 }
+// proporção da arte da tarja (altura ÷ largura) para o canvas da textura
+const aspectoTarja = () => TARJA_PARCIAL ? GEO.pote.tarjaMm[1] / GEO.pote.tarjaMm[0] : GEO.alt / 280;
 aplicaGeo(GEO);
 
 // modo de encaixe da tarja: sempre "encaixar" (nunca esticar/distorcer a arte)
@@ -594,14 +672,15 @@ function applyArt(which, dataURL) {
   const s = slots[which];
   const img = new Image();
   img.onload = () => {
-    const [W, H] = which === 'wrap' ? [FIT.wrap[0], Math.round(FIT.wrap[0] * GEO.alt / 280)] : FIT.top;
+    const [W, H] = which === 'wrap' ? [FIT.wrap[0], Math.round(FIT.wrap[0] * aspectoTarja())] : FIT.top;
     const [c, x] = cv(W, H);
     x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
     const k = Math.min(W / img.width, H / img.height);
     const w = img.width * k, ht = img.height * k;
     x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
-    const t = tex(c, which === 'wrap' ? 1 : 0);
-    if (which === 'wrap') t.wrapS = THREE.RepeatWrapping;
+    const volta = which === 'wrap' && !TARJA_PARCIAL;   // tarja 360° repete na emenda; o adesivo frontal não
+    const t = tex(c, volta ? 1 : 0);
+    if (volta) t.wrapS = THREE.RepeatWrapping;
     s.mat.map = t; s.mat.needsUpdate = true;
     stage.requestRender();
   };
@@ -652,7 +731,6 @@ const CENAS = [
 ];
 const PX = [3300, 2160]; // ~300 dpi, proporção da área útil do A4 paisagem
 
-let _verts = null;
 function vertices() {
   if (_verts) return _verts;
   const out = [], v = new THREE.Vector3();
@@ -827,6 +905,21 @@ if (window.matchMedia('(max-width: 760px) and (orientation: portrait)').matches)
 const mqRetrato = matchMedia('(max-width:760px) and (orientation:portrait)');
 const mqPaisagem = matchMedia('(max-height:500px) and (orientation:landscape)');
 
+/* rótulo da alça acompanha o estado: "Mais opções" (recolhido) / "Recolher" (aberto); teclado também abre e fecha */
+(function () {
+  const txt = toggleUp.querySelector('.txt');
+  const sync = () => {
+    const fechado = up.classList.contains('recolhido');
+    txt.textContent = fechado ? 'Mais opções' : 'Recolher';
+    toggleUp.setAttribute('aria-expanded', String(!fechado));
+  };
+  new MutationObserver(sync).observe(up, { attributes: true, attributeFilter: ['class'] });
+  sync();
+  toggleUp.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); up.classList.toggle('recolhido'); }
+  });
+})();
+
 /* ---------- alça: toque alterna; puxar/arrastar redimensiona e encaixa ---------- */
 (function () {
   let d = null;
@@ -910,21 +1003,60 @@ const MARCA_PADRAO = 'Veleiros do Caribe';
 // id do kit atualmente aplicado no pote — tenta recuperar da sessão anterior
 // comparando com o que foi salvo (senão fica sem nenhum card marcado)
 let kitAtivoId = store.kitAtivoId || null;
-let marcaAtual = store.marcaAtual || 'Todas';
+let marcaAtual = 'Todas';   // definida na primeira tela (escolha da marca)
 
 function pintarMarcas() {
-  const marcas = [...new Set(artes.map(a => a.marca || MARCA_PADRAO))].sort();
-  if (marcas.length < 2) { marcasBar.style.display = 'none'; marcasBar.innerHTML = ''; return; }
-  if (!marcas.includes(marcaAtual) && marcaAtual !== 'Todas') marcaAtual = 'Todas';
+  const marcas = [...new Set(artes.map(a => a.marca || MARCA_PADRAO))];
+  gabaritos.style.display = /veleiros|rota/i.test(marcaAtual) ? '' : 'none';   // gabaritos são do pote padrão Veleiros
+  if (marcas.length < 2 || marcaAtual === 'Todas') { marcasBar.style.display = 'none'; marcasBar.innerHTML = ''; return; }
   marcasBar.style.display = '';
-  marcasBar.innerHTML = ['Todas', ...marcas].map(m =>
-    '<span class="b' + (m === marcaAtual ? ' on' : '') + '" data-marca="' + m.replace(/"/g, '&quot;') + '">' + m + '</span>'
-  ).join('');
-  marcasBar.querySelectorAll('.b').forEach(b => b.addEventListener('click', () => {
-    marcaAtual = b.dataset.marca; store.marcaAtual = marcaAtual;
-    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
-    pintarLib();
-  }));
+  marcasBar.innerHTML = '<span class="b on">' + marcaAtual + '</span><span class="b trocar" role="button" tabindex="0">⇄ Trocar marca</span>';
+  marcasBar.querySelector('.trocar').addEventListener('click', abrirEscolha);
+}
+
+/* ---------- primeira tela: escolha da marca ----------
+   Link direto para uma marca: index.html?marca=jack-fera (pula a escolha). */
+const slugMarca = m => m.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const EXTRAS_MARCA = [{ nome: 'FilderCut · Talco', sub: 'frasco de talco', href: 'frasco.html', thumb: 'frasco/modelos/thumbs/verde-branco.webp', frasco: true }];
+function abrirEscolha() {
+  const marcas = [...new Set(artes.filter(a => a.servidor).map(a => a.marca || MARCA_PADRAO))];
+  if (!marcas.length) return;
+  emGrade.innerHTML = '';
+  marcas.forEach(m => {
+    const kits = artes.filter(a => (a.marca || MARCA_PADRAO) === m && a.tipo === 'kit');
+    const b = document.createElement('button');
+    b.className = 'em-marca'; b.type = 'button';
+    b.innerHTML = '<img alt=""><b></b><span></span>';
+    b.querySelector('img').src = kits[0] ? (kits[0].thumb || kits[0].dataTop) : '';
+    b.querySelector('b').textContent = m;
+    b.querySelector('span').textContent = kits.length + (kits.length === 1 ? ' modelo' : ' modelos');
+    b.addEventListener('click', () => escolherMarca(m));
+    emGrade.appendChild(b);
+  });
+  EXTRAS_MARCA.forEach(x => {
+    const a = document.createElement('a');
+    a.className = 'em-marca'; a.href = x.href;
+    a.innerHTML = '<img alt="" class="' + (x.frasco ? 'frasco' : '') + '" src="' + x.thumb + '"><b>' + x.nome + '</b><span>' + x.sub + '</span>';
+    emGrade.appendChild(a);
+  });
+  escolhaMarca.hidden = false;
+  const p = emGrade.querySelector('.em-marca'); if (p) p.focus();
+}
+function escolherMarca(m) {
+  marcaAtual = m; store.marcaAtual = m;
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+  escolhaMarca.hidden = true;
+  document.title = m + ' — simulador 3D';
+  pintarLib();
+  // abre o kit que já estava aplicado (se for desta marca) ou o primeiro da marca
+  const k = lib.querySelector('figure.ativo') || lib.querySelector('figure');
+  if (k) k.click();
+}
+function iniciarMarca() {
+  const pedida = new URLSearchParams(location.search).get('marca');
+  const marcas = [...new Set(artes.map(a => a.marca || MARCA_PADRAO))];
+  const achada = pedida && marcas.find(m => slugMarca(m) === slugMarca(pedida));
+  if (achada) escolherMarca(achada); else abrirEscolha();
 }
 
 function pintarLib() {
@@ -979,7 +1111,7 @@ function pintarLib() {
         return;
       }
       if (ehKit) {
-        aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco });
+        aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco, pote: a.pote, corPasta: a.corPasta });
         applyArt('top', a.dataTop);
         applyArt('wrap', a.dataWrap);
         store.top = a.dataTop; store.wrap = a.dataWrap;
@@ -1077,7 +1209,7 @@ async function carregarPasta() {
           dataWrap: 'artes/display/' + c.tarja,
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: 'artes/' + c.tampa,
-          alt: c.alt, tampaMm: c.tampaMm, foco: c.foco,
+          alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
@@ -1134,6 +1266,7 @@ if (modoCliente) {
   pintarLib();
   carregarPasta().then(srv => {
     if (srv.length) { artes = srv.concat(artes); pintarLib(); }
+    iniciarMarca();
   });
 } else {
   Promise.all([
@@ -1142,6 +1275,7 @@ if (modoCliente) {
   ]).then(([locais, srv]) => {
     artes = srv.concat(locais || []);
     pintarLib();
+    iniciarMarca();
   });
 }
 

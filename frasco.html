@@ -32,6 +32,7 @@
       border:1px solid rgba(217,164,65,.35);backdrop-filter:blur(8px);
       font-family:"Barlow Condensed",system-ui,sans-serif;color:#f3e2c4}
   #toggleUp{display:none}
+  #up .trocaMarca{align-self:flex-start;padding:5px 12px;border-radius:20px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#f3d590;text-decoration:none;border:1px solid rgba(217,164,65,.6);background:rgba(217,164,65,.14)}
   #up h1{margin:0;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:#e0b25c;font-weight:700}
   #up p{margin:0;font-size:13px;line-height:1.35;color:#bda98c}
   #up hr{width:100%;border:0;border-top:1px solid rgba(217,164,65,.25);margin:2px 0}
@@ -70,16 +71,21 @@
                            background:transparent;padding:2px;cursor:pointer}
   @media (max-width:760px) and (orientation:portrait){
     #up{left:0;right:0;top:auto;bottom:0;width:auto;max-height:60vh;
-        border-radius:16px 16px 0 0;padding-top:20px;transition:max-height .2s ease}
+        border-radius:16px 16px 0 0;padding-top:56px;transition:max-height .2s ease}
     /* recolhido mostra título + faixa de modelos: o cliente desliza e toca vendo o frasco */
-    #up.recolhido{max-height:150px;overflow:hidden}
+    #up.recolhido{max-height:226px;overflow:hidden}
     #up > p:first-of-type{display:none}
     .mods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:none;padding-bottom:2px}
     .mods::-webkit-scrollbar{display:none}
     .mods figure{flex:0 0 46px;height:90px;aspect-ratio:auto}
-    #toggleUp{display:block;position:absolute;top:0;left:0;right:0;height:34px;cursor:grab;touch-action:none;z-index:2;-webkit-tap-highlight-color:transparent}
-    #toggleUp::after{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:3px;background:rgba(217,164,65,.55);transition:.15s}
-    #toggleUp:active::after{width:56px;background:rgba(217,164,65,.9)}
+    #toggleUp{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;position:absolute;top:0;left:0;right:0;height:50px;padding-top:7px;box-sizing:border-box;cursor:grab;touch-action:none;z-index:2;-webkit-tap-highlight-color:transparent;user-select:none}
+    #toggleUp .puxador{width:52px;height:5px;border-radius:3px;background:rgba(217,164,65,.7);transition:.15s}
+    #toggleUp .rotulo{display:flex;align-items:center;gap:6px;padding:4px 14px 4px 10px;border-radius:20px;font:600 12px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#f3d590;border:1px solid rgba(217,164,65,.55);background:rgba(217,164,65,.14)}
+    #toggleUp .rotulo svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+    #up:not(.recolhido) #toggleUp .rotulo svg{transform:rotate(180deg)}
+    #toggleUp:active .puxador{width:64px;background:#e0b25c}
+    #up.recolhido #toggleUp .rotulo{animation:dicaAlca 1.4s ease-in-out 2.5s 3}
+    @keyframes dicaAlca{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}60%{transform:translateY(0)}75%{transform:translateY(-2px)}}
     #up.arrastando{transition:none!important;overflow:hidden}
   }
   /* celular deitado: a barra sai da parte de baixo e vira painel lateral; o pote fica centralizado no espaço restante */
@@ -94,7 +100,8 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <three-d-stage name="frasco-talco" background="#1d1714" autorotate></three-d-stage>
 <div id="up">
-  <div id="toggleUp" title="Mostrar/ocultar painel"></div>
+  <div id="toggleUp" role="button" tabindex="0" aria-expanded="false" title="Toque ou arraste para cima para ver mais opções"><span class="puxador"></span><span class="rotulo"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg><span class="txt">Mais opções</span></span></div>
+  <a class="trocaMarca" href="index.html">⇄ Trocar marca</a>
   <h1>FRASCO · TALCO</h1>
   <p>Escolha o modelo do rótulo:</p>
   <div class="mods" id="mods"></div>
@@ -369,6 +376,21 @@ function rot(btn, texto, icone) {
   btn.querySelector('.tx').textContent = texto;
   if (icone) btn.querySelector('use').setAttribute('href', '#i-' + icone);
 }
+
+/* rótulo da alça acompanha o estado: "Mais opções" (recolhido) / "Recolher" (aberto); teclado também abre e fecha */
+(function () {
+  const txt = toggleUp.querySelector('.txt');
+  const sync = () => {
+    const fechado = up.classList.contains('recolhido');
+    txt.textContent = fechado ? 'Mais opções' : 'Recolher';
+    toggleUp.setAttribute('aria-expanded', String(!fechado));
+  };
+  new MutationObserver(sync).observe(up, { attributes: true, attributeFilter: ['class'] });
+  sync();
+  toggleUp.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); up.classList.toggle('recolhido'); }
+  });
+})();
 
 /* ---------- alça: toque alterna; puxar/arrastar redimensiona e encaixa ---------- */
 (function () {
