@@ -297,7 +297,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-premium-gold.pdf"
  },
  {
   "id": "fildercut-evoluxion-dourado-inclinada",
@@ -314,7 +315,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-inclinada.pdf"
  },
  {
   "id": "fildercut-evoluxion-dourado-arredondada",
@@ -331,7 +333,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-arredondada.pdf"
  },
  {
   "id": "fildercut-evoluxion-dourado-contorno",
@@ -348,7 +351,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-contorno.pdf"
  },
  {
   "id": "fildercut-evoluxion-degrade-inclinada",
@@ -365,7 +369,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-inclinada.pdf"
  },
  {
   "id": "fildercut-evoluxion-degrade-arredondada",
@@ -382,7 +387,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-arredondada.pdf"
  },
  {
   "id": "fildercut-evoluxion-degrade-contorno",
@@ -399,7 +405,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-contorno.pdf"
  },
  {
   "id": "fildercut-evoluxion-vermelho-inclinada",
@@ -416,7 +423,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-inclinada.pdf"
  },
  {
   "id": "fildercut-evoluxion-vermelho-arredondada",
@@ -433,7 +441,8 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-arredondada.pdf"
  },
  {
   "id": "fildercut-evoluxion-vermelho-contorno",
@@ -450,6 +459,7 @@
    ],
    "respiroMm": 3
   },
-  "corPasta": "#e3ecee"
+  "corPasta": "#e3ecee",
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-contorno.pdf"
  }
 ]

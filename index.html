@@ -66,6 +66,7 @@
         border-radius:9px;background:rgba(217,164,65,.05);transition:.12s}
   #up .mosaico button:hover{background:rgba(176,17,24,.22)}
   #up .mosaico button:active{transform:scale(.96)}
+  #up .mosaico button[hidden]{display:none}
   #up .mosaico button:disabled{opacity:.4;cursor:default;pointer-events:none}
   #up .mosaico .ic{width:25px;height:25px;flex:none;fill:none;stroke:#e0b25c;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
   #up .mosaico button:hover .ic{stroke:#f6e8cc}
@@ -142,7 +143,7 @@
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10.5 5 5 5-5"/><path d="M5 20h14"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <script type="application/json" id="bibliotecaEmbutida">{"artes":[]}</script>
 <three-d-stage name="pote-simulador-3d" background="#1d1714" autorotate></three-d-stage>
 <div id="escolhaMarca" role="dialog" aria-modal="true" aria-labelledby="emTitulo">
@@ -174,8 +175,9 @@
     <button id="girar"><svg class="ic" viewBox="0 0 24 24"><use href="#i-play"/></svg><span class="tx">Girar</span></button>
     <button id="abrirTampa"><svg class="ic" viewBox="0 0 24 24"><use href="#i-abrir"/></svg><span class="tx">Abrir tampa</span></button>
     <button id="gravarVideo" title="Gravar vídeo da abertura da tampa"><svg class="ic" viewBox="0 0 24 24"><use href="#i-video"/></svg><span class="tx">Gravar vídeo</span></button>
-    <button id="pdf" title="Salvar PDF (4 cenários)"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pdf"/></svg><span class="tx">Salvar PDF</span></button>
+    <button id="pdf" title="Salvar PDF (4 cenários)"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pdf"/></svg><span class="tx">Mockup (PDF)</span></button>
     <button id="reset" title="Voltar ao original"><svg class="ic" viewBox="0 0 24 24"><use href="#i-reset"/></svg><span class="tx">Original</span></button>
+    <button id="baixarArte" title="Baixar o PDF de impressão (tampa + tarja) do modelo escolhido" hidden><svg class="ic" viewBox="0 0 24 24"><use href="#i-baixar"/></svg><span class="tx">Arte (PDF)</span></button>
     <button id="exportar" title="Exportar HTML para o cliente"><svg class="ic" viewBox="0 0 24 24"><use href="#i-html"/></svg><span class="tx">Exportar HTML</span></button>
   </div>
   <p id="aviso" style="color:#e0b25c"></p>
@@ -875,7 +877,7 @@ pdf.addEventListener('click', () => {
     } catch (e) {
       aviso.textContent = 'Falha ao gerar o PDF: ' + e.message;
     }
-    rot(pdf, 'Salvar PDF');
+    rot(pdf, 'Mockup (PDF)');
   }, 30);
 });
 
@@ -1059,6 +1061,20 @@ function iniciarMarca() {
   if (achada) escolherMarca(achada); else abrirEscolha();
 }
 
+/* ---------- PDF de impressão (tampa + tarja) do modelo escolhido ---------- */
+let kitAtivo = null;
+const nomeArquivoPdf = a => a.pdf.split('/').pop();   // ex.: fildercut-evoluxion-dourado-inclinada.pdf
+function atualizaBaixarArte() {
+  baixarArte.hidden = !(kitAtivo && kitAtivo.pdf);
+  if (!baixarArte.hidden) baixarArte.title = 'Baixar o PDF de impressão (tampa + tarja): ' + kitAtivo.nome;
+}
+baixarArte.addEventListener('click', () => {
+  if (!kitAtivo || !kitAtivo.pdf) return;
+  const el = document.createElement('a');
+  el.href = kitAtivo.pdf; el.download = nomeArquivoPdf(kitAtivo);
+  document.body.appendChild(el); el.click(); el.remove();
+});
+
 function pintarLib() {
   pintarMarcas();
   lib.innerHTML = '';
@@ -1095,7 +1111,9 @@ function pintarLib() {
           el.href = url; el.download = nome;
           document.body.appendChild(el); el.click(); el.remove();
         };
-        if (ehKit) {
+        if (ehKit && a.pdf) {
+          baixarUm(a.pdf, nomeArquivoPdf(a));
+        } else if (ehKit) {
           baixarUm(a.fullTop || a.dataTop, a.nome + ' - tampa');
           setTimeout(() => baixarUm(a.fullWrap || a.dataWrap, a.nome + ' - tarja'), 250);
         } else {
@@ -1116,10 +1134,12 @@ function pintarLib() {
         applyArt('wrap', a.dataWrap);
         store.top = a.dataTop; store.wrap = a.dataWrap;
         kitAtivoId = a.id; store.kitAtivoId = a.id;
+        kitAtivo = a; atualizaBaixarArte();
       } else {
         applyArt(a.slot, a.data);
         store[a.slot] = a.data;
         kitAtivoId = null; store.kitAtivoId = null;
+        kitAtivo = null; atualizaBaixarArte();
       }
       try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (err) {}
       pintarLib();
@@ -1210,6 +1230,7 @@ async function carregarPasta() {
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: 'artes/' + c.tampa,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
+          pdf: c.pdf ? 'artes/' + c.pdf : null,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
@@ -1331,7 +1352,7 @@ reset.addEventListener('click', () => {
     delete store[which];
   });
   COR_ORIG.forEach((c, m) => m.color.copy(c));
-  aplicaGeo(null); delete store.kitAtivoId; kitAtivoId = null; pintarLib();
+  aplicaGeo(null); delete store.kitAtivoId; kitAtivoId = null; kitAtivo = null; atualizaBaixarArte(); pintarLib();
   corPote.value = corTampaPlastico.value = '#0f0e0f';
   stage.requestRender();
   localStorage.setItem(KEY, JSON.stringify(store));
