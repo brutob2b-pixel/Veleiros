@@ -619,9 +619,9 @@
   "id": "undercut-argan",
   "marca": "Undercut",
   "nome": "Argan",
-  "tampa": "undercut/tampa-argan.webp",
-  "tarja": "undercut/tarja-argan.webp",
-  "thumb": "undercut/thumbs/tampa-argan.webp",
+  "tampa": "undercut/tampa-argan-v2.webp",
+  "tarja": "undercut/tarja-argan-v2.webp",
+  "thumb": "undercut/thumbs/tampa-argan-v2.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -631,15 +631,15 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-argan.pdf"
+  "pdf": "undercut/pdf/undercut-argan-v2.pdf"
  },
  {
   "id": "undercut-verde",
   "marca": "Undercut",
   "nome": "Verde",
-  "tampa": "undercut/tampa-verde.webp",
-  "tarja": "undercut/tarja-verde.webp",
-  "thumb": "undercut/thumbs/tampa-verde.webp",
+  "tampa": "undercut/tampa-verde-v2.webp",
+  "tarja": "undercut/tarja-verde-v2.webp",
+  "thumb": "undercut/thumbs/tampa-verde-v2.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -649,6 +649,6 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-verde.pdf"
+  "pdf": "undercut/pdf/undercut-verde-v2.pdf"
  }
 ]
