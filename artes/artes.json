@@ -637,9 +637,9 @@
   "id": "undercut-verde",
   "marca": "Undercut",
   "nome": "Verde",
-  "tampa": "undercut/tampa-verde-v2.webp",
-  "tarja": "undercut/tarja-verde-v2.webp",
-  "thumb": "undercut/thumbs/tampa-verde-v2.webp",
+  "tampa": "undercut/tampa-verde-v3.webp",
+  "tarja": "undercut/tarja-verde-v3.webp",
+  "thumb": "undercut/thumbs/tampa-verde-v3.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -649,6 +649,6 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-verde-v2.pdf"
+  "pdf": "undercut/pdf/undercut-verde-v3.pdf"
  }
 ]
