@@ -21,7 +21,7 @@
   }
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&family=Syne:wght@400;800&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
   html,body{margin:0;height:100%;background:#17120f}
   three-d-stage:not(:defined){visibility:hidden}
@@ -141,6 +141,24 @@
         border-radius:0 16px 16px 0}
     #toggleUp{display:none}
   }
+  /* ---------- assinatura UP Co. (identidade: teal #57999B, Syne + DM Sans, linha LED) ---------- */
+  :root{--up-teal:#57999B;--up-bg:rgba(15,15,15,.85);--up-mid:#888888;--up-white:#F2F2F2}
+  .up-selo{display:inline-flex;align-items:baseline;gap:4px;padding:5px 11px 5px 10px;border-radius:20px;background:var(--up-bg);
+           border:1px solid rgba(87,153,155,.25);box-shadow:0 4px 16px rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+           line-height:1;white-space:nowrap;user-select:none}
+  .up-selo .by{font:400 8.5px "DM Sans",system-ui,sans-serif;color:var(--up-mid);letter-spacing:.04em}
+  .up-selo .up{font:800 13px Syne,"DM Sans",system-ui,sans-serif;color:var(--up-white);letter-spacing:-.02em}
+  .up-selo .dash{font:600 13px "DM Sans",system-ui,sans-serif;color:var(--up-teal)}
+  .up-selo .co{font:400 13px Syne,"DM Sans",system-ui,sans-serif;color:var(--up-mid)}
+  #assinaturaUP{position:fixed;top:14px;right:14px;z-index:40;pointer-events:none}
+  .up-led{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(87,153,155,.45) 15%,rgba(87,153,155,.85) 50%,rgba(87,153,155,.45) 85%,transparent 100%)}
+  .up-credito{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .up-credito .linha{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .up-credito .txt{font:400 10px "DM Sans",system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--up-mid)}
+  .up-rodape{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .up-rodape .up-led{align-self:stretch}
+  .up-rodape .slogan{margin:0;font:400 12px "DM Sans",system-ui,sans-serif;color:var(--up-mid);letter-spacing:.02em}
+  .up-rodape .slogan b{color:var(--up-teal);font-weight:600}
 </style>
 </head>
 <body>
@@ -152,8 +170,10 @@
     <h2 id="emTitulo">Qual marca você quer ver?</h2>
     <p class="em-sub">Toque na marca para abrir o simulador 3D.</p>
     <div class="em-grade" id="emGrade"><p class="em-sub">Carregando marcas…</p></div>
+    <div class="up-rodape"><div class="up-led"></div><div class="up-selo"><span class="by">by</span><span class="up">UP</span><span class="dash">—</span><span class="co">Co.</span></div><p class="slogan">Simulador 3D desenvolvido por UP Co. · <b>o sócio que faltava</b></p></div>
   </div>
 </div>
+<div id="assinaturaUP" class="up-selo" title="Desenvolvido por UP Co. — o sócio que faltava"><span class="by">by</span><span class="up">UP</span><span class="dash">—</span><span class="co">Co.</span></div>
 <div id="up">
   <div id="toggleUp" role="button" tabindex="0" aria-expanded="false" title="Toque ou arraste para cima para ver mais opções"><span class="puxador"></span><span class="rotulo"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg><span class="txt">Mais opções</span></span></div>
   <h1>SUA ARTE</h1>
@@ -252,6 +272,7 @@
   });
 })();
 </script>
+  <div class="up-credito"><div class="up-led"></div><div class="linha"><span class="txt">Simulador 3D</span><span class="up-selo"><span class="by">by</span><span class="up">UP</span><span class="dash">—</span><span class="co">Co.</span></span></div></div>
 </div>
 <script src="three-d-stage.js"></script>
 <script type="module">
@@ -838,7 +859,9 @@ function montarPDF(imagens, dims, legendas) {
     const dx = (W - dw) / 2, dy = H - m - dh;
     const stream = 'q ' + dw.toFixed(2) + ' 0 0 ' + dh.toFixed(2) + ' ' + dx.toFixed(2) + ' ' + dy.toFixed(2) +
       ' cm /Im0 Do Q\nBT /F1 11 Tf ' + dx.toFixed(2) + ' ' + (dy - 18).toFixed(2) + ' Td (' +
-      legendas[i].replace(/[^\x20-\x7e]/g, '-').replace(/[()\\]/g, '') + ') Tj ET\n';
+      legendas[i].replace(/[^\x20-\x7e]/g, '-').replace(/[()\\]/g, '') + ') Tj ET\n' +
+      // assinatura UP Co. (teal da marca) alinhada à direita, sob a imagem
+      '0.341 0.6 0.608 rg BT /F1 9 Tf ' + (dx + dw - 168).toFixed(2) + ' ' + (dy - 18).toFixed(2) + ' Td (by UP Co.  \\267  o s\\363cio que faltava) Tj ET\n';
     addObj('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /XObject << /Im0 ' +
       imgIds[i] + ' 0 R >> /Font << /F1 ' + fontId + ' 0 R >> >> /Contents ' + contentIds[i] + ' 0 R >>\n');
     addObj('<< /Length ' + enc.encode(stream).length + ' >>\nstream\n', enc.encode(stream));
@@ -870,7 +893,7 @@ pdf.addEventListener('click', () => {
     try {
       const shots = CENAS.map(c => renderCena(c.dir, c.roll));
       const blob = montarPDF(shots.map(s => dataURLtoBytes(s.data)), shots.map(s => s.dim),
-                             CENAS.map(c => 'Pasta modeladora - ' + c.nome));
+                             CENAS.map(c => (kitAtivo ? (kitAtivo.marca || MARCA_PADRAO) + ' ' + kitAtivo.nome : 'Mockup 3D') + ' - ' + c.nome));
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url; a.download = 'rotulo-mockup-4-cenarios.pdf';

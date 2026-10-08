@@ -21,7 +21,7 @@
   }
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@500;700&family=Syne:wght@400;800&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
   html,body{margin:0;height:100%;background:#17120f}
   three-d-stage:not(:defined){visibility:hidden}
@@ -94,11 +94,30 @@
         border-radius:0 16px 16px 0}
     #toggleUp{display:none}
   }
+  /* ---------- assinatura UP Co. (identidade: teal #57999B, Syne + DM Sans, linha LED) ---------- */
+  :root{--up-teal:#57999B;--up-bg:rgba(15,15,15,.85);--up-mid:#888888;--up-white:#F2F2F2}
+  .up-selo{display:inline-flex;align-items:baseline;gap:4px;padding:5px 11px 5px 10px;border-radius:20px;background:var(--up-bg);
+           border:1px solid rgba(87,153,155,.25);box-shadow:0 4px 16px rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+           line-height:1;white-space:nowrap;user-select:none}
+  .up-selo .by{font:400 8.5px "DM Sans",system-ui,sans-serif;color:var(--up-mid);letter-spacing:.04em}
+  .up-selo .up{font:800 13px Syne,"DM Sans",system-ui,sans-serif;color:var(--up-white);letter-spacing:-.02em}
+  .up-selo .dash{font:600 13px "DM Sans",system-ui,sans-serif;color:var(--up-teal)}
+  .up-selo .co{font:400 13px Syne,"DM Sans",system-ui,sans-serif;color:var(--up-mid)}
+  #assinaturaUP{position:fixed;top:14px;right:14px;z-index:40;pointer-events:none}
+  .up-led{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(87,153,155,.45) 15%,rgba(87,153,155,.85) 50%,rgba(87,153,155,.45) 85%,transparent 100%)}
+  .up-credito{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .up-credito .linha{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .up-credito .txt{font:400 10px "DM Sans",system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--up-mid)}
+  .up-rodape{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .up-rodape .up-led{align-self:stretch}
+  .up-rodape .slogan{margin:0;font:400 12px "DM Sans",system-ui,sans-serif;color:var(--up-mid);letter-spacing:.02em}
+  .up-rodape .slogan b{color:var(--up-teal);font-weight:600}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol><symbol id="i-abrir" viewBox="0 0 24 24"><path d="M4 13.5h16V20H4z"/><path d="M5 10 17.5 4.5"/></symbol><symbol id="i-fechar" viewBox="0 0 24 24"><path d="M4 9h16v4H4z"/><path d="M5.5 13h13v7h-13z"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12.5" height="12" rx="2.2"/><path d="M15.5 10.5 21 7.5v9l-5.5-3z"/></symbol><symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h6"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4v5h5"/></symbol><symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></symbol><symbol id="i-png" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.6"/><path d="m3 17 5-5 4 4 3-3 6 5"/></symbol></svg>
 <three-d-stage name="frasco-talco" background="#1d1714" autorotate></three-d-stage>
+<div id="assinaturaUP" class="up-selo" title="Desenvolvido por UP Co. — o sócio que faltava"><span class="by">by</span><span class="up">UP</span><span class="dash">—</span><span class="co">Co.</span></div>
 <div id="up">
   <div id="toggleUp" role="button" tabindex="0" aria-expanded="false" title="Toque ou arraste para cima para ver mais opções"><span class="puxador"></span><span class="rotulo"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg><span class="txt">Mais opções</span></span></div>
   <a class="trocaMarca" href="index.html">⇄ Trocar marca</a>
@@ -122,6 +141,7 @@
     <input type="file" id="fileFrente" accept="image/png,image/webp,image/jpeg">
   </label>
   <p>Frasco estimado a partir do contorno do rótulo (sem medidas do frasco real): ~65 × 36 × 172 mm.</p>
+  <div class="up-credito"><div class="up-led"></div><div class="linha"><span class="txt">Simulador 3D</span><span class="up-selo"><span class="by">by</span><span class="up">UP</span><span class="dash">—</span><span class="co">Co.</span></span></div></div>
 </div>
 <script src="three-d-stage.js"></script>
 <script type="module">
