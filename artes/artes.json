@@ -614,5 +614,41 @@
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-contorno.pdf",
   "selo": "Extra Forte"
+ },
+ {
+  "id": "undercut-argan",
+  "marca": "Undercut",
+  "nome": "Argan",
+  "tampa": "undercut/tampa-argan.webp",
+  "tarja": "undercut/tarja-argan.webp",
+  "thumb": "undercut/thumbs/tampa-argan.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    189.9,
+    16.7
+   ],
+   "respiroMm": 1.5,
+   "corpoMm": 23
+  },
+  "pdf": "undercut/pdf/undercut-argan.pdf"
+ },
+ {
+  "id": "undercut-verde",
+  "marca": "Undercut",
+  "nome": "Verde",
+  "tampa": "undercut/tampa-verde.webp",
+  "tarja": "undercut/tarja-verde.webp",
+  "thumb": "undercut/thumbs/tampa-verde.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    189.9,
+    17.8
+   ],
+   "respiroMm": 1.5,
+   "corpoMm": 23
+  },
+  "pdf": "undercut/pdf/undercut-verde.pdf"
  }
 ]

@@ -410,7 +410,7 @@ const paste = new THREE.MeshPhysicalMaterial({
   clearcoat: .35, clearcoatRoughness: .2
 });
 const labelTop = new THREE.MeshStandardMaterial({ name: 'rotulo_tampa', map: tex(topC), roughness: .22, metalness: .12 });
-const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: tex(wrapC), roughness: .26, metalness: .12 });
+const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: tex(wrapC), roughness: .26, metalness: .12, transparent: true, alphaTest: .02 });
 
 /* ---------- geometria: pote Ø85 × 38 mm ---------- */
 const R = 0.04406, LID_R = 0.0453, BODY_H = 0.020, LID_H = 0.020, OVER = 0.002;
@@ -677,7 +677,8 @@ function applyArt(which, dataURL) {
   img.onload = () => {
     const [W, H] = which === 'wrap' ? [FIT.wrap[0], Math.round(FIT.wrap[0] * aspectoTarja())] : FIT.top;
     const [c, x] = cv(W, H);
-    x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H);
+    if (which === 'wrap') x.clearRect(0, 0, W, H);           // tarja: áreas transparentes da arte mostram o pote
+    else { x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H); }
     const k = Math.min(W / img.width, H / img.height);
     const w = img.width * k, ht = img.height * k;
     x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
@@ -1117,11 +1118,27 @@ function atualizaBaixarArte() {
   baixarArte.hidden = !(kitAtivo && kitAtivo.pdf);
   if (!baixarArte.hidden) baixarArte.title = 'Baixar o PDF de impressão (tampa + tarja): ' + kitAtivo.nome;
 }
-baixarArte.addEventListener('click', () => {
-  if (!kitAtivo || !kitAtivo.pdf) return;
-  const el = document.createElement('a');
-  el.href = kitAtivo.pdf; el.download = nomeArquivoPdf(kitAtivo);
-  document.body.appendChild(el); el.click(); el.remove();
+/* download direto na tela do app: baixa o arquivo como blob "genérico" e salva com o nome certo.
+   Um link comum para .pdf faz o celular/navegador abrir o visualizador numa página nova. */
+async function baixarArquivo(url, nome) {
+  try {
+    const r = await fetch(url, { cache: 'no-store' });
+    if (!r.ok) throw new Error(r.status);
+    const blob = new Blob([await r.arrayBuffer()], { type: 'application/octet-stream' });
+    const u = URL.createObjectURL(blob);
+    const el = document.createElement('a');
+    el.href = u; el.download = nome;
+    document.body.appendChild(el); el.click(); el.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 15000);
+  } catch (e) {
+    aviso.textContent = 'Não consegui baixar o arquivo agora. Tente de novo.';
+  }
+}
+baixarArte.addEventListener('click', async () => {
+  if (!kitAtivo || !kitAtivo.pdf || baixarArte.disabled) return;
+  baixarArte.disabled = true; rot(baixarArte, 'Baixando…');
+  await baixarArquivo(kitAtivo.pdf, nomeArquivoPdf(kitAtivo));
+  baixarArte.disabled = false; rot(baixarArte, 'Arte (PDF)');
 });
 
 function pintarLib() {
@@ -1157,9 +1174,8 @@ function pintarLib() {
       if (act === 'dl') {
         e.stopPropagation();
         const baixarUm = (url, nome) => {
-          const el = document.createElement('a');
-          el.href = url; el.download = nome;
-          document.body.appendChild(el); el.click(); el.remove();
+          const ext = (url.match(/^data:image\/(\w+)/) || url.match(/\.(\w+)(?:\?|$)/) || [, ''])[1];
+          baixarArquivo(url, ext && !nome.endsWith('.' + ext) ? nome + '.' + ext : nome);
         };
         if (ehKit && a.pdf) {
           baixarUm(a.pdf, nomeArquivoPdf(a));
