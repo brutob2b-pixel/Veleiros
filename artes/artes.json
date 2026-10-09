@@ -705,5 +705,24 @@
   },
   "pdf": "undercut/pdf/undercut-verde-v3.pdf",
   "tarjaHd": "hd/undercut/tarja-verde-v3.webp"
+ },
+ {
+  "id": "undercut-rosa",
+  "marca": "Undercut",
+  "nome": "Rosa",
+  "tampa": "undercut/tampa-rosa.webp",
+  "tarja": "undercut/tarja-rosa.webp",
+  "thumb": "undercut/thumbs/tampa-rosa.webp",
+  "tampaMm": 85,
+  "pote": {
+   "tarjaMm": [
+    189.9,
+    18.6
+   ],
+   "respiroMm": 1.5,
+   "corpoMm": 23
+  },
+  "pdf": "undercut/pdf/undercut-rosa.pdf",
+  "tarjaHd": "hd/undercut/tarja-rosa.webp"
  }
 ]
