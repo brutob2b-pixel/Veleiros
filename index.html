@@ -430,8 +430,37 @@ const paste = new THREE.MeshPhysicalMaterial({
   name: 'pasta_morango', map: tex(pasteC), roughness: .42, metalness: 0,
   clearcoat: .35, clearcoatRoughness: .2
 });
-const labelTop = new THREE.MeshStandardMaterial({ name: 'rotulo_tampa', map: tex(topC), roughness: .22, metalness: .12 });
-const labelWrap = new THREE.MeshStandardMaterial({ name: 'rotulo_corpo', map: tex(wrapC), roughness: .26, metalness: .12, transparent: true, alphaTest: .02 });
+/* rótulos brilhantes (verniz/laminação como nos potes reais): verniz transparente por cima da impressão
+   + um "estúdio" de reflexo só para eles (duas softboxes e um piso claro), que cria a faixa de luz ao girar */
+const reflexoEstudio = (() => {
+  // mapa HDR (valores acima de 1): o verniz reflete só ~4% da luz, então as faixas precisam ser bem mais fortes que o fundo
+  const W = 512, H = 256, px = new Uint16Array(W * H * 4), hf = THREE.DataUtils.toHalfFloat;   // half-float: filtra bem também em GPU de celular
+  const suave = (d, w) => Math.max(0, 1 - Math.pow(Math.abs(d) / w, 4));     // borda macia
+  const faixas = [[.12, 9, 20], [.37, 6, 13], [.62, 9, 20], [.87, 6, 13]];    // [posição, meia-largura px, intensidade]
+  for (let y = 0; y < H; y++) {
+    const v = y / H;
+    let base = v < .5 ? .06 + (.5 - v) * .1 : .08 + (v - .5) * .22;          // fundo escuro de estúdio, piso um pouco mais claro
+    let teto = v < .16 ? 5 * (1 - v / .16) : 0;                               // teto claro (brilho do disco da tampa)
+    const altura = suave(v - .48, .2);
+    for (let xx = 0; xx < W; xx++) {
+      let L = base + teto;
+      for (const [p, w, k] of faixas) {
+        let d = xx - p * W; d -= Math.round(d / W) * W;
+        L += k * suave(d, w) * altura;
+      }
+      const o = (y * W + xx) * 4; px[o] = hf(L); px[o + 1] = hf(L * .985); px[o + 2] = hf(L * .96); px[o + 3] = hf(1);
+    }
+  }
+  const t = new THREE.DataTexture(px, W, H, THREE.RGBAFormat, THREE.HalfFloatType);
+  t.mapping = THREE.EquirectangularReflectionMapping; t.magFilter = t.minFilter = THREE.LinearFilter; t.needsUpdate = true;
+  const pm = new THREE.PMREMGenerator(stage._renderer);
+  const env = pm.fromEquirectangular(t).texture; pm.dispose(); t.dispose();
+  return env;
+})();
+// impressão quase sem reflexo próprio (specularIntensity baixo) + verniz bem liso por cima (clearcoat)
+const VERNIZ = { roughness: .5, metalness: 0, specularIntensity: .2, clearcoat: 1, clearcoatRoughness: .03, envMap: reflexoEstudio, envMapIntensity: 1 };
+const labelTop = new THREE.MeshPhysicalMaterial(Object.assign({ name: 'rotulo_tampa', map: tex(topC) }, VERNIZ));
+const labelWrap = new THREE.MeshPhysicalMaterial(Object.assign({ name: 'rotulo_corpo', map: tex(wrapC), transparent: true, alphaTest: .02 }, VERNIZ));
 
 /* ---------- geometria: pote Ø85 × 38 mm ---------- */
 const R = 0.04406, LID_R = 0.0453, BODY_H = 0.020, LID_H = 0.020, OVER = 0.002;
