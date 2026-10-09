@@ -666,7 +666,7 @@ const store = JSON.parse(localStorage.getItem(KEY) || '{}');
      corPasta cor do produto dentro do pote (ex.: gel)
    A tampa nunca muda de forma. */
 let _verts = null;   // cache de vértices do enquadramento do PDF (zerado quando o pote muda)
-const GEO_PADRAO = { alt: 15, tampa: 89.1, foco: null, pote: null, corPasta: null };
+const GEO_PADRAO = { alt: 15, tampa: 89.1, foco: null, pote: null, corPasta: null, acabamento: null };
 const COR_PASTA_PADRAO = '#f3dfe2';
 let GEO = Object.assign({}, GEO_PADRAO, store.geo || {});
 let POTE_CHAVE = JSON.stringify([BODY_H * 1000, null, 3]), TARJA_PARCIAL = false;
@@ -712,8 +712,49 @@ function aplicaGeo(g) {
   disco.scale.set(GEO.tampa / 89.1, GEO.tampa / 89.1, 1);
   const corP = GEO.corPasta || COR_PASTA_PADRAO;
   if (corP !== pintaPasta.atual) { pintaPasta(corP); pintaPasta.atual = corP; paste.map.needsUpdate = true; }
+  aplicaAcabamento(GEO.acabamento);
   store.geo = GEO;
   stage.requestRender();
+}
+/* ---------- acabamento do pote por kit: cor + pintura metálica com flocos discretos (tipo pintura automotiva) ----------
+   kit no artes.json: "acabamento": { "cor": "#62388e", "glitter": true } — vale para corpo e tampa */
+const PECAS_POTE = ['corpo', 'fundo_pote', 'base_pe'], PECAS_TAMPA = ['tampa_lateral', 'tampa_topo', 'aro_base_tampa'];
+const MAT_ORIGINAL = new Map([...PECAS_POTE, ...PECAS_TAMPA].map(n => [n, jar.getObjectByName(n).material]));
+const flocos = (() => {   // normal map com milhares de flocos minúsculos inclinados: cintilam só quando pegam luz
+  const S = 512, [c, x] = cv(S, S);
+  x.fillStyle = 'rgb(128,128,255)'; x.fillRect(0, 0, S, S);
+  for (let i = 0; i < 14000; i++) {
+    const a = Math.random() * Math.PI * 2, k = 40 + Math.random() * 80;
+    x.fillStyle = `rgb(${Math.round(128 + Math.cos(a) * k)},${Math.round(128 + Math.sin(a) * k)},${Math.round(255 - k * .6)})`;
+    x.fillRect(Math.random() * S, Math.random() * S, 1 + (Math.random() < .3), 1 + (Math.random() < .3));
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.NoColorSpace;
+  return t;
+})();
+// repetição por peça para os flocos ficarem redondos e do mesmo tamanho (~20 mm por ladrilho de 512 px)
+const REPETE_FLOCOS = { pote: [14, 2.2], tampaLat: [14, 1], tampaTopo: [4.5, 4.5] };
+const pecaDe = n => PECAS_POTE.includes(n) ? 'pote' : (n === 'tampa_topo' ? 'tampaTopo' : 'tampaLat');
+const pinturas = {};
+function pintura(cor, glitter, peca) {
+  const k = cor + glitter + peca;
+  if (!pinturas[k]) pinturas[k] = new THREE.MeshPhysicalMaterial(Object.assign({
+    name: 'pintura_' + peca, color: cor, side: THREE.DoubleSide,
+    metalness: glitter ? .5 : .1, roughness: glitter ? .36 : .3,
+    clearcoat: 1, clearcoatRoughness: .05, envMap: reflexoEstudio, envMapIntensity: .8
+  }, glitter ? { normalMap: (() => { const t = flocos.clone(); t.repeat.set(...REPETE_FLOCOS[peca]); t.needsUpdate = true; return t; })(),
+                 normalScale: new THREE.Vector2(.22, .22) } : {}));
+  return pinturas[k];
+}
+function aplicaAcabamento(ac) {
+  [...PECAS_POTE, ...PECAS_TAMPA].forEach(n => {
+    const m = jar.getObjectByName(n);
+    m.material = ac ? pintura(ac.cor, !!ac.glitter, pecaDe(n)) : MAT_ORIGINAL.get(n);
+  });
+  if (typeof corPote !== 'undefined') {
+    const cor = '#' + jar.getObjectByName('corpo').material.color.getHexString();
+    corPote.value = cor; corTampaPlastico.value = '#' + jar.getObjectByName('tampa_lateral').material.color.getHexString();
+  }
 }
 // proporção da arte da tarja (altura ÷ largura) para o canvas da textura
 const aspectoTarja = () => TARJA_PARCIAL ? GEO.pote.tarjaMm[1] / GEO.pote.tarjaMm[0] : GEO.alt / 280;
@@ -1248,8 +1289,9 @@ function pintarLib() {
         return;
       }
       if (ehKit) {
-        aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco, pote: a.pote, corPasta: a.corPasta });
-        applyArt('top', a.dataTop);
+        aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco, pote: a.pote, corPasta: a.corPasta, acabamento: a.acabamento });
+        if (a.dataTop) applyArt('top', a.dataTop);
+        jar.getObjectByName('rotulo_tampa').visible = !!a.dataTop;   // kit sem arte de tampa: tampa lisa
         const urlTarja = (MAXTEX > 4096 && a.dataWrapHd) || a.dataWrap;
         applyArt('wrap', urlTarja);
         store.top = a.dataTop; store.wrap = urlTarja;
@@ -1342,18 +1384,19 @@ async function carregarPasta() {
           marca: c.marca || MARCA_PADRAO,
           // miniatura leve pra galeria (não baixa nada em resolução alta à toa)
           thumb: 'artes/' + (c.thumb || c.tampa),
+          semTampa: !c.tampa,
           // versão "display" (tamanho real de uso na textura 3D: 2048² / 4096
           // de largura) — é isso que baixa ao trocar de kit, bem mais leve que
           // o arquivo mestre. Se não existir em artes/display/, cai pro arquivo
           // original (compatibilidade com kits enviados por FTP sem essa pasta).
-          dataTop: 'artes/display/' + c.tampa,
+          dataTop: c.tampa ? 'artes/display/' + c.tampa : null,
           dataWrap: 'artes/display/' + c.tarja,
           // tarja em alta (~8000 px) para telas/GPUs que aguentam textura de 8192: fica tão nítida quanto a tampa de perto
           dataWrapHd: c.tarjaHd ? 'artes/' + c.tarjaHd : null,
           // arquivo mestre em resolução real — só usado no botão de download
-          fullTop: 'artes/' + c.tampa,
+          fullTop: c.tampa ? 'artes/' + c.tampa : null,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
-          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null,
+          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null, acabamento: c.acabamento || null,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
@@ -1462,11 +1505,10 @@ exportar.addEventListener('click', async () => {
 });
 
 /* ---------- cor do pote e da tampa (plástico; a arte dos rótulos não muda) ---------- */
-const POTE_MATS = [plasticSide2, plasticFoot];
-const TAMPA_MATS = [plasticSide, plastic];
-const COR_ORIG = new Map([...POTE_MATS, ...TAMPA_MATS].map(m => [m, m.color.clone()]));
-corPote.addEventListener('input', () => { POTE_MATS.forEach(m => m.color.set(corPote.value)); stage.requestRender(); });
-corTampaPlastico.addEventListener('input', () => { TAMPA_MATS.forEach(m => m.color.set(corTampaPlastico.value)); stage.requestRender(); });
+const COR_ORIG = new Map([...MAT_ORIGINAL.values()].map(m => [m, m.color.clone()]));
+const pintaPecas = (pecas, cor) => { new Set(pecas.map(n => jar.getObjectByName(n).material)).forEach(m => m.color.set(cor)); stage.requestRender(); };
+corPote.addEventListener('input', () => pintaPecas(PECAS_POTE, corPote.value));
+corTampaPlastico.addEventListener('input', () => pintaPecas(PECAS_TAMPA, corTampaPlastico.value));
 
 reset.addEventListener('click', () => {
   Object.entries(slots).forEach(([which, s]) => {
@@ -1475,6 +1517,8 @@ reset.addEventListener('click', () => {
     delete store[which];
   });
   COR_ORIG.forEach((c, m) => m.color.copy(c));
+  Object.values(pinturas).forEach(m => m.dispose()); for (const k in pinturas) delete pinturas[k];
+  jar.getObjectByName('rotulo_tampa').visible = true;
   aplicaGeo(null); delete store.kitAtivoId; kitAtivoId = null; kitAtivo = null; atualizaBaixarArte(); pintarLib();
   corPote.value = corTampaPlastico.value = '#0f0e0f';
   stage.requestRender();

@@ -669,6 +669,132 @@
   "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho-v2.webp"
  },
  {
+  "id": "fildercut-cera-roxo-pincel",
+  "marca": "FilderCut Cera",
+  "nome": "Logo roxo · Pincel",
+  "tarja": "fildercut-cera/tarja-roxo-pincel.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-roxo-pincel.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-roxo-pincel.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-roxo-pincel.pdf"
+ },
+ {
+  "id": "fildercut-cera-roxo-bastao",
+  "marca": "FilderCut Cera",
+  "nome": "Logo roxo · Bastão",
+  "tarja": "fildercut-cera/tarja-roxo-bastao.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-roxo-bastao.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-roxo-bastao.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-roxo-bastao.pdf"
+ },
+ {
+  "id": "fildercut-cera-roxo-classica",
+  "marca": "FilderCut Cera",
+  "nome": "Logo roxo · Clássica",
+  "tarja": "fildercut-cera/tarja-roxo-classica.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-roxo-classica.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-roxo-classica.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-roxo-classica.pdf"
+ },
+ {
+  "id": "fildercut-cera-branco-pincel",
+  "marca": "FilderCut Cera",
+  "nome": "Logo branco · Pincel",
+  "tarja": "fildercut-cera/tarja-branco-pincel.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-branco-pincel.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-branco-pincel.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-branco-pincel.pdf"
+ },
+ {
+  "id": "fildercut-cera-branco-bastao",
+  "marca": "FilderCut Cera",
+  "nome": "Logo branco · Bastão",
+  "tarja": "fildercut-cera/tarja-branco-bastao.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-branco-bastao.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-branco-bastao.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-branco-bastao.pdf"
+ },
+ {
+  "id": "fildercut-cera-branco-classica",
+  "marca": "FilderCut Cera",
+  "nome": "Logo branco · Clássica",
+  "tarja": "fildercut-cera/tarja-branco-classica.webp",
+  "tarjaHd": "hd/fildercut-cera/tarja-branco-classica.webp",
+  "thumb": "fildercut-cera/thumbs/tarja-branco-classica.webp",
+  "pote": {
+   "tarjaMm": [
+    135,
+    34.8
+   ],
+   "respiroMm": 3
+  },
+  "acabamento": {
+   "cor": "#62388e",
+   "glitter": true
+  },
+  "corPasta": "#efe7da",
+  "pdf": "fildercut-cera/pdf/fildercut-cera-branco-classica.pdf"
+ },
+ {
   "id": "undercut-argan",
   "marca": "Undercut",
   "nome": "Argan",
