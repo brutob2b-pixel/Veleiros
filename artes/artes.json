@@ -713,9 +713,9 @@
   "id": "undercut-verde",
   "marca": "Undercut",
   "nome": "Verde",
-  "tampa": "undercut/tampa-verde-v3.webp",
-  "tarja": "undercut/tarja-verde-v3.webp",
-  "thumb": "undercut/thumbs/tampa-verde-v3.webp",
+  "tampa": "undercut/tampa-verde-v4.webp",
+  "tarja": "undercut/tarja-verde-v4.webp",
+  "thumb": "undercut/thumbs/tampa-verde-v4.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -725,16 +725,16 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-verde-v3.pdf",
-  "tarjaHd": "hd/undercut/tarja-verde-v3.webp"
+  "pdf": "undercut/pdf/undercut-verde-v4.pdf",
+  "tarjaHd": "hd/undercut/tarja-verde-v4.webp"
  },
  {
   "id": "undercut-rosa",
   "marca": "Undercut",
   "nome": "Rosa",
-  "tampa": "undercut/tampa-rosa.webp",
-  "tarja": "undercut/tarja-rosa.webp",
-  "thumb": "undercut/thumbs/tampa-rosa.webp",
+  "tampa": "undercut/tampa-rosa-v2.webp",
+  "tarja": "undercut/tarja-rosa-v2.webp",
+  "thumb": "undercut/thumbs/tampa-rosa-v2.webp",
   "tampaMm": 85,
   "pote": {
    "tarjaMm": [
@@ -744,7 +744,7 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-rosa.pdf",
-  "tarjaHd": "hd/undercut/tarja-rosa.webp"
+  "pdf": "undercut/pdf/undercut-rosa-v2.pdf",
+  "tarjaHd": "hd/undercut/tarja-rosa-v2.webp"
  }
 ]
