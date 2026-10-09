@@ -741,7 +741,8 @@ function pintura(cor, glitter, peca) {
   if (!pinturas[k]) pinturas[k] = new THREE.MeshPhysicalMaterial(Object.assign({
     name: 'pintura_' + peca, color: cor, side: THREE.DoubleSide,
     metalness: glitter ? .5 : .1, roughness: glitter ? .36 : .3,
-    clearcoat: 1, clearcoatRoughness: .05, envMap: reflexoEstudio, envMapIntensity: .8
+    clearcoat: 1, clearcoatRoughness: .05, envMap: reflexoEstudio,
+    envMapIntensity: peca === 'tampaTopo' ? .3 : .7   // topo liso da tampa refletia o teto inteiro e ficava branco
   }, glitter ? { normalMap: (() => { const t = flocos.clone(); t.repeat.set(...REPETE_FLOCOS[peca]); t.needsUpdate = true; return t; })(),
                  normalScale: new THREE.Vector2(.22, .22) } : {}));
   return pinturas[k];
@@ -1250,7 +1251,7 @@ function pintarLib() {
       '<div class="act"><span data-a="dl" title="Baixar">↓</span>' +
       (modoCliente || a.servidor ? '' : '<span data-a="rm" title="Remover">×</span>') + '</div>' +
       (a.selo ? '<span class="selo">' + a.selo + '</span>' : '') +
-      '<figcaption>' + a.nome + '</figcaption>';
+      (a.semNome ? '' : '<figcaption>' + a.nome + '</figcaption>');   // semNome: cartão só com a imagem
     const im = f.querySelector('img');
     im.onload = () => {
       if (ehKit) return; // resolução checada nos dois arquivos do kit, não no preview
@@ -1396,7 +1397,7 @@ async function carregarPasta() {
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: c.tampa ? 'artes/' + c.tampa : null,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
-          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null, acabamento: c.acabamento || null,
+          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null, semNome: !!c.semNome, acabamento: c.acabamento || null,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
