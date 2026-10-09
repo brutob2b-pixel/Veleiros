@@ -5,7 +5,8 @@
   "tampa": "tampa-01.webp",
   "tarja": "tarja-01.webp",
   "nome": "Black Dourado",
-  "thumb": "thumbs/tampa-01.webp"
+  "thumb": "thumbs/tampa-01.webp",
+  "tarjaHd": "hd/tarja-01.webp"
  },
  {
   "id": "black-prata",
@@ -13,7 +14,8 @@
   "tampa": "tampa-02.webp",
   "tarja": "tarja-02.webp",
   "nome": "Black Prata",
-  "thumb": "thumbs/tampa-02.webp"
+  "thumb": "thumbs/tampa-02.webp",
+  "tarjaHd": "hd/tarja-02.webp"
  },
  {
   "id": "classic-dourado",
@@ -21,7 +23,8 @@
   "tampa": "tampa-03.webp",
   "tarja": "tarja-03.webp",
   "nome": "Classic Dourado",
-  "thumb": "thumbs/tampa-03.webp"
+  "thumb": "thumbs/tampa-03.webp",
+  "tarjaHd": "hd/tarja-03.webp"
  },
  {
   "id": "classic-prata",
@@ -29,7 +32,8 @@
   "tampa": "tampa-04.webp",
   "tarja": "tarja-04.webp",
   "nome": "Classic Prata",
-  "thumb": "thumbs/tampa-04.webp"
+  "thumb": "thumbs/tampa-04.webp",
+  "tarjaHd": "hd/tarja-04.webp"
  },
  {
   "id": "light-dourado",
@@ -37,7 +41,8 @@
   "tampa": "tampa-05.webp",
   "tarja": "tarja-05.webp",
   "nome": "Light Dourada",
-  "thumb": "thumbs/tampa-05.webp"
+  "thumb": "thumbs/tampa-05.webp",
+  "tarjaHd": "hd/tarja-05.webp"
  },
  {
   "id": "light-prata",
@@ -45,7 +50,8 @@
   "tampa": "tampa-06.webp",
   "tarja": "tarja-06.webp",
   "nome": "Light Prata",
-  "thumb": "thumbs/tampa-06.webp"
+  "thumb": "thumbs/tampa-06.webp",
+  "tarjaHd": "hd/tarja-06.webp"
  },
  {
   "id": "premium-dourado",
@@ -53,7 +59,8 @@
   "tampa": "tampa-07.webp",
   "tarja": "tarja-07.webp",
   "nome": "Premium Dourada",
-  "thumb": "thumbs/tampa-07.webp"
+  "thumb": "thumbs/tampa-07.webp",
+  "tarjaHd": "hd/tarja-07.webp"
  },
  {
   "id": "premium-prata",
@@ -61,7 +68,8 @@
   "tampa": "tampa-08.webp",
   "tarja": "tarja-08.webp",
   "nome": "Premium Prata",
-  "thumb": "thumbs/tampa-08.webp"
+  "thumb": "thumbs/tampa-08.webp",
+  "tarjaHd": "hd/tarja-08.webp"
  },
  {
   "id": "morango-prata",
@@ -69,7 +77,8 @@
   "tampa": "tampa-09.webp",
   "tarja": "tarja-09.webp",
   "nome": "Morango Prata",
-  "thumb": "thumbs/tampa-09.webp"
+  "thumb": "thumbs/tampa-09.webp",
+  "tarjaHd": "hd/tarja-09.webp"
  },
  {
   "id": "morango-dourado",
@@ -77,7 +86,8 @@
   "tampa": "tampa-10.webp",
   "tarja": "tarja-10.webp",
   "nome": "Morango Dourado",
-  "thumb": "thumbs/tampa-10.webp"
+  "thumb": "thumbs/tampa-10.webp",
+  "tarjaHd": "hd/tarja-10.webp"
  },
  {
   "id": "rota-black-dourado",
@@ -85,7 +95,8 @@
   "tampa": "rota-do-caribe/tampa-black-dourado.webp",
   "tarja": "rota-do-caribe/tarja-black-dourado.webp",
   "nome": "Black Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-black-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-black-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-black-dourado.webp"
  },
  {
   "id": "rota-black-prata",
@@ -93,7 +104,8 @@
   "tampa": "rota-do-caribe/tampa-black-prata.webp",
   "tarja": "rota-do-caribe/tarja-black-prata.webp",
   "nome": "Black Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-black-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-black-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-black-prata.webp"
  },
  {
   "id": "rota-classic-dourado",
@@ -101,7 +113,8 @@
   "tampa": "rota-do-caribe/tampa-classic-dourado.webp",
   "tarja": "rota-do-caribe/tarja-classic-dourado.webp",
   "nome": "Classic Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-classic-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-classic-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-classic-dourado.webp"
  },
  {
   "id": "rota-classic-prata",
@@ -109,7 +122,8 @@
   "tampa": "rota-do-caribe/tampa-classic-prata.webp",
   "tarja": "rota-do-caribe/tarja-classic-prata.webp",
   "nome": "Classic Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-classic-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-classic-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-classic-prata.webp"
  },
  {
   "id": "rota-light-dourado",
@@ -117,7 +131,8 @@
   "tampa": "rota-do-caribe/tampa-light-dourado.webp",
   "tarja": "rota-do-caribe/tarja-light-dourado.webp",
   "nome": "Light Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-light-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-light-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-light-dourado.webp"
  },
  {
   "id": "rota-light-prata",
@@ -125,7 +140,8 @@
   "tampa": "rota-do-caribe/tampa-light-prata.webp",
   "tarja": "rota-do-caribe/tarja-light-prata.webp",
   "nome": "Light Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-light-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-light-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-light-prata.webp"
  },
  {
   "id": "rota-premium-dourado",
@@ -133,7 +149,8 @@
   "tampa": "rota-do-caribe/tampa-premium-dourado.webp",
   "tarja": "rota-do-caribe/tarja-premium-dourado.webp",
   "nome": "Premium Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-premium-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-premium-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-premium-dourado.webp"
  },
  {
   "id": "rota-premium-prata",
@@ -141,7 +158,8 @@
   "tampa": "rota-do-caribe/tampa-premium-prata.webp",
   "tarja": "rota-do-caribe/tarja-premium-prata.webp",
   "nome": "Premium Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-premium-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-premium-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-premium-prata.webp"
  },
  {
   "id": "rota-morango-dourado",
@@ -149,7 +167,8 @@
   "tampa": "rota-do-caribe/tampa-morango-dourado.webp",
   "tarja": "rota-do-caribe/tarja-morango-dourado.webp",
   "nome": "Morango Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-morango-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-morango-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-morango-dourado.webp"
  },
  {
   "id": "rota-morango-prata",
@@ -157,7 +176,8 @@
   "tampa": "rota-do-caribe/tampa-morango-prata.webp",
   "tarja": "rota-do-caribe/tarja-morango-prata.webp",
   "nome": "Morango Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-morango-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-morango-prata.webp"
  },
  {
   "id": "pistache-claro-dourado",
@@ -165,7 +185,8 @@
   "tampa": "pistache/tampa-claro-dourado.webp",
   "tarja": "pistache/tarja-dourado.webp",
   "nome": "Pistache Claro Dourado",
-  "thumb": "pistache/thumbs/tampa-claro-dourado.webp"
+  "thumb": "pistache/thumbs/tampa-claro-dourado.webp",
+  "tarjaHd": "pistache/tarja-dourado.webp"
  },
  {
   "id": "pistache-claro-prata",
@@ -173,7 +194,8 @@
   "tampa": "pistache/tampa-claro-prata.webp",
   "tarja": "pistache/tarja-prata.webp",
   "nome": "Pistache Claro Prata",
-  "thumb": "pistache/thumbs/tampa-claro-prata.webp"
+  "thumb": "pistache/thumbs/tampa-claro-prata.webp",
+  "tarjaHd": "pistache/tarja-prata.webp"
  },
  {
   "id": "pistache-veleiro-dourado",
@@ -181,7 +203,8 @@
   "tampa": "pistache/tampa-veleiro-dourado.webp",
   "tarja": "pistache/tarja-dourado.webp",
   "nome": "Pistache Veleiro Dourado",
-  "thumb": "pistache/thumbs/tampa-veleiro-dourado.webp"
+  "thumb": "pistache/thumbs/tampa-veleiro-dourado.webp",
+  "tarjaHd": "pistache/tarja-dourado.webp"
  },
  {
   "id": "pistache-veleiro-prata",
@@ -189,7 +212,8 @@
   "tampa": "pistache/tampa-veleiro-prata.webp",
   "tarja": "pistache/tarja-prata.webp",
   "nome": "Pistache Veleiro Prata",
-  "thumb": "pistache/thumbs/tampa-veleiro-prata.webp"
+  "thumb": "pistache/thumbs/tampa-veleiro-prata.webp",
+  "tarjaHd": "pistache/tarja-prata.webp"
  },
  {
   "id": "pistache-oliva-dourado",
@@ -197,7 +221,8 @@
   "tampa": "pistache/tampa-oliva-dourado.webp",
   "tarja": "pistache/tarja-dourado.webp",
   "nome": "Pistache Oliva Dourado",
-  "thumb": "pistache/thumbs/tampa-oliva-dourado.webp"
+  "thumb": "pistache/thumbs/tampa-oliva-dourado.webp",
+  "tarjaHd": "pistache/tarja-dourado.webp"
  },
  {
   "id": "pistache-oliva-prata",
@@ -205,7 +230,8 @@
   "tampa": "pistache/tampa-oliva-prata.webp",
   "tarja": "pistache/tarja-prata.webp",
   "nome": "Pistache Oliva Prata",
-  "thumb": "pistache/thumbs/tampa-oliva-prata.webp"
+  "thumb": "pistache/thumbs/tampa-oliva-prata.webp",
+  "tarjaHd": "pistache/tarja-prata.webp"
  },
  {
   "id": "rota-caveira-dourado",
@@ -213,7 +239,8 @@
   "tampa": "rota-do-caribe/tampa-caveira-dourado.webp",
   "tarja": "rota-do-caribe/tarja-caveira-dourado.webp",
   "nome": "Caveira Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-caveira-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-caveira-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-caveira-dourado.webp"
  },
  {
   "id": "rota-caveira-prata",
@@ -221,7 +248,8 @@
   "tampa": "rota-do-caribe/tampa-caveira-prata.webp",
   "tarja": "rota-do-caribe/tarja-caveira-prata.webp",
   "nome": "Caveira Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-caveira-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-caveira-prata.webp"
  },
  {
   "id": "classic-cinza-navio-dourado",
@@ -229,7 +257,8 @@
   "tampa": "classic-cinza/tampa-navio-dourado.webp",
   "tarja": "classic-cinza/tarja-dourado.webp",
   "nome": "Classic Cinza Navio Dourado",
-  "thumb": "classic-cinza/thumbs/tampa-navio-dourado.webp"
+  "thumb": "classic-cinza/thumbs/tampa-navio-dourado.webp",
+  "tarjaHd": "classic-cinza/tarja-dourado.webp"
  },
  {
   "id": "classic-cinza-navio-prata",
@@ -237,7 +266,8 @@
   "tampa": "classic-cinza/tampa-navio-prata.webp",
   "tarja": "classic-cinza/tarja-prata.webp",
   "nome": "Classic Cinza Navio Prata",
-  "thumb": "classic-cinza/thumbs/tampa-navio-prata.webp"
+  "thumb": "classic-cinza/thumbs/tampa-navio-prata.webp",
+  "tarjaHd": "classic-cinza/tarja-prata.webp"
  },
  {
   "id": "classic-cinza-liso-dourado",
@@ -245,7 +275,8 @@
   "tampa": "classic-cinza/tampa-liso-dourado.webp",
   "tarja": "classic-cinza/tarja-dourado.webp",
   "nome": "Classic Cinza Liso Dourado",
-  "thumb": "classic-cinza/thumbs/tampa-liso-dourado.webp"
+  "thumb": "classic-cinza/thumbs/tampa-liso-dourado.webp",
+  "tarjaHd": "classic-cinza/tarja-dourado.webp"
  },
  {
   "id": "classic-cinza-liso-prata",
@@ -253,7 +284,8 @@
   "tampa": "classic-cinza/tampa-liso-prata.webp",
   "tarja": "classic-cinza/tarja-prata.webp",
   "nome": "Classic Cinza Liso Prata",
-  "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp"
+  "thumb": "classic-cinza/thumbs/tampa-liso-prata.webp",
+  "tarjaHd": "classic-cinza/tarja-prata.webp"
  },
  {
   "id": "rota-teia-dourado",
@@ -261,7 +293,8 @@
   "tampa": "rota-do-caribe/tampa-teia-dourado.webp",
   "tarja": "rota-do-caribe/tarja-teia-dourado.webp",
   "nome": "Teia Dourado",
-  "thumb": "rota-do-caribe/thumbs/tampa-teia-dourado.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-teia-dourado.webp",
+  "tarjaHd": "rota-do-caribe/tarja-teia-dourado.webp"
  },
  {
   "id": "rota-teia-prata",
@@ -269,7 +302,8 @@
   "tampa": "rota-do-caribe/tampa-teia-prata.webp",
   "tarja": "rota-do-caribe/tarja-teia-prata.webp",
   "nome": "Teia Prata",
-  "thumb": "rota-do-caribe/thumbs/tampa-teia-prata.webp"
+  "thumb": "rota-do-caribe/thumbs/tampa-teia-prata.webp",
+  "tarjaHd": "rota-do-caribe/tarja-teia-prata.webp"
  },
  {
   "id": "jack-fera-uva",
@@ -280,7 +314,8 @@
   "thumb": "jack-fera/thumbs/tampa-uva.webp",
   "alt": 19.1,
   "tampaMm": 85,
-  "foco": 0.23
+  "foco": 0.23,
+  "tarjaHd": "jack-fera/tarja-uva.webp"
  },
  {
   "id": "fildercut-evoluxion-dourado-inclinada",
@@ -298,7 +333,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-inclinada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-inclinada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-dourado-arredondada",
@@ -316,7 +352,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-arredondada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-arredondada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-dourado-contorno",
@@ -334,7 +371,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-contorno.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-dourado-contorno.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-degrade-inclinada",
@@ -352,7 +390,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-inclinada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-inclinada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-degrade-arredondada",
@@ -370,7 +409,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-arredondada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-arredondada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-degrade-contorno",
@@ -388,7 +428,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-contorno.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-degrade-contorno.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado.webp"
  },
  {
   "id": "fildercut-evoluxion-vermelho-inclinada",
@@ -406,7 +447,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-inclinada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-inclinada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho.webp"
  },
  {
   "id": "fildercut-evoluxion-vermelho-arredondada",
@@ -424,7 +466,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-arredondada.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-arredondada.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho.webp"
  },
  {
   "id": "fildercut-evoluxion-vermelho-contorno",
@@ -442,7 +485,8 @@
    "respiroMm": 3
   },
   "corPasta": "#e3ecee",
-  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-contorno.pdf"
+  "pdf": "fildercut/pdf/fildercut-evoluxion-vermelho-contorno.pdf",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-dourado-inclinada",
@@ -461,7 +505,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-inclinada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-dourado-arredondada",
@@ -480,7 +525,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-arredondada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-dourado-contorno",
@@ -499,7 +545,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-dourado-contorno.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-degrade-inclinada",
@@ -518,7 +565,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-inclinada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-degrade-arredondada",
@@ -537,7 +585,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-arredondada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-degrade-contorno",
@@ -556,7 +605,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-degrade-contorno.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-dourado-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-vermelho-inclinada",
@@ -575,7 +625,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-inclinada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-vermelho-arredondada",
@@ -594,7 +645,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-arredondada.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho-v2.webp"
  },
  {
   "id": "fildercut-evoluxion-extra-forte-vermelho-contorno",
@@ -613,7 +665,8 @@
   },
   "corPasta": "#e3ecee",
   "pdf": "fildercut/pdf/fildercut-evoluxion-extra-forte-vermelho-contorno.pdf",
-  "selo": "Extra Forte"
+  "selo": "Extra Forte",
+  "tarjaHd": "hd/fildercut/tarja-evoluxion-vermelho-v2.webp"
  },
  {
   "id": "undercut-argan",
@@ -631,7 +684,8 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-argan-v2.pdf"
+  "pdf": "undercut/pdf/undercut-argan-v2.pdf",
+  "tarjaHd": "hd/undercut/tarja-argan-v2.webp"
  },
  {
   "id": "undercut-verde",
@@ -649,6 +703,7 @@
    "respiroMm": 1.5,
    "corpoMm": 23
   },
-  "pdf": "undercut/pdf/undercut-verde-v3.pdf"
+  "pdf": "undercut/pdf/undercut-verde-v3.pdf",
+  "tarjaHd": "hd/undercut/tarja-verde-v3.webp"
  }
 ]

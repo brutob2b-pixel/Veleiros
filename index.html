@@ -729,6 +729,7 @@ function applyArt(which, dataURL) {
     const [c, x] = cv(W, H);
     if (which === 'wrap') x.clearRect(0, 0, W, H);           // tarja: áreas transparentes da arte mostram o pote
     else { x.fillStyle = '#0b0708'; x.fillRect(0, 0, W, H); }
+    x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high';
     const k = Math.min(W / img.width, H / img.height);
     const w = img.width * k, ht = img.height * k;
     x.drawImage(img, (W - w) / 2, (H - ht) / 2, w, ht);
@@ -1249,8 +1250,9 @@ function pintarLib() {
       if (ehKit) {
         aplicaGeo({ alt: a.alt, tampa: a.tampaMm, foco: a.foco, pote: a.pote, corPasta: a.corPasta });
         applyArt('top', a.dataTop);
-        applyArt('wrap', a.dataWrap);
-        store.top = a.dataTop; store.wrap = a.dataWrap;
+        const urlTarja = (MAXTEX > 4096 && a.dataWrapHd) || a.dataWrap;
+        applyArt('wrap', urlTarja);
+        store.top = a.dataTop; store.wrap = urlTarja;
         kitAtivoId = a.id; store.kitAtivoId = a.id;
         kitAtivo = a; atualizaBaixarArte();
         if (e.isTrusted) mostrarResultado();   // escolha feita pela pessoa (não a automática da abertura)
@@ -1346,6 +1348,8 @@ async function carregarPasta() {
           // original (compatibilidade com kits enviados por FTP sem essa pasta).
           dataTop: 'artes/display/' + c.tampa,
           dataWrap: 'artes/display/' + c.tarja,
+          // tarja em alta (~8000 px) para telas/GPUs que aguentam textura de 8192: fica tão nítida quanto a tampa de perto
+          dataWrapHd: c.tarjaHd ? 'artes/' + c.tarjaHd : null,
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: 'artes/' + c.tampa,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
