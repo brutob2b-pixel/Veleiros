@@ -435,12 +435,12 @@ const paste = new THREE.MeshPhysicalMaterial({
 const reflexoEstudio = (() => {
   // mapa HDR (valores acima de 1): o verniz reflete só ~4% da luz, então as faixas precisam ser bem mais fortes que o fundo
   const W = 512, H = 256, px = new Uint16Array(W * H * 4), hf = THREE.DataUtils.toHalfFloat;   // half-float: filtra bem também em GPU de celular
-  const suave = (d, w) => Math.max(0, 1 - Math.pow(Math.abs(d) / w, 4));     // borda macia
-  const faixas = [[.12, 9, 20], [.37, 6, 13], [.62, 9, 20], [.87, 6, 13]];    // [posição, meia-largura px, intensidade]
+  const suave = (d, w) => Math.max(0, 1 - Math.pow(Math.abs(d) / w, 2));     // borda macia
+  const faixas = [[.12, 13, 5.5], [.37, 9, 3.5], [.62, 13, 5.5], [.87, 9, 3.5]];   // reflexo translúcido: a arte aparece através do brilho    // [posição, meia-largura px, intensidade]
   for (let y = 0; y < H; y++) {
     const v = y / H;
     let base = v < .5 ? .06 + (.5 - v) * .1 : .08 + (v - .5) * .22;          // fundo escuro de estúdio, piso um pouco mais claro
-    let teto = v < .16 ? 5 * (1 - v / .16) : 0;                               // teto claro (brilho do disco da tampa)
+    let teto = v < .16 ? 3 * (1 - v / .16) : 0;                               // teto claro (brilho do disco da tampa)
     const altura = suave(v - .48, .2);
     for (let xx = 0; xx < W; xx++) {
       let L = base + teto;
@@ -458,7 +458,7 @@ const reflexoEstudio = (() => {
   return env;
 })();
 // impressão quase sem reflexo próprio (specularIntensity baixo) + verniz bem liso por cima (clearcoat)
-const VERNIZ = { roughness: .5, metalness: 0, specularIntensity: .2, clearcoat: 1, clearcoatRoughness: .03, envMap: reflexoEstudio, envMapIntensity: 1 };
+const VERNIZ = { roughness: .5, metalness: 0, specularIntensity: .2, clearcoat: 1, clearcoatRoughness: .05, envMap: reflexoEstudio, envMapIntensity: .85 };
 const labelTop = new THREE.MeshPhysicalMaterial(Object.assign({ name: 'rotulo_tampa', map: tex(topC) }, VERNIZ));
 const labelWrap = new THREE.MeshPhysicalMaterial(Object.assign({ name: 'rotulo_corpo', map: tex(wrapC), transparent: true, alphaTest: .02 }, VERNIZ));
 
