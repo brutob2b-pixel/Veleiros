@@ -746,5 +746,21 @@
   },
   "pdf": "undercut/pdf/undercut-rosa-v2.pdf",
   "tarjaHd": "hd/undercut/tarja-rosa-v2.webp"
+ },
+ {
+  "id": "stars-pomada-nautica",
+  "marca": "Stars (pomada)",
+  "nome": "Pomada Náutica",
+  "tampa": "pomada/tampa-01.webp",
+  "tarja": "pomada/tarja-01.webp",
+  "tarjaHd": "pomada/tarja-01.webp",
+  "thumb": "thumbs/pomada-tampa-01.webp",
+  "pote": {
+   "tarjaMm": [
+    190,
+    17
+   ],
+   "respiroMm": 3
+  }
  }
 ]
