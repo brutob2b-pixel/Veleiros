@@ -199,6 +199,7 @@
     <button id="pdf" title="Salvar PDF (4 cenários)"><svg class="ic" viewBox="0 0 24 24"><use href="#i-pdf"/></svg><span class="tx">Mockup (PDF)</span></button>
     <button id="reset" title="Voltar ao original"><svg class="ic" viewBox="0 0 24 24"><use href="#i-reset"/></svg><span class="tx">Original</span></button>
     <button id="baixarArte" title="Baixar o PDF de impressão (tampa + tarja) do modelo escolhido" hidden><svg class="ic" viewBox="0 0 24 24"><use href="#i-baixar"/></svg><span class="tx">Arte (PDF)</span></button>
+    <button id="baixarAi" title="Baixar os arquivos editáveis (Illustrator) do modelo escolhido" hidden><svg class="ic" viewBox="0 0 24 24"><use href="#i-baixar"/></svg><span class="tx">Arte (AI)</span></button>
     <button id="exportar" title="Exportar HTML para o cliente"><svg class="ic" viewBox="0 0 24 24"><use href="#i-html"/></svg><span class="tx">Exportar HTML</span></button>
   </div>
   <p id="aviso" style="color:#e0b25c"></p>
@@ -1212,6 +1213,8 @@ const nomeArquivoPdf = a => a.pdf.split('/').pop();   // ex.: fildercut-evoluxio
 function atualizaBaixarArte() {
   baixarArte.hidden = !(kitAtivo && kitAtivo.pdf);
   if (!baixarArte.hidden) baixarArte.title = 'Baixar o PDF de impressão (tampa + tarja): ' + kitAtivo.nome;
+  baixarAi.hidden = !(kitAtivo && kitAtivo.ai);
+  if (!baixarAi.hidden) baixarAi.title = 'Baixar os arquivos editáveis (Illustrator): ' + kitAtivo.nome;
 }
 /* download direto na tela do app: baixa o arquivo como blob "genérico" e salva com o nome certo.
    Um link comum para .pdf faz o celular/navegador abrir o visualizador numa página nova. */
@@ -1234,6 +1237,12 @@ baixarArte.addEventListener('click', async () => {
   baixarArte.disabled = true; rot(baixarArte, 'Baixando…');
   await baixarArquivo(kitAtivo.pdf, nomeArquivoPdf(kitAtivo));
   baixarArte.disabled = false; rot(baixarArte, 'Arte (PDF)');
+});
+baixarAi.addEventListener('click', async () => {
+  if (!kitAtivo || !kitAtivo.ai || baixarAi.disabled) return;
+  baixarAi.disabled = true; rot(baixarAi, 'Baixando…');
+  await baixarArquivo(kitAtivo.ai, kitAtivo.ai.split('/').pop());
+  baixarAi.disabled = false; rot(baixarAi, 'Arte (AI)');
 });
 
 function pintarLib() {
@@ -1397,7 +1406,7 @@ async function carregarPasta() {
           // arquivo mestre em resolução real — só usado no botão de download
           fullTop: c.tampa ? 'artes/' + c.tampa : null,
           alt: c.alt, tampaMm: c.tampaMm, foco: c.foco, pote: c.pote, corPasta: c.corPasta,
-          pdf: c.pdf ? 'artes/' + c.pdf : null, selo: c.selo || null, semNome: !!c.semNome, acabamento: c.acabamento || null,
+          pdf: c.pdf ? 'artes/' + c.pdf : null, ai: c.ai ? 'artes/' + c.ai : null, selo: c.selo || null, semNome: !!c.semNome, acabamento: c.acabamento || null,
           fullWrap: 'artes/' + c.tarja
         }));
         return achadas;
