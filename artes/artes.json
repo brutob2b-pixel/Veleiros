@@ -762,7 +762,8 @@
     190,
     17
    ],
-   "respiroMm": 3
+   "respiroMm": 1.5,
+   "corpoMm": 22
   }
  }
 ]
