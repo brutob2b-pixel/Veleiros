@@ -765,5 +765,41 @@
    "respiroMm": 1.5,
    "corpoMm": 22
   }
+ },
+ {
+  "id": "rota-pasta-modeladora",
+  "marca": "Rota do Caribe",
+  "nome": "Pasta Modeladora",
+  "tampa": "pasta-modeladora/rota/tampa.webp",
+  "pdf": "pasta-modeladora/pdf/pasta-modeladora-rota.pdf",
+  "tarja": "pasta-modeladora/rota/tarja.webp",
+  "tarjaHd": "pasta-modeladora/rota/tarja.webp",
+  "thumb": "thumbs/pasta-modeladora-rota-tampa.webp",
+  "pote": {
+   "tarjaMm": [
+    190,
+    17
+   ],
+   "respiroMm": 1.5,
+   "corpoMm": 22
+  }
+ },
+ {
+  "id": "veleiros-pasta-modeladora",
+  "marca": "Veleiros do Caribe",
+  "nome": "Pasta Modeladora",
+  "tampa": "pasta-modeladora/veleiros/tampa.webp",
+  "pdf": "pasta-modeladora/pdf/pasta-modeladora-veleiros.pdf",
+  "tarja": "pasta-modeladora/veleiros/tarja.webp",
+  "tarjaHd": "pasta-modeladora/veleiros/tarja.webp",
+  "thumb": "thumbs/pasta-modeladora-veleiros-tampa.webp",
+  "pote": {
+   "tarjaMm": [
+    190,
+    17
+   ],
+   "respiroMm": 1.5,
+   "corpoMm": 22
+  }
  }
 ]
