@@ -768,8 +768,8 @@
  },
  {
   "id": "rota-pasta-modeladora",
-  "marca": "Rota do Caribe",
-  "nome": "Pasta Modeladora",
+  "marca": "2º lote de criativos (Rota e Veleiros)",
+  "nome": "Rota do Caribe · Tipo A",
   "tampa": "pasta-modeladora/rota/tampa.webp",
   "pdf": "pasta-modeladora/pdf/pasta-modeladora-rota.pdf",
   "ai": "pasta-modeladora/ai/pasta-modeladora-rota-illustrator.zip",
@@ -787,8 +787,8 @@
  },
  {
   "id": "veleiros-pasta-modeladora",
-  "marca": "Veleiros do Caribe",
-  "nome": "Pasta Modeladora",
+  "marca": "2º lote de criativos (Rota e Veleiros)",
+  "nome": "Veleiros do Caribe · Tipo A",
   "tampa": "pasta-modeladora/veleiros/tampa.webp",
   "pdf": "pasta-modeladora/pdf/pasta-modeladora-veleiros.pdf",
   "ai": "pasta-modeladora/ai/pasta-modeladora-veleiros-illustrator.zip",
@@ -806,8 +806,8 @@
  },
  {
   "id": "rota-pasta-modeladora-b",
-  "marca": "Rota do Caribe",
-  "nome": "Pasta Modeladora (Tipo B)",
+  "marca": "2º lote de criativos (Rota e Veleiros)",
+  "nome": "Rota do Caribe · Tipo B",
   "tampa": "pasta-modeladora/rota-b/tampa.webp",
   "pdf": "pasta-modeladora/pdf/pasta-modeladora-rota-b.pdf",
   "ai": "pasta-modeladora/ai/pasta-modeladora-rota-b-illustrator.zip",
@@ -825,8 +825,8 @@
  },
  {
   "id": "veleiros-pasta-modeladora-b",
-  "marca": "Veleiros do Caribe",
-  "nome": "Pasta Modeladora (Tipo B)",
+  "marca": "2º lote de criativos (Rota e Veleiros)",
+  "nome": "Veleiros do Caribe · Tipo B",
   "tampa": "pasta-modeladora/veleiros-b/tampa.webp",
   "pdf": "pasta-modeladora/pdf/pasta-modeladora-veleiros-b.pdf",
   "ai": "pasta-modeladora/ai/pasta-modeladora-veleiros-b-illustrator.zip",
